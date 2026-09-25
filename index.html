@@ -1,0 +1,2384 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<script>
+  document.documentElement.classList.replace("no-js", "js");
+  // Safety net: never leave the page hidden if the main script fails.
+  setTimeout(function () { document.documentElement.classList.add("in"); }, 4500);
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ashutosh Om Kumar</title>
+<meta name="description" content="Ashutosh Om Kumar: writing on metabolic health at MetaboliQ and building AnubhutiHealth, integrative care for diabetes and metabolic health.">
+<meta name="theme-color" content="#F1ECE3">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ashutosh Om Kumar">
+<meta property="og:description" content="Blog, projects, journey, credentials and courses.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Jost:wght@400;500&display=swap">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  :root {
+    color-scheme: light;
+    --paper: #F1ECE3;
+    --ink: #141210;
+    --ink-2: #2B2723;
+    --ink-3: #5E574D;
+    --thread: rgba(20, 18, 16, .4);
+    --chandan: #DDAF55;
+    --kumkum: #B32620;
+
+    --display: "Italiana", "Cormorant Garamond", Georgia, serif;
+    --serif: "Cormorant Garamond", Georgia, serif;
+    --sans: "Jost", "Futura", "Avenir Next", "Century Gothic", system-ui, sans-serif;
+
+    --ease-out: cubic-bezier(.16, 1, .3, 1);
+    --ease: cubic-bezier(.45, 0, .2, 1);
+
+    /* Landscape (laptop) scale; portrait and phones override below. */
+    --name: clamp(30px, min(4.7vw, 9vh), 90px);
+    --name-ls: .02em;
+    --dot: clamp(8px, calc(var(--name) * .16), 12.5px);
+    --label: clamp(10.5px, min(.9vw, 1.65vh), 13.5px);
+    --label-ls: .3em;
+    --gap-x: clamp(20px, 3.3vw, 58px);
+    --nav-mt: clamp(22px, 7vh, 72px);
+    --thread-h: clamp(12px, 3.2vh, 30px);
+    --sub: clamp(19px, min(1.8vw, 3.3vh), 28px);
+    --desc: clamp(15px, min(1.28vw, 2.35vh), 19.5px);
+    --reserve: clamp(0px, 4vh, 40px);
+    --foot-b: clamp(10px, 3.6vh, 36px);
+    --cap: 0px;
+  }
+
+  html, body { margin: 0; height: 100%; overflow: hidden; overscroll-behavior: none; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0;
+    overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
+
+  /* ---------- Atmosphere: mountains, clouds, smoke, vignette, grain ---------- */
+  .art {
+    position: fixed; bottom: 0; z-index: 0;
+    width: min(32vw, 640px); height: 100vh; height: 100lvh;
+    overflow: hidden; pointer-events: none;
+  }
+  .art--l { left: 0; }
+  .art--r { right: 0; }
+  .art canvas { position: absolute; left: 0; bottom: 0; display: block; }
+
+  .clouds { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+  /* Carried by the shared wind from script (see poseStrata()). */
+  .stratum { position: absolute; left: 0; will-change: transform, opacity; }
+  .cloud__bob { animation: cloud-bob 17s ease-in-out infinite alternate; }
+  .stratum canvas { display: block; }
+
+  /* Wind-borne leaves and blossoms. Under the smoke, so its mist veils the ones at the sides. */
+  .drift {
+    position: fixed; left: 0; bottom: 0; z-index: 1; display: block;
+    width: 100%; height: 66vh; height: 66lvh; pointer-events: none;
+  }
+
+  .smoke { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+
+  .vignette {
+    position: fixed; inset: 0; z-index: 2; pointer-events: none;
+    background: radial-gradient(125% 100% at 50% 44%, rgba(0, 0, 0, 0) 56%, rgba(96, 70, 44, .1) 100%);
+    mix-blend-mode: multiply;
+  }
+  .grain {
+    position: fixed; inset: 0; z-index: 30; pointer-events: none;
+    opacity: .55; mix-blend-mode: soft-light;
+    background-size: 220px 220px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='.66 .66 .66 0 -.5 .66 .66 .66 0 -.5 .66 .66 .66 0 -.5 0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- Flowering boughs beside the name ---------- */
+  .boughs { position: fixed; inset: 0; z-index: 4; pointer-events: none; }
+  .bough { position: absolute; }
+  /* Swayed from script by the shared breeze (see breeze()); the pivot sits at the trunk. */
+  .bough__in { position: absolute; inset: 0; transform-origin: 100% 51%; will-change: transform; }
+  .bough.is-flip .bough__in { transform-origin: 0 51%; }
+  .bough svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .bough.is-flip svg { transform: scaleX(-1); }
+  .bough path { fill: none; stroke: var(--ink); stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+  .bough circle { transform-box: fill-box; transform-origin: center; }
+
+  /* ---------- Stage ---------- */
+  .stage {
+    position: fixed; inset: 0; z-index: 10;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: max(clamp(16px, 6vh, 64px), env(safe-area-inset-top)) 16px calc(var(--reserve) + 40px + var(--foot-b) + env(safe-area-inset-bottom));
+  }
+  .id { display: flex; flex-direction: column; align-items: center; }
+
+  /* Tilak: chandan above, kumkum below, on the exact centre line of the name. */
+  .tilak {
+    display: flex; flex-direction: column; align-items: center;
+    gap: calc(var(--dot) * 1.75);
+    margin-bottom: calc(var(--name) * .42);
+  }
+  .dot { display: block; position: relative; width: var(--dot); height: var(--dot); border-radius: 50%; }
+  .dot::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit;
+    background: inherit; opacity: 0; pointer-events: none;
+  }
+  .dot--chandan { background: radial-gradient(circle at 38% 34%, #E9C77F 0%, #DDAF55 50%, #CC9C45 100%); }
+  .dot--kumkum { background: radial-gradient(circle at 38% 34%, #C43A2F 0%, #B32620 52%, #981C17 100%); }
+
+  .id__slot { position: relative; }
+  .name {
+    margin: 0; font-family: var(--display); font-weight: 400; font-size: var(--name);
+    line-height: 1.04; color: var(--ink); text-align: center; white-space: nowrap;
+    font-synthesis: none; font-kerning: normal;
+  }
+  .name__vis { display: block; }
+  /* Trailing tracking is cancelled per word so the line is optically centred under the tilak. */
+  .w { display: inline-block; letter-spacing: var(--name-ls); margin-right: calc(-1 * var(--name-ls)); }
+  .w + .w { margin-left: .3em; }
+  .l { display: inline-block; }
+
+  /* The stage a section takes over on touch screens (see "Touch: the name becomes the page"). */
+  .focus {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: min(92vw, 560px); display: flex; flex-direction: column; align-items: center; text-align: center;
+    pointer-events: none;
+  }
+  .focus.is-live { pointer-events: auto; }
+  .focus__title {
+    display: inline-flex; align-items: flex-start; gap: .1em; margin: 0; padding: 2px 6px;
+    font-family: var(--serif); font-style: italic; font-weight: 500; font-size: calc(var(--name) * .92);
+    line-height: 1.05; color: var(--ink); text-decoration: none; white-space: nowrap;
+  }
+  .focus__arrow { width: .3em; height: .3em; margin-top: .22em; flex: none; opacity: .55; }
+  .focus__desc {
+    margin: .55em 0 0; max-width: 32ch;
+    font-family: var(--serif); font-style: italic; font-size: var(--desc); line-height: 1.45; color: var(--ink-3);
+  }
+  .focus__desc span { display: block; text-wrap: balance; }
+  .focus .l, .focus__desc, .focus__arrow { opacity: 0; }
+
+  /* ---------- Areas ---------- */
+  .areas { position: relative; margin-top: var(--nav-mt); padding-bottom: var(--cap); }
+  .areas__list {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start;
+    column-gap: var(--gap-x); row-gap: 2px;
+  }
+  .area { position: relative; }
+  .area-break { display: none; }
+
+  .area__label {
+    appearance: none; -webkit-appearance: none; border: 0; background: none; margin: 0; cursor: pointer;
+    position: relative; display: inline-block;
+    padding: 12px 0 12px var(--label-ls); /* left pad balances the trailing tracking */
+    font-family: var(--sans); font-weight: 400; font-size: var(--label); line-height: 1;
+    letter-spacing: var(--label-ls); text-transform: uppercase; text-decoration: none;
+    color: var(--ink-2); transition: color .35s var(--ease);
+  }
+  /* A bindu of kumkum marks the section that holds the stage on touch screens. */
+  .area__label::before {
+    content: ""; position: absolute; left: 50%; bottom: 1px; width: 4px; height: 4px; margin-left: -2px;
+    border-radius: 50%; background: var(--kumkum); transform: scale(0); transition: transform .5s var(--ease-out);
+  }
+  .area.is-active > .area__label { color: var(--ink); }
+  .area.is-active > .area__label::before { transform: scale(1); }
+
+  .sub {
+    position: absolute; top: 100%; left: 50%; z-index: 2;
+    transform: translateX(-50%);
+    width: max-content; max-width: min(360px, 86vw);
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    visibility: hidden; opacity: 0;
+    transition: opacity .3s var(--ease), visibility 0s linear .3s;
+  }
+  .sub__thread {
+    display: block; width: 1px; height: var(--thread-h); background: var(--thread);
+    transform: scaleY(0); transform-origin: 50% 0; transition: transform .45s var(--ease-out);
+  }
+  .sub__item { display: flex; flex-direction: column; align-items: center; padding-top: 6px; }
+  .sub__link {
+    display: inline-flex; align-items: flex-start; gap: .22em; padding: 2px 4px;
+    font-family: var(--serif); font-style: italic; font-weight: 500; font-size: var(--sub); line-height: 1.15;
+    color: var(--ink); text-decoration: none; white-space: nowrap;
+    text-shadow: 0 0 14px var(--paper), 0 0 4px var(--paper);
+    opacity: 0; transform: translateY(-6px); filter: blur(3px);
+    transition: opacity .45s var(--ease-out) .08s, transform .6s var(--ease-out) .08s, filter .45s var(--ease-out) .08s;
+  }
+  .sub__arrow {
+    width: .36em; height: .36em; margin-top: .22em; flex: none; opacity: .5;
+    transition: transform .4s var(--ease-out), opacity .4s;
+  }
+  .sub__desc, .sub__note {
+    margin: 8px 0 0; max-width: min(360px, 86vw);
+    font-family: var(--serif); font-style: italic; font-size: var(--desc); line-height: 1.45; color: var(--ink-3);
+    text-shadow: 0 0 12px var(--paper), 0 0 3px var(--paper);
+    opacity: 0; transform: translateY(-4px);
+    transition: opacity .45s var(--ease), transform .55s var(--ease-out);
+  }
+  .sub__note { max-width: min(320px, 86vw); text-wrap: balance; transition-delay: .1s; }
+  .sub__desc span { display: block; text-wrap: balance; }
+
+  /* Open: click (is-open), keyboard focus, or hover on a fine pointer. */
+  .area.is-open > .sub,
+  .area:has(:focus-visible) > .sub { visibility: visible; opacity: 1; transition-delay: 0s; }
+  .area.is-open .sub__thread,
+  .area:has(:focus-visible) .sub__thread { transform: scaleY(1); }
+  .area.is-open .sub__link,
+  .area:has(:focus-visible) .sub__link,
+  .area.is-open .sub__note,
+  .area:has(:focus-visible) .sub__note { opacity: 1; transform: none; filter: none; }
+  .area.is-open > .area__label { color: var(--ink); }
+  .sub__link:focus-visible + .sub__desc { opacity: 1; transform: none; }
+
+  @media (hover: hover) and (pointer: fine) {
+    .area__label:hover { color: var(--ink); }
+    .area:hover > .sub { visibility: visible; opacity: 1; transition-delay: 0s; }
+    .area:hover .sub__thread { transform: scaleY(1); }
+    .area:hover .sub__link, .area:hover .sub__note { opacity: 1; transform: none; filter: none; }
+    .sub__item:hover .sub__desc { opacity: 1; transform: none; }
+    .sub__item:hover .sub__arrow { transform: translate(2px, -2px); opacity: .9; }
+  }
+
+  /* ---------- Socials ---------- */
+  .socials {
+    position: fixed; left: 0; right: 0; z-index: 10;
+    bottom: calc(var(--foot-b) + env(safe-area-inset-bottom));
+    display: flex; justify-content: center; gap: clamp(14px, 2vw, 28px);
+  }
+  .social {
+    width: 40px; height: 40px; display: grid; place-items: center;
+    color: var(--ink-2); opacity: .72; border-radius: 50%;
+    transition: opacity .35s var(--ease), color .35s var(--ease), transform .45s var(--ease-out);
+  }
+  .social svg { width: 19px; height: 19px; display: block; }
+  @media (hover: hover) and (pointer: fine) {
+    .social:hover { opacity: 1; color: var(--ink); transform: translateY(-2px); }
+  }
+
+  /* ---------- Music: four ink bars that breathe while it plays ---------- */
+  .sound {
+    position: fixed; z-index: 12;
+    top: calc(max(10px, 2.2vh) + env(safe-area-inset-top)); right: calc(max(10px, 1.8vw) + env(safe-area-inset-right));
+    width: 44px; height: 44px; display: grid; place-items: center; padding: 0;
+    border: 0; background: none; cursor: pointer; color: rgba(43, 39, 35, .62);
+    transition: color .35s var(--ease);
+  }
+  .sound__bars { display: flex; align-items: center; gap: 3px; height: 14px; }
+  .sound__bars i {
+    display: block; width: 1.5px; height: 14px; border-radius: 1px; background: currentColor;
+    transform: scaleY(.2); transition: transform .6s var(--ease-out);
+  }
+  .sound.is-on .sound__bars i { animation: sound-bar 1.3s ease-in-out infinite alternate; }
+  .sound.is-on .sound__bars i:nth-child(2) { animation-duration: 1.05s; animation-delay: -.4s; }
+  .sound.is-on .sound__bars i:nth-child(3) { animation-duration: 1.5s; animation-delay: -.9s; }
+  .sound.is-on .sound__bars i:nth-child(4) { animation-duration: 1.2s; animation-delay: -.2s; }
+  @media (hover: hover) and (pointer: fine) {
+    .sound:hover { color: var(--ink); }
+  }
+
+  :focus { outline: none; }
+  :focus-visible { outline: 1px solid var(--ink); outline-offset: 4px; border-radius: 2px; }
+
+  /* ---------- Credentials: the tilak unfurls into a japa mala ---------- */
+  .creds {
+    position: fixed; left: 0; right: 0; top: 56px; height: 60vh; z-index: 11;
+    visibility: hidden; pointer-events: none;
+    --gap: 64px; --col: 360px; --b: 8px;
+  }
+  .creds.is-open { visibility: visible; }
+  /* The mala scrolls inside its own window; the page itself never scrolls. */
+  .creds__scroll {
+    height: 100%; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(transparent, #000 22px, #000 calc(100% - 44px), transparent);
+            mask-image: linear-gradient(transparent, #000 22px, #000 calc(100% - 44px), transparent);
+  }
+  .creds__scroll::-webkit-scrollbar { display: none; }
+  .creds__cue {
+    position: absolute; bottom: -12px; left: var(--cue-x, 50%); z-index: 2; height: 30px; width: 0;
+    opacity: 0; transition: opacity .6s var(--ease); pointer-events: none;
+  }
+  .creds.has-more .creds__cue { opacity: 1; transition-delay: 1.8s; }
+  .creds__cue i {
+    position: absolute; left: -2.5px; top: 0; width: 5px; height: 5px; border-radius: 50%;
+    background: radial-gradient(circle at 38% 34%, #E9C77F, #CC9C45); animation: cue-drop 2.2s var(--ease) infinite;
+  }
+  .creds__cue span {
+    position: absolute; left: 12px; top: 8px; font-family: var(--sans); font-size: 9.5px; letter-spacing: .28em;
+    text-transform: uppercase; color: var(--ink-2); white-space: nowrap;
+  }
+  @keyframes cue-drop { 0% { transform: translateY(0); opacity: 0; } 25% { opacity: 1; } 80% { transform: translateY(22px); opacity: 1; } 100% { transform: translateY(24px); opacity: 0; } }
+  .creds.is-open .creds__scroll { pointer-events: auto; }
+  .creds__fit { position: relative; width: calc(var(--col) * 2 + var(--gap)); max-width: 100%; margin: 0 auto; padding: 24px 0 48px; }
+  .creds__thread {
+    position: absolute; width: 1px; margin-left: -.5px;
+    background: linear-gradient(rgba(221, 175, 85, .75), rgba(94, 63, 44, .42) 10%, rgba(94, 63, 44, .42) 88%, rgba(179, 38, 32, .6));
+  }
+  .creds__list { list-style: none; margin: 0; padding: 0; position: relative; }
+  /* Wide screens: chapters alternate either side of the thread, placed by placeMala(). */
+  .cred { position: absolute; width: var(--col); }
+  .cred.is-left { left: 0; text-align: right; }
+  .cred.is-right { left: calc(var(--col) + var(--gap)); text-align: left; }
+
+  /* Beads: chandan where it began, rudraksha for the road, gold for the medal, kumkum for now. */
+  .bead {
+    position: absolute; top: 4px; width: var(--b); height: var(--b); border-radius: 50%;
+    background: radial-gradient(circle at 38% 34%, #8E6448 0%, #5E3F2C 58%, #45301F 100%);
+  }
+  .cred.is-left > .bead { right: calc(var(--gap) / -2 - var(--b) / 2); }
+  .cred.is-right > .bead { left: calc(var(--gap) / -2 - var(--b) / 2); }
+  .bead--chandan, .bead--kumkum { --b: var(--dot); top: calc(8px - var(--dot) / 2); }
+  .bead--chandan { background: radial-gradient(circle at 38% 34%, #E9C77F 0%, #DDAF55 50%, #CC9C45 100%); }
+  .bead--kumkum { background: radial-gradient(circle at 38% 34%, #C43A2F 0%, #B32620 52%, #981C17 100%); }
+  .bead--kumkum::after {
+    content: ""; position: absolute; inset: 0; border-radius: 50%; background: inherit; opacity: 0;
+    animation: bead-now 3.4s ease-out 2s infinite;
+  }
+  .bead--gold { --b: 13px; height: 17.6px; top: -3.2px; border-radius: 0; background: none; overflow: visible; }
+
+  .cred__head {
+    appearance: none; -webkit-appearance: none; display: block; width: 100%; margin: 0; padding: 0;
+    border: 0; background: none; font: inherit; color: inherit; text-align: inherit; cursor: default;
+  }
+  .cred__when {
+    display: block; font-family: var(--sans); font-size: 9.5px; line-height: 16px; letter-spacing: .24em;
+    text-transform: uppercase; color: var(--ink-3);
+  }
+  .cred__title {
+    display: block; margin-top: 1px; font-family: var(--serif); font-style: italic; font-weight: 500;
+    font-size: clamp(17px, 1.42vw, 21px); line-height: 1.15; color: var(--ink);
+  }
+  .cred__place {
+    display: block; margin-top: 1px; font-family: var(--serif); font-style: italic;
+    font-size: clamp(14px, 1.05vw, 15.5px); line-height: 1.3; color: var(--ink-3);
+  }
+  .cred__more {
+    display: grid; grid-template-rows: 0fr; opacity: 0;
+    transition: grid-template-rows .45s var(--ease), opacity .4s var(--ease);
+  }
+  .cred__more > div { overflow: hidden; }
+  .cred__more p {
+    margin: 4px 0 0; font-family: var(--serif); font-style: italic; font-size: clamp(13.5px, 1vw, 15px);
+    line-height: 1.35; color: var(--ink-3); text-wrap: pretty;
+  }
+  .cred.is-more .cred__more { grid-template-rows: 1fr; opacity: 1; }
+  @media (hover: hover) and (pointer: fine) {
+    .cred:hover .cred__more, .cred:focus-within .cred__more { grid-template-rows: 1fr; opacity: 1; }
+  }
+
+  /* Small marks: medals after a title, a page or a book for work in print, a dashed page for
+     work still in draft, a small screen for the video course. */
+  .medal { display: inline-block; width: .5em; height: .7em; margin: 0 .3em; vertical-align: .02em; }
+  .ico { display: inline-block; width: 12px; height: 12px; margin: 0 .45em; vertical-align: -1px; color: var(--ink-2); opacity: .8; }
+  .pub { display: block; margin-top: 5px; color: inherit; text-decoration: none; }
+  .pub__src { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: clamp(15px, 1.15vw, 17px); color: var(--ink); }
+  .pub__what { display: block; font-family: var(--serif); font-style: italic; font-size: clamp(13.5px, 1vw, 15px); line-height: 1.3; color: var(--ink-3); }
+  @media (hover: hover) and (pointer: fine) {
+    .pub:hover .pub__src { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  }
+
+  /* The sumeru and tassel at the foot of the mala are the full CV. */
+  .cred--tassel { left: 0; right: 0; width: auto; text-align: center; }
+  .tassel { display: inline-flex; flex-direction: column; align-items: center; color: inherit; text-decoration: none; }
+  .tassel__art { width: 22px; height: 46px; overflow: visible; transform-origin: 50% 14%; }
+  .tassel__text { display: flex; flex-direction: column; align-items: center; }
+  .tassel__label { margin-top: 2px; font-family: var(--serif); font-style: italic; font-weight: 500; font-size: clamp(15px, 1.15vw, 17px); color: var(--ink); }
+  .tassel__sub { font-family: var(--sans); font-size: 9px; letter-spacing: .26em; text-transform: uppercase; color: var(--ink-3); }
+  @media (hover: hover) and (pointer: fine) {
+    .tassel:hover .tassel__label { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  }
+
+  .tilak.is-away .dot { visibility: hidden; }
+  .dot-flight { position: fixed; z-index: 12; border-radius: 50%; pointer-events: none; will-change: transform; }
+  .boughs { transition: opacity .8s var(--ease), filter .8s var(--ease); }
+  .boughs.is-hushed { opacity: 0; filter: blur(4px); }
+  .areas { transition: transform .9s var(--ease); }
+  .creds-open #sub-credentials { display: none !important; }
+  @keyframes bead-now { 0% { opacity: .45; transform: scale(1); } 70%, 100% { opacity: 0; transform: scale(2.6); } }
+
+  /* One column on phones and portrait screens: the thread runs down the left. */
+  @media (max-width: 699px), (max-aspect-ratio: 1/1) {
+    .creds { --gap: 34px; }
+    .creds__fit { width: min(420px, 92vw); }
+    .creds__list { display: grid; grid-template-columns: var(--gap) minmax(0, 1fr); row-gap: 13px; }
+    .cred, .cred.is-left, .cred.is-right { position: relative; left: auto; width: auto; grid-column: 2; text-align: left; }
+    .cred > .bead, .cred.is-left > .bead { left: calc(var(--gap) / -2 - var(--b) / 2); right: auto; }
+    .cred--tassel { text-align: left; }
+    .tassel { flex-direction: row; align-items: center; gap: 10px; margin-left: calc(var(--gap) / -2 - 11px); }
+    .tassel__text { align-items: flex-start; }
+    .cred__head { cursor: pointer; }
+  }
+
+  /* ---------- Portrait: the name stacks on two lines ---------- */
+  @media (max-aspect-ratio: 1/1) {
+    :root {
+      --name: clamp(30px, min(12vw, 7vh), 100px);
+      --label: clamp(10.5px, min(1.7vw, 1.5vh), 14px);
+      --nav-mt: clamp(22px, 5vh, 56px);
+      --reserve: 0px;
+      --desc: clamp(15.5px, min(2.4vw, 1.9vh), 20px);
+    }
+    .name { line-height: 1.1; }
+    .w1 { display: block; }
+    .w2 { margin-left: 0; }
+    .art { width: 54vw; height: 50vh; height: 50svh; }
+  }
+
+  /* ---------- Phones: 3 + 2 areas ---------- */
+  @media (max-width: 599px) {
+    :root { --label: 11px; --label-ls: .26em; --gap-x: 22px; }
+    .area-break { display: block; flex-basis: 100%; height: 0; }
+  }
+  /* A narrow window with a mouse keeps the hover cascade, in a shared caption below. */
+  @media (max-width: 599px) and (hover: hover) and (pointer: fine) {
+    :root { --cap: 124px; --thread-h: 16px; }
+    .area { position: static; }
+    .sub { top: calc(100% - var(--cap)); width: min(340px, 90vw); }
+  }
+
+  /* ---------- Touch: no hover, so the name hands its stage to the section ---------- */
+  @media (hover: none), (pointer: coarse) {
+    .sub { display: none !important; }
+  }
+  @media (hover: none) and (min-aspect-ratio: 1/1), (pointer: coarse) and (min-aspect-ratio: 1/1) {
+    .id__slot { min-height: calc(var(--name) * 1.1 + 3.7em); display: flex; align-items: center; justify-content: center; }
+    .focus__desc span { display: inline; }
+    .focus__desc { max-width: 60ch; }
+  }
+
+  /* Very short landscape screens */
+  @media (max-height: 460px) and (min-aspect-ratio: 1/1) {
+    :root { --thread-h: 10px; --desc: 13.5px; --sub: 17px; }
+    .sub__desc, .sub__note { margin-top: 5px; line-height: 1.35; }
+  }
+
+  /* ---------- Intro ---------- */
+  .js .art, .js .dot, .js .l, .js .area, .js .social, .js .clouds, .js .sound { opacity: 0; }
+  .js.smoke-on .art { opacity: 1; transition: opacity .6s var(--ease); }
+  .js.no-smoke .art { animation: art-in 2.8s var(--ease) .1s both; }
+  .js.in .clouds { animation: fade-in 3.2s var(--ease) 1.2s both; }
+
+  .js.in .dot--chandan { animation: dot-in 1s var(--ease-out) .2s both; }
+  .js.in .dot--kumkum { animation: dot-in 1s var(--ease-out) .5s both; }
+  .js.in .dot--chandan::after { animation: bloom 1.8s var(--ease-out) .3s both; }
+  .js.in .dot--kumkum::after { animation: bloom 1.8s var(--ease-out) .6s both; }
+  .js.in .name .l { animation: letter-in 1.4s var(--ease-out) calc(.8s + var(--d, 0ms)) both; }
+  .js.in .area { animation: rise-in 1s var(--ease-out) calc(1.8s + var(--i, 0) * 90ms) both; }
+  .js.in .social { animation: rise-in 1s var(--ease-out) calc(2.3s + var(--i, 0) * 70ms) both; }
+  .js.in .sound { animation: fade-in 1.2s var(--ease) 2.8s both; }
+
+  @keyframes dot-in { from { opacity: 0; transform: scale(.3); } to { opacity: 1; transform: none; } }
+  @keyframes bloom { from { opacity: .42; transform: scale(1); } to { opacity: 0; transform: scale(3.4); } }
+  @keyframes letter-in {
+    from { opacity: 0; filter: blur(10px); transform: translateY(.12em); }
+    to { opacity: 1; filter: none; transform: none; }
+  }
+  @keyframes rise-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @keyframes art-in { from { opacity: 0; filter: blur(14px); } to { opacity: 1; filter: none; } }
+  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+  @keyframes branch-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @keyframes bud-in { from { opacity: 0; transform: scale(.2); } to { opacity: 1; transform: none; } }
+  @keyframes blossom { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(.55); opacity: .6; } }
+  @keyframes sound-bar { from { transform: scaleY(.25); } to { transform: scaleY(1); } }
+  @keyframes cloud-bob { from { transform: translateY(-3px); } to { transform: translateY(4px); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .art, .js .dot, .js .l, .js .area, .js .social, .js .clouds, .js .sound { opacity: 1 !important; animation: none !important; }
+    .sound.is-on .sound__bars i { animation: none !important; transform: scaleY(.7); }
+    .creds__cue i { animation: none !important; top: 11px; }
+    .js .dot::after, .bough__in, .bough path, .bough circle, .stratum, .cloud__bob { animation: none !important; }
+    *, *::before, *::after { transition-duration: .01ms !important; transition-delay: 0s !important; }
+  }
+</style>
+</head>
+<body>
+  <div class="art art--l" aria-hidden="true"><canvas></canvas></div>
+  <div class="art art--r" aria-hidden="true"><canvas></canvas></div>
+  <div class="clouds" aria-hidden="true"></div>
+  <canvas class="drift" aria-hidden="true"></canvas>
+  <canvas class="smoke" aria-hidden="true"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="boughs" aria-hidden="true"></div>
+
+  <main class="stage">
+    <header class="id">
+      <div class="tilak" aria-hidden="true">
+        <i class="dot dot--chandan"></i>
+        <i class="dot dot--kumkum"></i>
+      </div>
+      <div class="id__slot">
+        <h1 class="name">
+          <span class="sr-only">Ashutosh Om Kumar</span>
+          <span class="name__vis" aria-hidden="true"><span class="w w1">Ashutosh</span><span class="w w2">Om</span><span class="w w3">Kumar</span></span>
+        </h1>
+        <div class="focus" id="focus" aria-live="polite"></div>
+      </div>
+    </header>
+
+    <nav class="areas" aria-label="Sections">
+      <ul class="areas__list">
+        <li class="area">
+          <button class="area__label" type="button" aria-expanded="false" aria-controls="sub-blog">Blog</button>
+          <div class="sub" id="sub-blog">
+            <span class="sub__thread" aria-hidden="true"></span>
+            <div class="sub__item">
+              <a class="sub__link" href="https://anubhutihealth.in/metaboliq" target="_blank" rel="noopener" aria-describedby="d-metaboliq">MetaboliQ<svg class="sub__arrow" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.2 7.8 7.8 2.2M3.4 2.2h4.4v4.4"/></svg></a>
+              <p class="sub__desc" id="d-metaboliq">
+                <span>Every meal is a message to your cells.</span>
+                <span>MetaboliQ decodes the reply.</span>
+              </p>
+            </div>
+          </div>
+        </li>
+        <li class="area">
+          <button class="area__label" type="button" aria-expanded="false" aria-controls="sub-projects">Projects</button>
+          <div class="sub" id="sub-projects">
+            <span class="sub__thread" aria-hidden="true"></span>
+            <div class="sub__item">
+              <a class="sub__link" href="https://anubhutihealth.in" target="_blank" rel="noopener" aria-describedby="d-anubhuti">AnubhutiHealth<svg class="sub__arrow" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.2 7.8 7.8 2.2M3.4 2.2h4.4v4.4"/></svg></a>
+              <p class="sub__desc" id="d-anubhuti">
+                <span>Where lab reports meet lived experience.</span>
+                <span>Integrative care for diabetes and metabolic health.</span>
+              </p>
+            </div>
+          </div>
+        </li>
+        <li class="area">
+          <button class="area__label" type="button" aria-expanded="false" aria-controls="sub-journey">Journey</button>
+          <div class="sub" id="sub-journey">
+            <span class="sub__thread" aria-hidden="true"></span>
+            <p class="sub__note">The path so far: the turns, the teachers and the lessons in between.</p>
+          </div>
+        </li>
+        <li class="area-break" role="presentation" aria-hidden="true"></li>
+        <li class="area">
+          <button class="area__label" type="button" aria-expanded="false" aria-controls="sub-credentials">Credentials</button>
+          <div class="sub" id="sub-credentials">
+            <span class="sub__thread" aria-hidden="true"></span>
+            <p class="sub__note">Degrees, certifications and the training behind the work.</p>
+          </div>
+        </li>
+        <li class="area">
+          <button class="area__label" type="button" aria-expanded="false" aria-controls="sub-courses">Courses</button>
+          <div class="sub" id="sub-courses">
+            <span class="sub__thread" aria-hidden="true"></span>
+            <p class="sub__note">Structured learning on metabolic health, for those who want to go deeper.</p>
+          </div>
+        </li>
+      </ul>
+    </nav>
+  </main>
+
+  <!-- Credentials: opened in place by the CREDENTIALS label; the tilak unfurls into this japa mala. -->
+  <section class="creds" id="creds" aria-label="Credentials" aria-hidden="true">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <defs>
+        <radialGradient id="g-gold" cx="38%" cy="34%" r="70%"><stop offset="0" stop-color="#F0D48E"/><stop offset=".55" stop-color="#D9AC52"/><stop offset="1" stop-color="#B98A3A"/></radialGradient>
+        <radialGradient id="g-silver" cx="38%" cy="34%" r="70%"><stop offset="0" stop-color="#EDEBE7"/><stop offset=".55" stop-color="#BDB9B2"/><stop offset="1" stop-color="#8F8A83"/></radialGradient>
+        <radialGradient id="g-chandan" cx="38%" cy="34%" r="70%"><stop offset="0" stop-color="#E9C77F"/><stop offset=".5" stop-color="#DDAF55"/><stop offset="1" stop-color="#CC9C45"/></radialGradient>
+      </defs>
+    </svg>
+    <div class="creds__cue" aria-hidden="true"><i></i><span>Scroll</span></div>
+    <div class="creds__scroll">
+    <div class="creds__fit">
+      <span class="creds__thread" aria-hidden="true"></span>
+      <ol class="creds__list">
+        <li class="cred">
+          <span class="bead bead--chandan" aria-hidden="true"></span>
+          <button class="cred__head" type="button">
+            <span class="cred__when">2019 · Where it began</span>
+            <span class="cred__title">B.Sc. Zoology (Hons.)</span>
+            <span class="cred__place">A.N. College, Magadh University</span>
+          </button>
+          <div class="cred__more"><div>
+            <p>The living body, cell to system. Graduated with 72%.</p>
+            <p>Second place, National Science Week Quiz, RMRIMS-ICMR.</p>
+          </div></div>
+        </li>
+        <li class="cred">
+          <span class="bead" aria-hidden="true"></span>
+          <button class="cred__head" type="button">
+            <span class="cred__when">2017–19 · Learning in the open</span>
+            <span class="cred__title">NPTEL certifications<svg class="medal" viewBox="0 0 10 14" role="img" aria-label="Silver medal"><path d="M2.6 .8 5 5.4 7.4 .8" fill="none" stroke="#6E675F" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="5" cy="9.2" r="3.7" fill="url(#g-silver)"/></svg></span>
+            <span class="cred__place">IIT Kanpur, IIT Kharagpur, IIT Roorkee</span>
+          </button>
+          <div class="cred__more"><div>
+            <p>Animal Physiology, 2019, with a silver medal.</p>
+            <p>Functional Genomics, Biomedical Nanotechnology, Biochemistry and Emotional Intelligence, 2018. Human Molecular Genetics, 2017.</p>
+          </div></div>
+        </li>
+        <li class="cred">
+          <span class="bead" aria-hidden="true"></span>
+          <button class="cred__head" type="button">
+            <span class="cred__when">2019–21 · First students</span>
+            <span class="cred__title">Biology faculty</span>
+            <span class="cred__place">Limitless Coaching, Patna</span>
+          </button>
+          <div class="cred__more"><div>
+            <p>Two years teaching human physiology and biology to competitive-exam batches. The one-to-one coaching now used with the nutrition team began here.</p>
+          </div></div>
+        </li>
+        <li class="cred">
+          <svg class="bead bead--gold" viewBox="0 0 14 19" aria-hidden="true"><path d="M3.6 1 7 7.4 10.4 1" fill="none" stroke="#B32620" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="12" r="5.6" fill="url(#g-gold)"/><circle cx="7" cy="12" r="3.7" fill="none" stroke="rgba(122,84,28,.35)" stroke-width=".6"/></svg>
+          <button class="cred__head" type="button">
+            <span class="cred__when">2022 · The gold year</span>
+            <span class="cred__title">M.Sc. Biotechnology<svg class="medal" viewBox="0 0 10 14" role="img" aria-label="Gold medal"><path d="M2.6 .8 5 5.4 7.4 .8" fill="none" stroke="#B32620" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="5" cy="9.2" r="3.7" fill="url(#g-gold)"/></svg></span>
+            <span class="cred__place">Patna University</span>
+          </button>
+          <div class="cred__more"><div>
+            <p>Gold medallist, with 82%.</p>
+            <p>Also certified in Food Microbiology and Food Safety, Central University of Haryana.</p>
+          </div></div>
+        </li>
+        <li class="cred">
+          <span class="bead" aria-hidden="true"></span>
+          <button class="cred__head" type="button">
+            <span class="cred__when">2022–23 · Into the lab</span>
+            <span class="cred__title">Dissertation research</span>
+            <span class="cred__place">CSIR-CCMB, Hyderabad</span>
+          </button>
+          <div class="cred__more"><div>
+            <p>How repeated social stress shapes behaviour and the epigenome, in a mouse model of depression.</p>
+            <p>Behavioural assays, brain dissection, DNA and RNA work, PCR and Western blots. Trained in zebrafish handling and breeding.</p>
+          </div></div>
+        </li>
+        <li class="cred">
+          <span class="bead" aria-hidden="true"></span>
+          <div class="cred__head">
+            <span class="cred__when">2023–25 · In print</span>
+            <a class="pub" href="https://doi.org/10.1007/s10571-025-01597-3" target="_blank" rel="noopener">
+              <svg class="ico" viewBox="0 0 12 12" role="img" aria-label="Journal paper"><path d="M3 1.2h4l2.2 2.2v7.4H3zM7 1.2v2.2h2.2M4.4 6h3.4M4.4 8h3.4" fill="none" stroke="currentColor" stroke-width=".9" stroke-linejoin="round"/></svg><span class="pub__src">Cellular and Molecular Neurobiology</span>
+              <span class="pub__what">Springer, 2025, on stress and the epigenetics of depression</span>
+            </a>
+            <a class="pub" href="https://doi.org/10.2174/9789815123739123010013" target="_blank" rel="noopener">
+              <svg class="ico" viewBox="0 0 12 12" role="img" aria-label="Book chapter"><path d="M6 3.2C4.8 2.4 3.2 2.2 1.4 2.6v7c1.8-.4 3.4-.2 4.6.6 1.2-.8 2.8-1 4.6-.6v-7C8.8 2.2 7.2 2.4 6 3.2zM6 3.2v7" fill="none" stroke="currentColor" stroke-width=".9" stroke-linejoin="round"/></svg><span class="pub__src">Recent Advances in Biosensor Technology</span>
+              <span class="pub__what">Bentham Science, a chapter on biosensors for heavy metals</span>
+            </a>
+          </div>
+        </li>
+        <li class="cred">
+          <span class="bead" aria-hidden="true"></span>
+          <button class="cred__head" type="button">
+            <span class="cred__when">Since 2023 · Into the clinic</span>
+            <span class="cred__title">Clinical nutrition counsellor</span>
+            <span class="cred__place">Under Dr. Kumar Anuj, DM (Endocrinology)</span>
+          </button>
+          <div class="cred__more"><div>
+            <p>More than 500 patients counselled across type 2, type 1 and gestational diabetes, obesity, PCOS and metabolic syndrome.</p>
+            <p>Every diet decision carries the endocrinologist's sign-off.</p>
+          </div></div>
+        </li>
+        <li class="cred">
+          <span class="bead" aria-hidden="true"></span>
+          <button class="cred__head" type="button">
+            <span class="cred__when">Certified</span>
+            <span class="cred__title">Certified Diabetes Educator</span>
+            <span class="cred__place">NDEP, Dr. Mohan's Diabetes Education Academy</span>
+          </button>
+          <div class="cred__more"><div>
+            <p>Also trained in Good Clinical Practice, Good Laboratory Practice and ethics in human health research.</p>
+          </div></div>
+        </li>
+        <li class="cred">
+          <span class="bead" aria-hidden="true"></span>
+          <button class="cred__head" type="button">
+            <span class="cred__when">Since 2023 · Building AnubhutiHealth</span>
+            <span class="cred__title">Head of Projects</span>
+            <span class="cred__place">Nutrition and clinical operations</span>
+          </button>
+          <div class="cred__more"><div>
+            <p>Grew the nutrition line from zero to ₹3 lakh a month in 18 months. Leads a six-person team of dietitians, coaches and engineers.</p>
+            <p>Wrote the 12-module dietitian certification, the care SOPs and the escalation rules, and led the app end to end.</p>
+          </div></div>
+        </li>
+        <li class="cred">
+          <span class="bead" aria-hidden="true"></span>
+          <button class="cred__head" type="button">
+            <span class="cred__when">The evidence</span>
+            <span class="cred__title">Diabetes remission cohort<svg class="ico" viewBox="0 0 12 12" role="img" aria-label="Manuscript in preparation"><path d="M3 1.2h4l2.2 2.2v7.4H3z" fill="none" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.3 1.1"/><path d="M4.4 6h3.4" fill="none" stroke="currentColor" stroke-width=".9"/></svg></span>
+            <span class="cred__place">37 patients, followed over time</span>
+          </button>
+          <div class="cred__more"><div>
+            <p>Mean HbA1c down about 2 points (Wilcoxon, p &lt; 0.001). Manuscript in preparation.</p>
+            <p>Also completed: a study of type 2 diabetes nutrition patterns in Bihar.</p>
+          </div></div>
+        </li>
+        <li class="cred">
+          <span class="bead" aria-hidden="true"></span>
+          <div class="cred__head">
+            <span class="cred__when">On camera</span>
+            <a class="pub" href="https://www.youtube.com/watch?v=aM7hpccDjz8&amp;list=PL1ATlZrFBRFJZKKNC5ww8qoXrgCrkhqm0" target="_blank" rel="noopener">
+              <svg class="ico" viewBox="0 0 12 12" role="img" aria-label="Video course"><rect x="1.2" y="2.4" width="9.6" height="7.2" rx="1.8" fill="none" stroke="currentColor" stroke-width=".9"/><path d="M5 4.6v2.8L7.4 6z" fill="currentColor"/></svg><span class="pub__src">Diabetes education course</span>
+              <span class="pub__what">A video course for patients, written and presented</span>
+            </a>
+          </div>
+        </li>
+        <li class="cred">
+          <span class="bead bead--kumkum" aria-hidden="true"></span>
+          <button class="cred__head" type="button">
+            <span class="cred__when">Now</span>
+            <span class="cred__title">M.Tech, AI and Data Science</span>
+            <span class="cred__place">IIT Patna, July 2026 to July 2028</span>
+          </button>
+          <div class="cred__more"><div>
+            <p>Learning the mathematics beneath the models, to build better care with them.</p>
+          </div></div>
+        </li>
+        <li class="cred cred--tassel">
+          <a class="tassel" href="Ashutosh-Om-Kumar-CV.pdf" download>
+            <svg class="tassel__art" viewBox="0 0 24 50" aria-hidden="true">
+              <circle class="tassel__bead" cx="12" cy="7" r="4.6" fill="url(#g-chandan)"/>
+              <ellipse cx="12" cy="14" rx="2.4" ry="1.5" fill="#981C17"/>
+              <path d="M12 15.5c-.2 8-4.8 20-7 30M12 15.5c-.1 8-2.6 21-3.6 31M12 15.5c0 8-.8 21-1 31.5M12 15.5c0 8 .8 21 1 31.5M12 15.5c.1 8 2.6 21 3.6 31M12 15.5c.2 8 4.8 20 7 30" fill="none" stroke="#B32620" stroke-width=".7" stroke-linecap="round" opacity=".85"/>
+              <rect x="9.6" y="18" width="4.8" height="2.2" rx="1" fill="#981C17"/>
+            </svg>
+            <span class="tassel__text">
+              <span class="tassel__label">The full CV</span>
+              <span class="tassel__sub">PDF</span>
+            </span>
+          </a>
+        </li>
+      </ol>
+    </div>
+    </div>
+  </section>
+
+  <!-- Social links: replace each href="#" with the real profile URL. -->
+  <footer class="socials" aria-label="Social links">
+    <a class="social" href="#" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3.2"/><path d="M8 10.6V17M8 7.4v.01M11.6 17v-6.4M11.6 13.6c0-1.9 1.1-3 2.6-3s2.3 1 2.3 2.9V17"/></svg>
+    </a>
+    <a class="social" href="#" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="3.4" y="3.4" width="17.2" height="17.2" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".7" fill="currentColor" stroke="none"/></svg>
+    </a>
+    <a class="social" href="#" target="_blank" rel="noopener" aria-label="X" title="X">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.6 4.6h4l10.8 14.8h-4z"/><path d="M19.2 4.6l-5.9 6.5M10.7 13.1l-5.9 6.3"/></svg>
+    </a>
+    <a class="social" href="#" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><rect x="2.8" y="5.8" width="18.4" height="12.4" rx="3.6"/><path d="M10.3 9.3v5.4l4.6-2.7z" fill="currentColor"/></svg>
+    </a>
+    <a class="social" href="#" aria-label="Email" title="Email">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3.6 7l8.4 6.2L20.4 7"/></svg>
+    </a>
+  </footer>
+
+  <button class="sound" type="button" aria-pressed="false" aria-label="Play music" title="Music">
+    <span class="sound__bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+  </button>
+
+  <div class="grain" aria-hidden="true"></div>
+
+<script>
+(() => {
+  "use strict";
+  const html = document.documentElement;
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const touchMQ = matchMedia("(hover: none), (pointer: coarse)");
+  const PAPER = "#F1ECE3";
+  const frozen = new URLSearchParams(location.search).get("freeze");
+  const FREEZE = frozen !== null && frozen !== "" && isFinite(frozen) ? Number(frozen) : null;
+  const NS = "http://www.w3.org/2000/svg";
+
+  const mulberry32 = (a) => () => {
+    a |= 0; a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  // Smooth 1D value noise in [-1, 1].
+  const noise1 = (R) => {
+    const t = new Float32Array(512);
+    for (let i = 0; i < 512; i++) t[i] = R() * 2 - 1;
+    return (x) => {
+      x += 4096;
+      const i = Math.floor(x), f = x - i, u = f * f * (3 - 2 * f);
+      return t[i & 511] * (1 - u) + t[(i + 1) & 511] * u;
+    };
+  };
+  const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+  const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
+  const TAU = 2 * Math.PI;
+
+  /* ---------- One breeze for everything that moves in the wind ---------- */
+  // breeze(t) is near 0 in stillness and near 1 at the top of a gust (t in seconds):
+  // slow swells, plus a gust every 7 s whose strength itself rises and falls, so no two
+  // gusts are quite the same. The boughs, the ground mist, the smoke's ambient mist and
+  // every leaf and blossom ride this one wind.
+  const GUST = 2 * Math.PI / 7;
+  const gustK = (t) => .72 + .28 * Math.sin(t * .17 + 2.3); // how hard the gust at t blows
+  const breeze = (t) => {
+    const swell = .5 + .5 * Math.sin(t * .31) * Math.sin(t * .13 + 1.7);
+    const gust = Math.pow(Math.max(0, Math.sin(t * GUST + .6)), 4) * gustK(t);
+    return .3 * swell + .7 * gust;
+  };
+
+  // How far the wind has carried things since t = 0 is its integral, in closed form, so
+  // every drifting thing is a pure function of t (exact under ?freeze, never drifting off in
+  // a long visit). The swell integrates directly; the gust is sin^4 on each rising lobe times
+  // gustK, whose whole lobes add up as a Dirichlet sum. Keep in step with breeze(): the
+  // ?freeze dev check below fails loudly if they part.
+  const swellRun = (t) => .5 * t + (.25 / .18) * Math.sin(.18 * t - 1.7) - (.25 / .44) * Math.sin(.44 * t + 1.7);
+  const F4 = (x) => .375 * x - Math.sin(2 * x) / 4 + Math.sin(4 * x) / 32; // integral of sin^4 from 0 to x
+  const lobes = (th) => { const k = Math.floor(th / TAU); return k * .375 * Math.PI + F4(Math.min(th - k * TAU, Math.PI)); };
+  // The same, weighted by sin(GB u + GG): gustK's wave written in the gust's own phase u.
+  const GB = .17 / GUST, GG = 2.3 - .6 * GB, GAL = TAU * GB;
+  const GF = [GB, GB + 2, GB - 2, GB + 4, GB - 4];
+  const GA = [-3 / (8 * GB), 1 / (4 * (GB + 2)), 1 / (4 * (GB - 2)), -1 / (16 * (GB + 4)), -1 / (16 * (GB - 4))];
+  const prim = (u) => { let s = 0; for (let j = 0; j < 5; j++) s += GA[j] * Math.cos(GF[j] * u + GG); return s; };
+  let GE = 0, GS = 0;
+  for (let j = 0; j < 5; j++) {
+    GE += GA[j] * (Math.cos(GF[j] * Math.PI + GG) - Math.cos(GG));
+    GS += GA[j] * (Math.sin(GF[j] * Math.PI + GG) - Math.sin(GG));
+  }
+  const lobesW = (th) => {
+    const k = Math.floor(th / TAU), u0 = k * TAU, ph = (k - 1) * GAL / 2;
+    return Math.sin(k * GAL / 2) / Math.sin(GAL / 2) * (GE * Math.cos(ph) - GS * Math.sin(ph))
+      + prim(u0 + Math.min(th - u0, Math.PI)) - prim(u0);
+  };
+  const gustRun = (t) => { const th = t * GUST + .6; return (.72 * lobes(th) + .28 * lobesW(th)) / GUST; };
+  const RUN0 = .3 * swellRun(0) + .7 * gustRun(0);
+  const breezeInt = (t) => .3 * swellRun(t) + .7 * gustRun(t) - RUN0;
+  // In wind-seconds: .55 in a calm, about 2 at the top of a strong gust.
+  const windSpeed = (t) => .55 + 1.6 * breeze(t);
+  const windRun = (t) => .55 * t + 1.6 * breezeInt(t);
+  const gustTop = (k) => (Math.PI / 2 - .6 + TAU * k) / GUST;
+  if (FREEZE !== null) {
+    let s = breeze(0) + breeze(40);
+    for (let i = 1; i < 4000; i++) s += breeze(i * .01) * (i % 2 ? 4 : 2);
+    if (Math.abs(s * .01 / 3 - breezeInt(40)) > 1e-6) console.error("breezeInt out of sync with breeze()");
+  }
+
+  // The wind's clock starts with the intro ("in"), the zero ?freeze uses, and stops while the tab is hidden.
+  let clk0 = null, hidAt = 0;
+  const windT = (now) => (FREEZE !== null ? FREEZE / 1000 : clk0 === null ? 0 : Math.max(0, (now - clk0) / 1000));
+  document.addEventListener("visibilitychange", () => {
+    if (clk0 === null) return;
+    if (document.hidden) hidAt = performance.now();
+    else clk0 += performance.now() - hidAt;
+  });
+  // A gust crosses the page left to right at the boughs' own pace: it reaches x lag(x)
+  // seconds after the left bough, and the right bough .45 s after that.
+  let pivL = innerWidth * .3, pivR = innerWidth * .7;
+  const lag = (x) => clamp(.45 * (x - pivL) / Math.max(1, pivR - pivL), -.3, .8);
+  const T_STILL = 21; // the one frame shown under reduced motion
+  let keepDirty = true; // the keep-out rects around the words need reading again
+
+  const splitLetters = (el, R, spread) => {
+    const letters = [...el.textContent];
+    el.textContent = "";
+    for (const ch of letters) {
+      const s = document.createElement("span");
+      s.className = "l";
+      s.textContent = ch;
+      s.style.setProperty("--d", Math.round(R() * spread) + "ms");
+      el.append(s);
+    }
+  };
+
+  /* ---------- Name: letters arrive unevenly, like smoke settling ---------- */
+  const rnd = mulberry32(108);
+  document.querySelectorAll(".name .w").forEach((w) => splitLetters(w, rnd, 560));
+  document.querySelectorAll(".area").forEach((el, i) => el.style.setProperty("--i", i));
+  document.querySelectorAll(".social").forEach((el, i) => el.style.setProperty("--i", i));
+
+  /* ---------- Ink-wash Himalaya, painted once per size ---------- */
+  // Units: the art box is 1000 units tall; x runs from the outer screen edge inwards.
+  // peaks: [x, height, half-width]. Far ranges are tallest and palest; light falls from the left.
+  const LAYERS = [
+    { base: 700, jag: .8, alpha: .15, depth: 210, ink: "92,78,62", peaks: [[70, 390, 240], [330, 200, 210]] },
+    { base: 815, jag: .75, alpha: .28, depth: 220, ink: "56,49,42", peaks: [[-10, 270, 250], [255, 185, 240]] },
+    { base: 930, jag: .65, alpha: .5, depth: 230, ink: "32,28,24", peaks: [[105, 225, 320]] },
+  ];
+
+  const washStrip = (ink) => {
+    const c = document.createElement("canvas");
+    c.width = 1; c.height = 256;
+    const x = c.getContext("2d");
+    const g = x.createLinearGradient(0, 0, 0, 256);
+    [[0, 1], [.02, .82], [.1, .56], [.3, .28], [.6, .09], [1, 0]]
+      .forEach(([o, a]) => g.addColorStop(o, `rgba(${ink},${a})`));
+    x.fillStyle = g;
+    x.fillRect(0, 0, 1, 256);
+    return c;
+  };
+
+  function paintArt(canvas, mirror, seed) {
+    const host = canvas.parentElement;
+    const cw = host.clientWidth, ch = host.clientHeight;
+    if (!cw || !ch) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = Math.round(cw * dpr), h = Math.round(ch * dpr);
+    canvas.width = w; canvas.height = h;
+    canvas.style.width = cw + "px"; canvas.style.height = ch + "px";
+    const ctx = canvas.getContext("2d");
+    const R = mulberry32(seed);
+    const s = h / 1000;
+    const uAt = (c) => (mirror ? w - c : c) / s;
+    const lift = mirror ? .84 : 1; // the right-hand range sits lower and calmer
+    const tmp = document.createElement("canvas");
+    tmp.width = w; tmp.height = h;
+    const tctx = tmp.getContext("2d");
+    const ys = new Float32Array(w + 1), body = new Float32Array(w + 1);
+
+    ctx.clearRect(0, 0, w, h);
+    for (const L of LAYERS) {
+      const peaks = L.peaks.map(([px, ph, pw]) => [px + (R() - .5) * 50, ph * lift * (.9 + R() * .2), pw * (.9 + R() * .2)]);
+      const base = L.base + (1 - lift) * 160;
+      const hmax = Math.max(...peaks.map((p) => p[1]));
+      const n1 = noise1(R), n2 = noise1(R), n3 = noise1(R), nd = noise1(R), nb = noise1(R);
+
+      for (let c = 0; c <= w; c++) {
+        const u = uAt(c);
+        let p = 0;
+        for (const [px, ph, pw] of peaks) {
+          const t = Math.abs(u - px) / pw;
+          if (t < 1) p = Math.max(p, ph * Math.pow(1 - t, 1.25));
+        }
+        const k = .25 + .75 * p / hmax; // rock is craggier near the summits
+        body[c] = (base - p - n1(u / 90) * 22 * L.jag * k) * s;
+        ys[c] = body[c] - (n2(u / 26) * 9 + n3(u / 9) * 3.2) * L.jag * k * s;
+      }
+
+      // 1. Paper below the ridge hides the ranges behind, the way mist does.
+      ctx.beginPath();
+      ctx.moveTo(0, h + 2);
+      for (let c = 0; c <= w; c++) ctx.lineTo(c, ys[c]);
+      ctx.lineTo(w, h + 2);
+      ctx.closePath();
+      ctx.fillStyle = PAPER;
+      ctx.fill();
+
+      // 2. Ink that is darkest at the ridge and dissolves downward. Faces turned
+      //    away from the light (ridge falling to the right) carry a second, shorter
+      //    wash, so the shadow sits on the upper slopes and melts lower down.
+      tctx.globalCompositeOperation = "source-over";
+      tctx.clearRect(0, 0, w, h);
+      const strip = washStrip(L.ink);
+      const span = Math.max(2, Math.round(9 * s));
+      for (let c = 0; c < w; c++) {
+        const u = uAt(c);
+        const a = body[Math.max(0, c - span)], b = body[Math.min(w, c + span)];
+        const shadow = Math.max(0, Math.tanh(((b - a) / (2 * span)) * 1.8 + nb(u / 7) * .35));
+        const brush = .86 + .28 * (nb(u / 15) * .5 + .5);
+        const d = L.depth * s * (.7 + .6 * (nd(u / 24) * .5 + .5));
+        tctx.globalAlpha = .62 * brush;
+        tctx.drawImage(strip, 0, 0, 1, 256, c, ys[c], 1, d);
+        if (shadow > .02) {
+          tctx.globalAlpha = Math.min(1, shadow * .75 * brush);
+          tctx.drawImage(strip, 0, 0, 1, 256, c, ys[c], 1, d * .5);
+        }
+      }
+      tctx.globalAlpha = 1;
+
+      ctx.globalAlpha = L.alpha;
+      ctx.drawImage(tmp, 0, 0);
+      ctx.globalAlpha = 1;
+    }
+
+    // Dissolve toward the centre of the page, and let the foot of the range sink into mist.
+    ctx.globalCompositeOperation = "destination-in";
+    const gx = ctx.createLinearGradient(mirror ? w : 0, 0, mirror ? 0 : w, 0);
+    gx.addColorStop(0, "rgba(0,0,0,1)");
+    gx.addColorStop(.42, "rgba(0,0,0,.9)");
+    gx.addColorStop(.82, "rgba(0,0,0,0)");
+    ctx.fillStyle = gx;
+    ctx.fillRect(0, 0, w, h);
+    ctx.globalCompositeOperation = "destination-out";
+    const gy = ctx.createLinearGradient(0, h * .8, 0, h);
+    gy.addColorStop(0, "rgba(0,0,0,0)");
+    gy.addColorStop(1, "rgba(0,0,0,.82)");
+    ctx.fillStyle = gy;
+    ctx.fillRect(0, h * .8, w, h * .2);
+    ctx.globalCompositeOperation = "source-over";
+  }
+
+  /* ---------- Ground mist: long strata that flow along the feet of the ranges ---------- */
+  // 32 x 32 value noise, wrapped; fbm sums four octaves of it.
+  const valueNoise = (R) => {
+    const table = new Float32Array(1024);
+    for (let i = 0; i < 1024; i++) table[i] = R();
+    const cell = (x, y) => table[(x & 31) + (y & 31) * 32];
+    return (x, y) => {
+      const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
+      const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+      const a = cell(xi, yi), b = cell(xi + 1, yi), c = cell(xi, yi + 1), d = cell(xi + 1, yi + 1);
+      return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+    };
+  };
+  const makeFbm = (R) => {
+    const vn = valueNoise(R);
+    return (x, y) => {
+      let s = 0, amp = .5;
+      for (let o = 0; o < 4; o++) { s += amp * vn(x, y); x = x * 2.03 + 7.1; y = y * 2.03 + 3.3; amp *= .5; }
+      return s;
+    };
+  };
+
+  // One stratum is a strip two tiles long, painted once at a third of the resolution (mist has
+  // no edges worth pixels): warped noise in banks, inside a feathered band, a shade lighter than
+  // the paper so it veils the mountains, with a faint cooler underbelly so it still reads on bare
+  // paper. The tile's first quarter is cross-faded with the stretch just past it, so the strip is
+  // exactly periodic and can slide forever without a seam. Returns the tile and height in CSS px.
+  function paintStrip(cv, Tcss, hCss, R, banks) {
+    const q = 3, Tq = Math.max(8, Math.round(Tcss / q)), hq = Math.max(4, Math.round(hCss / q));
+    const Eq = Math.round(.25 * Tq), SW = Tq + Eq;
+    cv.width = 2 * Tq; cv.height = hq;
+    cv.style.width = 2 * Tq * q + "px"; cv.style.height = hq * q + "px";
+    const fbm = makeFbm(R);
+    const ox = 1 + R() * 40, oy = 1 + R() * 40, phi = TAU * R();
+    const bank = new Float32Array(SW), src = new Float32Array(SW * hq);
+    for (let x = 0; x < SW; x++) bank[x] = .3 + .7 * smooth(.25, .75, .5 + .5 * Math.sin(TAU * banks * x / Tq + phi));
+    const ctx = cv.getContext("2d");
+    const img = ctx.createImageData(2 * Tq, hq), o = img.data;
+    for (let y = 0; y < hq; y++) {
+      const ny = y / hq, ey = Math.exp(-Math.pow((ny - .55) / .26, 2)), bb = .5 * smooth(.55, .92, ny);
+      for (let x = 0; x < SW; x++) {
+        const env = ey * bank[x];
+        if (env < .01) continue;
+        const nx = x / Tq;
+        const warp = fbm(nx * 3.3 + ox, ny * 1.2 + oy);
+        const n = fbm(nx * 9 + warp * 1.7 + ox, ny * 1.5 + oy);
+        src[y * SW + x] = 250 * env * smooth(.24, .62, n) * (1 - .3 * bb);
+      }
+      const r = 250 - 26 * bb, g = 248 - 29 * bb, b = 243 - 33 * bb;
+      for (let x = 0; x < Tq; x++) {
+        const w = x < Eq ? x / Eq : 1;
+        const a = w * src[y * SW + x] + (1 - w) * src[y * SW + x + Tq];
+        const i = (y * 2 * Tq + x) * 4, j = i + Tq * 4;
+        o[i] = o[j] = r; o[i + 1] = o[j + 1] = g; o[i + 2] = o[j + 2] = b; o[i + 3] = o[j + 3] = a;
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+    return { T: Tq * q, h: hq * q };
+  }
+
+  // Low in the ranges only, never in the sky; the lower strata are nearer, and faster.
+  // [centre (share of height), height (share of height), tile (share of width), px per wind-second at 1440 wide, opacity, banks per tile]
+  const STRATA = {
+    wide: [[.7, .2, 1.2, 14, .85, 1], [.83, .2, 1.25, 22, .9, 2], [.95, .16, 1.3, 32, .95, 1]],
+    tall: [[.72, .17, 1.3, 12, .85, 1], [.845, .17, 1.35, 18, .9, 2], [.95, .12, 1.4, 26, .95, 1]],
+  };
+  const cloudLayer = document.querySelector(".clouds");
+  let strata = [];
+  function buildClouds() {
+    cloudLayer.textContent = "";
+    const W = innerWidth, H = innerHeight, tall = H > W;
+    const R = mulberry32(tall ? 5 : 3);
+    strata = (tall ? STRATA.tall : STRATA.wide).map(([cy, ch, tile, speed, op, banks]) => {
+      const head = R();
+      const el = document.createElement("div");
+      el.className = "stratum";
+      const bob = document.createElement("div");
+      bob.className = "cloud__bob";
+      bob.style.animationDelay = (-head * 17).toFixed(1) + "s";
+      const cv = document.createElement("canvas");
+      const { T, h } = paintStrip(cv, tile * W, ch * H, R, banks);
+      el.style.top = Math.round(cy * H - h / 2) + "px";
+      bob.append(cv);
+      el.append(bob);
+      cloudLayer.append(el);
+      return { el, T, head, op, v: speed * Math.max(.5, W / 1440), shown: -1 };
+    });
+    poseStrata(reduced ? T_STILL : windT(performance.now()));
+  }
+  // The strata slide on the wind's run, a gust later in the middle of the page than at the
+  // left bough, and lift a little as it passes.
+  function poseStrata(t) {
+    const tl = t - lag(innerWidth / 2), g = breeze(tl), run = windRun(tl);
+    for (const s of strata) {
+      const a = s.head * s.T + s.v * run;
+      const x = -s.T + (a - s.T * Math.floor(a / s.T));
+      s.el.style.transform = `translate3d(${x.toFixed(1)}px, ${(-3 * g).toFixed(2)}px, 0)`;
+      const op = s.op * (1 - .08 * g);
+      if (Math.abs(op - s.shown) > .002) { s.el.style.opacity = op.toFixed(3); s.shown = op; }
+    }
+  }
+
+  const arts = [
+    [document.querySelector(".art--l canvas"), false, 11],
+    [document.querySelector(".art--r canvas"), true, 29],
+  ];
+  const paintAll = () => arts.forEach(([c, m, sd]) => c && paintArt(c, m, sd));
+  paintAll();
+  buildClouds();
+
+  /* ---------- Flowering boughs (from the Claude Design version) ---------- */
+  // A branch grows out from beside the name, forks, and ends in buds; every third bud
+  // opens into a chandan or kumkum blossom that keeps breathing.
+  function growBough(mirrored) {
+    let seed = mirrored ? 91 : 37;
+    const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+    const segs = [], buds = [];
+    const grow = (x, y, ang, len, w, depth, t) => {
+      const ex = x + Math.cos(ang) * len, ey = y + Math.sin(ang) * len;
+      const bend = (rnd() - .5) * len * .35;
+      const mx = (x + ex) / 2 - Math.sin(ang) * bend, my = (y + ey) / 2 + Math.cos(ang) * bend;
+      const dur = .35 + len / 260;
+      segs.push({ d: `M${x.toFixed(1)},${y.toFixed(1)} Q${mx.toFixed(1)},${my.toFixed(1)} ${ex.toFixed(1)},${ey.toFixed(1)}`, w, t, dur });
+      const next = t + dur * .8;
+      if (depth <= 0 || segs.length > 160 || ey < 14 || ey > 186 || ex < 6) { buds.push({ x: ex, y: ey, t: t + dur, r: 1.1 + rnd() * 1.1 }); return; }
+      const toward = (100 - ey) / 400;
+      grow(ex, ey, ang + (rnd() - .5) * .3 + toward, len * (.74 + rnd() * .08), w * .72, depth - 1, next);
+      const side = rnd() < .5 ? -1 : 1;
+      grow(ex, ey, ang + side * (.45 + rnd() * .35), len * (.5 + rnd() * .15), w * .6, depth - 1 - (rnd() < .3 ? 1 : 0), next + .1);
+    };
+    grow(500, 96, Math.PI - .12, 120, 2.8, 7, .4);
+    grow(500, 108, Math.PI + .16, 96, 2.2, 6, .9);
+    return { segs, buds };
+  }
+
+  const T0 = .6; // the boughs start once the tilak has settled
+  function buildBough(side, mirrored) {
+    const { segs, buds } = growBough(mirrored);
+    const el = document.createElement("div");
+    el.className = "bough bough--" + side;
+    const inner = document.createElement("div");
+    inner.className = "bough__in";
+    const svg = (cls) => {
+      const s = document.createElementNS(NS, "svg");
+      s.setAttribute("viewBox", "0 0 500 200");
+      s.setAttribute("preserveAspectRatio", "xMaxYMid meet");
+      s.setAttribute("class", cls);
+      return s;
+    };
+    const node = (name, attrs, style) => {
+      const n = document.createElementNS(NS, name);
+      for (const k in attrs) n.setAttribute(k, attrs[k]);
+      if (style) n.setAttribute("style", style);
+      return n;
+    };
+    // Blossoms sit behind the wood in their own layer, so their breathing repaints little.
+    const bloomSvg = svg("bough__blooms");
+    const defs = node("defs", {});
+    const grad = (id, stops) => {
+      const g = node("radialGradient", { id });
+      stops.forEach(([o, c, a]) => g.append(node("stop", { offset: o, "stop-color": c, "stop-opacity": a })));
+      defs.append(g);
+    };
+    grad(side + "-hc", [["0", "#E6BE6E", .95], [".45", "#D8AE5E", .45], ["1", "#D8AE5E", 0]]);
+    grad(side + "-hr", [["0", "#C0392B", .85], [".45", "#A8231B", .35], ["1", "#A8231B", 0]]);
+    bloomSvg.append(defs);
+    buds.filter((p, i) => i % 3 === 0).forEach((p, i) => {
+      bloomSvg.append(node("circle", {
+        cx: p.x.toFixed(1), cy: p.y.toFixed(1), r: (5 + (i % 4) * 1.6).toFixed(1),
+        fill: `url(#${side}-${i % 3 === 1 ? "hr" : "hc"})`,
+      }, `animation: bud-in 1.2s ease ${(p.t + .2 + T0).toFixed(2)}s both, blossom ${(3.2 + (i % 5) * .7).toFixed(1)}s ease-in-out ${(p.t + 1.4 + (i % 4) * .5 + T0).toFixed(2)}s infinite`));
+    });
+    const woodSvg = svg("bough__wood");
+    segs.forEach((g) => woodSvg.append(node("path", {
+      d: g.d, pathLength: "1", "stroke-width": Math.max(g.w, .45).toFixed(2),
+    }, `animation: branch-draw ${g.dur.toFixed(2)}s cubic-bezier(.4,.1,.3,1) ${(g.t + T0).toFixed(2)}s both`)));
+    buds.forEach((p, i) => woodSvg.append(node("circle", {
+      cx: p.x.toFixed(1), cy: p.y.toFixed(1), r: p.r.toFixed(2), fill: i % 7 === 3 ? "#A8231B" : "#1C1B19",
+    }, `animation: bud-in .8s ease ${(p.t + T0).toFixed(2)}s both`)));
+    inner.append(bloomSvg, woodSvg);
+    el.append(inner);
+    return el;
+  }
+
+  const boughLayer = document.querySelector(".boughs");
+  const nameVis = document.querySelector(".name__vis");
+  const tilakEl = document.querySelector(".tilak");
+  let boughs = null;
+  function placeBoughs() {
+    if (!boughs) return;
+    const r = nameVis.getBoundingClientRect();
+    if (!r.width) return;
+    const W = innerWidth, H = innerHeight;
+    keepDirty = true;
+    const put = (el, x, y, w, h, flip) => {
+      el.style.cssText = `left:${x.toFixed(1)}px;top:${y.toFixed(1)}px;width:${w.toFixed(1)}px;height:${h.toFixed(1)}px`;
+      el.classList.toggle("is-flip", flip);
+    };
+    if (H <= W) {
+      // Beside the name, growing outward.
+      const w = Math.max(0, Math.min(W * .24, 420, r.left - 14)), h = w * .4;
+      const y = r.top + r.height / 2 - h / 2;
+      put(boughs[0], r.left - 12 - w, y, w, h, false);
+      put(boughs[1], r.right + 12, y, w, h, true);
+      pivL = r.left - 12; pivR = r.right + 12; // the trunks
+    } else {
+      // Portrait has no room beside the name: the boughs reach in from the edges
+      // at the height of the tilak, and frame it.
+      const t = tilakEl.getBoundingClientRect();
+      const w = Math.min(W * .38, 280), h = w * .4;
+      const y = t.top + t.height / 2 - h / 2;
+      put(boughs[0], 0, y, w, h, true);
+      put(boughs[1], W - w, y, w, h, false);
+      pivL = 0; pivR = W;
+    }
+  }
+  function plantBoughs() {
+    boughs = [buildBough("l", false), buildBough("r", true)];
+    boughLayer.append(...boughs);
+    placeBoughs();
+    if (window.ResizeObserver) new ResizeObserver(placeBoughs).observe(nameVis);
+  }
+
+  let lastW = innerWidth, lastH = innerHeight, rt = 0;
+  addEventListener("resize", () => {
+    placeBoughs();
+    driftTop();
+    clearTimeout(rt);
+    rt = setTimeout(() => {
+      const turned = (innerHeight > innerWidth) !== (lastH > lastW);
+      if (innerWidth !== lastW || Math.abs(innerHeight - lastH) / lastH > .15) {
+        lastW = innerWidth; lastH = innerHeight;
+        paintAll();
+        buildClouds();
+        layoutDrift();
+      }
+      if (turned) placeBoughs();
+    }, 160);
+  });
+
+  /* ---------- Smoke: a paper-coloured veil that thins into wisps ---------- */
+  const VERT = "attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}";
+  const FRAG = `
+    #ifdef GL_FRAGMENT_PRECISION_HIGH
+    precision highp float;
+    #else
+    precision mediump float;
+    #endif
+    uniform vec2 uRes; uniform float uTime; uniform float uReveal; uniform float uPortrait;
+    uniform vec3 uPaper; uniform vec2 uSeed; uniform vec4 uPuff; uniform float uWind;
+    float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+    float noise(vec2 p){
+      vec2 i = floor(p), f = fract(p), u = f * f * (3.0 - 2.0 * f);
+      return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x), u.y);
+    }
+    float fbm(vec2 p){
+      float v = 0.0, a = 0.5; mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
+      for (int i = 0; i < 5; i++) { v += a * noise(p); p = m * p; a *= 0.5; }
+      return v;
+    }
+    void main(){
+      vec2 uv = gl_FragCoord.xy / uRes;
+      vec2 p = vec2(uv.x * uRes.x / uRes.y, uv.y) * 2.4 + uSeed;
+      float t = uTime;
+      vec2 q = vec2(fbm(p + vec2(0.0, -0.32 * t)), fbm(p + vec2(5.2, 1.3) + vec2(0.07 * t, -0.27 * t)));
+      float n = fbm(p * 1.25 + 2.1 * q + vec2(0.03 * t, -0.2 * t));
+
+      float dx = abs(uv.x - 0.5);
+      float zone = mix(smoothstep(0.06, 0.34, dx),
+                       smoothstep(0.66, 0.3, uv.y) * smoothstep(0.0, 0.26, dx), uPortrait);
+
+      // uReveal is the share of the veil already cleared; the logit maps it onto
+      // the noise distribution (mean ~0.484, sd ~0.115) so clearing runs at an even pace.
+      float r = clamp(uReveal, 0.0, 1.0);
+      float th = r <= 0.001 ? -1.0 : (r >= 0.999 ? 2.0 : 0.484 + 0.064 * log(r / (1.0 - r)));
+      float dens = smoothstep(th - 0.09, th + 0.09, n);
+      float rim = 1.0 - smoothstep(0.0, 0.09, abs(n - th));
+
+      float m = fbm(p * 0.7 + vec2(-uWind, 0.012 * t) + 9.0); // flows with the shared wind
+      float mist = smoothstep(0.5, 0.82, m) * 0.34 * smoothstep(0.62, 0.05, uv.y) * smoothstep(0.6, 1.0, r);
+
+      // A puff of smoke where the name dissolves (touch screens).
+      float age = t - uPuff.z, puff = 0.0;
+      if (age > 0.0 && age < 1.9) {
+        vec2 d = (uv - uPuff.xy) * vec2(uRes.x / uRes.y * 0.55, 1.0);
+        float rad = uPuff.w * (0.75 + 0.85 * age);
+        float life = smoothstep(0.0, 0.22, age) * (1.0 - smoothstep(0.45, 1.9, age));
+        puff = (1.0 - smoothstep(rad * 0.25, rad, length(d))) * life * smoothstep(0.34, 0.72, n);
+      }
+
+      float veil = clamp(max(dens, mist) * zone, 0.0, 1.0);
+      float a = max(veil, puff * 0.9);
+      // Grey wisps show while the veil breaks up, then fade with it.
+      float k = 0.16 * pow(sin(3.14159 * r), 0.8);
+      float wisp = rim * 0.85 + dens * smoothstep(0.25, 0.75, 1.0 - n) * 0.5;
+      vec3 col = uPaper * (1.0 - k * wisp * step(0.001, veil) - 0.13 * puff);
+      gl_FragColor = vec4(col * a, a);
+    }`;
+
+  function startSmoke(canvas, onFirstFrame) {
+    let gl = null;
+    try {
+      gl = canvas.getContext("webgl", { alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false, powerPreference: "low-power" });
+    } catch (e) { gl = null; }
+    if (!gl) return null;
+    const compile = (type, src) => {
+      const sh = gl.createShader(type);
+      gl.shaderSource(sh, src);
+      gl.compileShader(sh);
+      if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(sh) || "shader");
+      return sh;
+    };
+    const prog = gl.createProgram();
+    try {
+      gl.attachShader(prog, compile(gl.VERTEX_SHADER, VERT));
+      gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FRAG));
+      gl.linkProgram(prog);
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error("link");
+    } catch (e) { return null; }
+    gl.useProgram(prog);
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(prog, "p");
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    const U = (n) => gl.getUniformLocation(prog, n);
+    const uRes = U("uRes"), uTime = U("uTime"), uReveal = U("uReveal"), uPortrait = U("uPortrait"), uPuff = U("uPuff"), uWind = U("uWind");
+    gl.uniform3f(U("uPaper"), 241 / 255, 236 / 255, 227 / 255);
+    gl.uniform2f(U("uSeed"), Math.random() * 40, Math.random() * 40);
+    gl.uniform4f(uPuff, 0, 0, -99, 0);
+
+    // Half resolution: smoke is soft, and it keeps phones cool.
+    const fit = () => {
+      const w = Math.max(2, Math.round(innerWidth / 2)), h = Math.max(2, Math.round(innerHeight / 2));
+      if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+      gl.viewport(0, 0, w, h);
+      gl.uniform2f(uRes, w, h);
+      gl.uniform1f(uPortrait, innerHeight > innerWidth ? 1 : 0);
+    };
+    fit();
+    addEventListener("resize", fit);
+
+    const HOLD = 350, REVEAL = 3500;
+    const ease = (x) => (x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2);
+    // el: ms since the smoke began; tw: seconds on the wind's clock.
+    const render = (el, tw) => {
+      gl.uniform1f(uReveal, ease(Math.min(1, Math.max(0, (el - HOLD) / REVEAL))));
+      gl.uniform1f(uTime, el / 1000);
+      gl.uniform1f(uWind, .045 * windRun(tw));
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+    };
+    if (FREEZE !== null) { render(FREEZE, FREEZE / 1000); onFirstFrame(); return { puff() {} }; }
+    let start = performance.now(), hiddenAt = 0, last = 0, raf = 0, first = true, boostUntil = 0;
+    const draw = (now) => {
+      raf = requestAnimationFrame(draw);
+      const el = now - start;
+      if (el > HOLD + REVEAL + 300 && now > boostUntil && now - last < 42) return; // ambient mist at ~24 fps
+      last = now;
+      render(el, windT(now));
+      if (first) { first = false; onFirstFrame(); }
+    };
+    raf = requestAnimationFrame(draw);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) { cancelAnimationFrame(raf); hiddenAt = performance.now(); }
+      else { start += performance.now() - hiddenAt; raf = requestAnimationFrame(draw); }
+    });
+    canvas.addEventListener("webglcontextlost", (e) => { e.preventDefault(); cancelAnimationFrame(raf); });
+    return {
+      puff(x, y, radius) {
+        const now = performance.now();
+        gl.uniform4f(uPuff, x / innerWidth, 1 - y / innerHeight, (now - start) / 1000, radius / innerHeight);
+        boostUntil = now + 2000;
+      },
+    };
+  }
+
+  /* ---------- Intro ---------- */
+  let smoke = null;
+  if (!reduced) {
+    smoke = startSmoke(document.querySelector(".smoke"), () => html.classList.add("smoke-on"));
+    if (!smoke) html.classList.add("no-smoke");
+  }
+  const fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+  Promise.race([fontsReady, new Promise((r) => setTimeout(r, 1600))])
+    .then(() => requestAnimationFrame(() => {
+      html.classList.add("in"); clk0 = performance.now();
+      plantBoughs();
+      startWind();
+      // ?freeze=1200 holds every intro animation at 1.2 s, and the wind at the same moment, for checking frames.
+      if (FREEZE !== null) requestAnimationFrame(() => {
+        document.getAnimations().forEach((a) => { a.pause(); a.currentTime = FREEZE; });
+        freezeWind();
+      });
+    }));
+
+  /* ---------- Areas: hover on laptops, keys everywhere ---------- */
+  const areas = [...document.querySelectorAll(".area")];
+  const setOpen = (area, open) => {
+    area.classList.toggle("is-open", open);
+    area.querySelector(".area__label").setAttribute("aria-expanded", String(open));
+    keepDirty = true;
+  };
+  const closeAll = (except) => areas.forEach((a) => a !== except && setOpen(a, false));
+
+  /* ---------- Touch: the name becomes the page ----------
+     There is no hover on a phone, so a tapped section does not drop a menu. The name
+     dissolves into smoke, the section condenses in its place with its two lines, and
+     a kumkum bindu marks the chosen word. Tap the word again, the tilak or the paper
+     to bring the name back. */
+  const focus = document.getElementById("focus");
+  const nameLetters = [...document.querySelectorAll(".name .l")];
+  const kumkum = document.querySelector(".dot--kumkum");
+  const OUT = { opacity: 0, filter: "blur(8px)", transform: "translateY(-0.22em)" };
+  const IN = { opacity: 1, filter: "blur(0px)", transform: "translateY(0em)" };
+  const START = { opacity: 0, filter: "blur(10px)", transform: "translateY(0.14em)" };
+  const tween = (el, to, opt, from) => {
+    if (!from) {
+      const cs = getComputedStyle(el);
+      from = { opacity: cs.opacity, filter: cs.filter === "none" ? "blur(0px)" : cs.filter, transform: cs.transform === "none" ? "translateY(0em)" : cs.transform };
+    }
+    if (el._a) el._a.cancel();
+    el._a = el.animate([from, to], Object.assign({ fill: "both" }, opt));
+    return el._a.finished.catch(() => {});
+  };
+  const arrowSvg = '<svg class="focus__arrow" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.2 7.8 7.8 2.2M3.4 2.2h4.4v4.4"/></svg>';
+
+  function fillFocus(area) {
+    const link = area.querySelector(".sub__link");
+    const desc = area.querySelector(".sub__desc, .sub__note");
+    focus.textContent = "";
+    const title = document.createElement(link ? "a" : "p");
+    title.className = "focus__title";
+    const text = link ? link.textContent.trim() : area.querySelector(".area__label").textContent.trim();
+    if (link) {
+      title.href = link.href;
+      title.target = "_blank";
+      title.rel = "noopener";
+      title.setAttribute("aria-label", text);
+    } else {
+      const sr = document.createElement("span");
+      sr.className = "sr-only";
+      sr.textContent = text;
+      title.append(sr);
+    }
+    const word = document.createElement("span");
+    word.setAttribute("aria-hidden", "true");
+    word.textContent = text;
+    splitLetters(word, Math.random, 0);
+    title.append(word);
+    if (link) title.insertAdjacentHTML("beforeend", arrowSvg);
+    const p = document.createElement("p");
+    p.className = "focus__desc";
+    p.innerHTML = desc ? desc.innerHTML : "";
+    focus.append(title, p);
+  }
+
+  let shown = null, token = 0;
+  async function stage(area) {
+    const my = ++token;
+    areas.forEach((a) => {
+      a.classList.toggle("is-active", a === area);
+      a.querySelector(".area__label").setAttribute("aria-expanded", String(a === area));
+    });
+    const leaving = shown ? [...focus.querySelectorAll(".l, .focus__desc, .focus__arrow")] : nameLetters;
+    const outs = leaving.map((el) => tween(el, OUT, { duration: 420, delay: Math.random() * 150, easing: "cubic-bezier(.5,0,.75,.25)" }));
+    focus.classList.remove("is-live");
+    const r = document.querySelector(".id__slot").getBoundingClientRect();
+    if (smoke) smoke.puff(r.left + r.width / 2, r.top + r.height / 2, Math.max(r.width, 160) * .42);
+    try {
+      kumkum.animate([{ opacity: .42, transform: "scale(1)" }, { opacity: 0, transform: "scale(3.4)" }],
+        { duration: 1500, easing: "cubic-bezier(.16,1,.3,1)", pseudoElement: "::after" });
+    } catch (e) { /* pseudo-element animation unsupported: skip the bloom */ }
+    await Promise.race([Promise.all(outs), new Promise((res) => setTimeout(res, 620))]);
+    if (my !== token) return;
+    shown = area;
+    if (area) {
+      fillFocus(area);
+      focus.querySelectorAll(".l").forEach((l) =>
+        tween(l, IN, { duration: 950, delay: Math.random() * 320, easing: "cubic-bezier(.16,1,.3,1)" }, START));
+      focus.querySelectorAll(".focus__desc, .focus__arrow").forEach((el) =>
+        tween(el, IN, { duration: 800, delay: 380, easing: "cubic-bezier(.16,1,.3,1)" }, START));
+      focus.classList.add("is-live");
+    } else {
+      focus.textContent = "";
+      nameLetters.forEach((l) => tween(l, IN, { duration: 1000, delay: Math.random() * 380, easing: "cubic-bezier(.16,1,.3,1)" }));
+    }
+    keepDirty = true;
+  }
+
+  /* ---------- Credentials: the tilak unfurls into a japa mala ----------
+     Nothing navigates and the music plays on. The name goes up in smoke, the chandan dot
+     flies to the head of a thread and the kumkum dot to its foot, the thread draws out from
+     where the tilak stood, and a bead blooms for each chapter: chandan where it began,
+     rudraksha for the road, a gold medallion for the gold year, kumkum for now. Hover a
+     chapter (tap on a phone) for the rest of it. The tassel at the foot is the full CV. */
+  const creds = document.getElementById("creds");
+  const credsFit = creds.querySelector(".creds__fit");
+  const credsThread = creds.querySelector(".creds__thread");
+  const credItems = [...creds.querySelectorAll(".cred:not(.cred--tassel)")];
+  const credBeads = credItems.map((c) => c.querySelector(".bead"));
+  const credHeads = [...creds.querySelectorAll(".cred__head, .tassel")];
+  const tassel = creds.querySelector(".tassel");
+  const tasselArt = creds.querySelector(".tassel__art");
+  const tasselBead = creds.querySelector(".tassel__bead");
+  const tasselItem = creds.querySelector(".cred--tassel");
+  const credsScroll = creds.querySelector(".creds__scroll");
+  const narrowMala = matchMedia("(max-width: 699px), (max-aspect-ratio: 1/1)");
+  const credsArea = document.getElementById("sub-credentials").closest(".area");
+  const navEl = document.querySelector(".areas");
+  const tilakEl2 = document.querySelector(".tilak");
+  const tilakDots = [...tilakEl2.querySelectorAll(".dot")];
+  const SWIFT = "cubic-bezier(.65,0,.25,1)", SETTLE = "cubic-bezier(.16,1,.3,1)";
+  const ms = (v) => (reduced ? 1 : v);
+  const wait = (v) => new Promise((r) => setTimeout(r, ms(v)));
+  const centre = (el) => { const r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
+  let credsOpen = false, credsTok = 0, flights = [], navShift = 0, threadH = 1, threadO = 0;
+
+  // Wide screens: chapters alternate either side of the thread. Each is given the room its
+  // unfolded detail needs, so opening one never touches the next chapter on its side.
+  const STEP = 52;
+  function placeMala() {
+    const list = creds.querySelector(".creds__list");
+    if (narrowMala.matches) {
+      list.style.height = "";
+      [...credItems, tasselItem].forEach((c) => { c.style.top = ""; c.classList.remove("is-left", "is-right"); });
+      return;
+    }
+    const free = [0, 0];
+    let last = -STEP, bottom = 0;
+    credItems.forEach((c, i) => {
+      const side = i % 2;
+      c.classList.toggle("is-left", side === 0);
+      c.classList.toggle("is-right", side === 1);
+      const more = c.querySelector(".cred__more > div");
+      const h = c.querySelector(".cred__head").offsetHeight + (more ? more.scrollHeight + 8 : 0);
+      const top = Math.max(free[side], last + STEP);
+      c.style.top = top + "px";
+      free[side] = top + h + 16;
+      last = top;
+      bottom = Math.max(bottom, top + h);
+    });
+    const tt = Math.max(bottom + 10, last + STEP + 24);
+    tasselItem.style.top = tt + "px";
+    list.style.height = tt + tasselItem.offsetHeight + "px";
+  }
+
+  // The window the mala scrolls in runs from the top of the screen down to the nav, and the nav
+  // glides down toward the socials to give the mala as much of the screen as it can.
+  function layoutCreds() {
+    const nav = navEl.getBoundingClientRect();
+    const navTop = nav.top - navShift, navBot = nav.bottom - navShift;
+    const soc = document.querySelector(".socials").getBoundingClientRect();
+    const top = Math.max(soundBtn.getBoundingClientRect().bottom + 4, 48);
+    navShift = Math.max(0, soc.top - 14 - navBot);
+    navEl.style.transform = navShift ? `translateY(${navShift.toFixed(1)}px)` : "";
+    creds.style.top = top.toFixed(1) + "px";
+    creds.style.height = Math.max(80, navTop + navShift - 14 - top).toFixed(1) + "px";
+    placeMala();
+    // The thread runs from the first bead to the sumeru, in the scrolled content's own pixels.
+    const fr = credsFit.getBoundingClientRect();
+    const [x0, y0] = centre(credBeads[0]), [, y1] = centre(tasselBead);
+    threadH = Math.max(1, y1 - y0);
+    credsThread.style.left = (x0 - fr.left).toFixed(1) + "px";
+    credsThread.style.top = (y0 - fr.top).toFixed(1) + "px";
+    credsThread.style.height = threadH.toFixed(1) + "px";
+    creds.style.setProperty("--cue-x", (x0 - creds.getBoundingClientRect().left).toFixed(1) + "px");
+    keepDirty = true;
+    showCue();
+  }
+  // While more of the mala lies below, a chandan bead keeps sliding down the thread at the foot
+  // of the window. It leaves once the sumeru is in view.
+  const showCue = () => {
+    const rest = credsScroll.scrollHeight - credsScroll.clientHeight - credsScroll.scrollTop;
+    creds.classList.toggle("has-more", rest > 24);
+  };
+  credsScroll.addEventListener("scroll", showCue, { passive: true });
+  // The wheel and the keys scroll the mala wherever the pointer happens to be.
+  addEventListener("wheel", (e) => {
+    if (credsOpen && !(e.target.closest && e.target.closest(".creds__scroll"))) credsScroll.scrollTop += e.deltaY;
+  }, { passive: true });
+  addEventListener("keydown", (e) => {
+    if (!credsOpen || e.altKey || e.ctrlKey || e.metaKey) return;
+    const page = credsScroll.clientHeight * .85;
+    const by = { ArrowDown: 60, ArrowUp: -60, PageDown: page, PageUp: -page, End: 1e5, Home: -1e5 }[e.key];
+    if (by === undefined) return;
+    e.preventDefault();
+    credsScroll.scrollBy({ top: by, behavior: reduced ? "auto" : "smooth" });
+  });
+
+  const clearFlights = () => { flights.forEach((f) => f.remove()); flights = []; };
+  // A tilak dot flies between its place and a bead on a soft S, swelling a little mid-air. A bead
+  // scrolled out of the window is met at the window's edge, where the dot fades into the mala.
+  function fly(dot, bead, home) {
+    const view = credsScroll.getBoundingClientRect();
+    const [bx, byRaw] = centre(bead);
+    const by = Math.min(view.bottom - 14, Math.max(view.top + 10, byRaw));
+    const out = by !== byRaw;
+    const [dx0, dy0] = centre(dot);
+    const [ax, ay] = home ? [bx, by] : [dx0, dy0], [ex, ey] = home ? [dx0, dy0] : [bx, by];
+    const s = dot.getBoundingClientRect().width || 10;
+    const f = document.createElement("i");
+    f.className = "dot-flight " + (dot.classList.contains("dot--chandan") ? "dot--chandan" : "dot--kumkum");
+    f.style.cssText = `left:${(ax - s / 2).toFixed(1)}px;top:${(ay - s / 2).toFixed(1)}px;width:${s}px;height:${s}px`;
+    document.body.append(f);
+    flights.push(f);
+    const dx = ex - ax, dy = ey - ay, bow = Math.sign(dy || 1) * Math.min(28, Math.abs(dy) * .14) * (Math.abs(dy) > Math.abs(dx) ? 1 : 0);
+    return f.animate([
+      { transform: "translate(0px, 0px) scale(1)", opacity: home && out ? 0 : 1 },
+      { transform: `translate(${(dx * .5 + bow).toFixed(1)}px, ${(dy * .5).toFixed(1)}px) scale(1.3)`, opacity: 1, offset: .5 },
+      { transform: `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) scale(1)`, opacity: !home && out ? 0 : 1 },
+    ], { duration: ms(home ? 850 : 1100), easing: SWIFT, fill: "both" }).finished.catch(() => {});
+  }
+
+  async function openCreds(byKeyboard) {
+    if (credsOpen) return;
+    credsOpen = true;
+    const my = ++credsTok;
+    token++; // a touch stage() in flight stops here
+    html.classList.add("creds-open");
+    closeAll();
+    areas.forEach((a) => {
+      a.classList.toggle("is-active", a === credsArea);
+      a.querySelector(".area__label").setAttribute("aria-expanded", String(a === credsArea));
+    });
+    // The name (or a section standing in for it) goes up in smoke.
+    const leaving = shown ? [...focus.querySelectorAll(".l, .focus__desc, .focus__arrow")] : nameLetters;
+    leaving.forEach((el) => tween(el, OUT, { duration: ms(440), delay: ms(Math.random() * 160), easing: "cubic-bezier(.5,0,.75,.25)" }));
+    if (shown) { shown = null; focus.classList.remove("is-live"); setTimeout(() => { if (!shown) focus.textContent = ""; }, 700); }
+    const slot = document.querySelector(".id__slot").getBoundingClientRect();
+    if (smoke) smoke.puff(slot.left + slot.width / 2, slot.top + slot.height / 2, Math.max(slot.width, 220) * .55);
+    if (innerHeight > innerWidth) boughLayer.classList.add("is-hushed");
+
+    credItems.forEach((c) => c.classList.remove("is-more"));
+    creds.classList.add("is-open");
+    creds.setAttribute("aria-hidden", "false");
+    credsScroll.scrollTop = 0;
+    layoutCreds();
+    // The thread draws out both ways from where the tilak stood.
+    const fr = credsFit.getBoundingClientRect();
+    const threadTop = fr.top + parseFloat(credsThread.style.top);
+    const [, ty] = centre(tilakEl2);
+    threadO = Math.min(threadH, Math.max(0, ty - threadTop));
+    const p = (threadO / threadH) * 100;
+    credsThread.animate([{ clipPath: `inset(${p.toFixed(2)}% 0 ${(100 - p).toFixed(2)}% 0)` }, { clipPath: "inset(0% 0 0% 0)" }],
+      { duration: ms(1150 + Math.min(900, threadH * .4)), delay: ms(300), easing: SWIFT, fill: "both" });
+    // Beads bloom as the thread reaches them; each chapter settles in after its bead.
+    credBeads.forEach((b, i) => {
+      const at = 380 + Math.min(1, Math.abs(centre(b)[1] - threadTop - threadO) / 640) * 1000;
+      const ends = i === 0 || i === credBeads.length - 1;
+      if (ends) b.animate([{ opacity: 0 }, { opacity: 1 }], { duration: ms(160), delay: ms(1330), fill: "both" });
+      else b.animate([{ opacity: 0, transform: "scale(0)" }, { opacity: 1, transform: "scale(1)" }], { duration: ms(650), delay: ms(at), easing: SETTLE, fill: "both" });
+      tween(credHeads[i], IN, { duration: ms(900), delay: ms(Math.max(at, ends ? 1150 : 0) + 140), easing: SETTLE }, START);
+    });
+    tween(tassel, IN, { duration: ms(900), delay: ms(1500), easing: SETTLE }, { opacity: 0, filter: "blur(6px)", transform: "translateY(-10px)" });
+
+    await wait(240);
+    if (my !== credsTok) return;
+    tilakEl2.classList.add("is-away");
+    await Promise.all([fly(tilakDots[0], credBeads[0]), fly(tilakDots[1], credBeads[credBeads.length - 1])]);
+    if (my !== credsTok) return;
+    clearFlights();
+    if (byKeyboard) credHeads[0].focus({ preventScroll: true });
+  }
+
+  async function closeCreds(restoreName = true) {
+    if (!credsOpen) return;
+    credsOpen = false;
+    const my = ++credsTok;
+    html.classList.remove("creds-open");
+    if (restoreName) areas.forEach((a) => {
+      a.classList.remove("is-active");
+      a.querySelector(".area__label").setAttribute("aria-expanded", "false");
+    });
+    credItems.forEach((c) => c.classList.remove("is-more"));
+    credHeads.forEach((h) => tween(h, OUT, { duration: ms(340), delay: ms(Math.random() * 120), easing: "cubic-bezier(.5,0,.75,.25)" }));
+    credBeads.slice(1, -1).forEach((b, i) => b.animate([{ opacity: 1, transform: "scale(1)" }, { opacity: 0, transform: "scale(0)" }],
+      { duration: ms(380), delay: ms(120 + i * 35), easing: "ease-in", fill: "both" }));
+    const p = (threadO / threadH) * 100;
+    credsThread.animate([{ clipPath: "inset(0% 0 0% 0)" }, { clipPath: `inset(${p.toFixed(2)}% 0 ${(100 - p).toFixed(2)}% 0)` }],
+      { duration: ms(760), delay: ms(160), easing: SWIFT, fill: "both" });
+    navShift = 0;
+    navEl.style.transform = "";
+    boughLayer.classList.remove("is-hushed");
+    if (restoreName) {
+      const slot = document.querySelector(".id__slot").getBoundingClientRect();
+      if (smoke) smoke.puff(slot.left + slot.width / 2, slot.top + slot.height / 2, Math.max(slot.width, 220) * .45);
+      nameLetters.forEach((l) => tween(l, IN, { duration: ms(1000), delay: ms(420 + Math.random() * 380), easing: SETTLE }));
+    }
+    await wait(260);
+    if (my !== credsTok) return;
+    const ends = [credBeads[0], credBeads[credBeads.length - 1]];
+    ends.forEach((b) => b.animate([{ opacity: 0 }, { opacity: 0 }], { duration: 1, fill: "both" }));
+    await Promise.all([fly(tilakDots[0], ends[0], true), fly(tilakDots[1], ends[1], true)]);
+    if (my !== credsTok) return;
+    tilakEl2.classList.remove("is-away");
+    clearFlights();
+    creds.classList.remove("is-open");
+    creds.setAttribute("aria-hidden", "true");
+    keepDirty = true;
+  }
+
+  // Touch has no hover, so a chapter opens its rest on tap, one at a time.
+  creds.querySelectorAll("button.cred__head").forEach((h) => h.addEventListener("click", () => {
+    const item = h.closest(".cred"), open = !item.classList.contains("is-more");
+    credItems.forEach((c) => c.classList.toggle("is-more", c === item && open));
+    setTimeout(() => { if (credsOpen) layoutCreds(); }, 480);
+  }));
+  addEventListener("resize", () => { if (credsOpen) requestAnimationFrame(layoutCreds); });
+
+  areas.forEach((area) => {
+    area.querySelector(".area__label").addEventListener("click", (e) => {
+      if (area === credsArea) { if (credsOpen) closeCreds(); else openCreds(e.detail === 0); return; }
+      if (credsOpen) closeCreds(!touchMQ.matches); // on touch the section takes the stage straight over
+      if (touchMQ.matches) { stage(shown === area ? null : area); return; }
+      const open = !area.classList.contains("is-open");
+      closeAll(area);
+      setOpen(area, open);
+    });
+    area.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") closeAll(area); });
+  });
+  document.addEventListener("click", (e) => {
+    if (e.target.closest(".area") || e.target.closest(".focus__title") || e.target.closest(".sound") || e.target.closest(".cred")) return;
+    closeAll();
+    if (credsOpen) closeCreds();
+    if (shown) stage(null);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    closeAll();
+    if (credsOpen) closeCreds();
+    if (shown) stage(null);
+  });
+
+  /* ---------- The boughs bend in the wind ---------- */
+  // They bend from the trunk: a shear grows with distance from the pivot, so the tips
+  // travel and the base stays put. A gust lifts the tips, the far bough answers a beat later.
+  function swayBoughs(t) {
+    if (!boughs) return;
+    for (let i = 0; i < boughs.length; i++) {
+      const b = boughs[i], w = breeze(t - i * .45);
+      const flutter = Math.sin(t * 1.7 + i * 2.1) * (.25 + .75 * w) + Math.sin(t * 3.3 + i) * .2 * w;
+      const bend = 2.3 * w + .6 * flutter - .3;
+      const lean = .3 * w + .22 * flutter;
+      const s = b.classList.contains("is-flip") ? -1 : 1;
+      b.firstElementChild.style.transform = `rotate(${(s * lean).toFixed(3)}deg) skewY(${(s * bend).toFixed(3)}deg)`;
+    }
+    // The mala's tassel swings on the same breeze, leaning downwind in a gust.
+    if (credsOpen) {
+      const w = breeze(t);
+      tasselArt.style.transform = `rotate(${(-(1.2 + 4 * w) * Math.sin(t * 1.3) - 3 * w).toFixed(2)}deg)`;
+    }
+  }
+
+  /* ---------- Leaves and blossoms on the wind ---------- */
+  // Dry chandan leaves, a few green ones and small kumkum flowers cross the lower scene on the
+  // shared wind. Each is painted once as a small watercolour sprite; where it is, how it turns
+  // and how it tumbles are pure functions of t. They keep below the nav, fade to ghosts near
+  // any words, and live on one canvas under the smoke.
+  const noise2 = (R) => {
+    const vn = valueNoise(R);
+    return (x, y, oct = 3) => {
+      let s = 0, amp = .5, n = 0;
+      for (let o = 0; o < oct; o++) { s += amp * vn(x, y); n += amp; x = x * 2.03 + 7.1; y = y * 2.03 + 3.3; amp *= .5; }
+      return s / n;
+    };
+  };
+  const hex = (h) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+  const mixc = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+  const PAPER_RGB = hex(PAPER);
+
+  // Leaf shapes: half-width profile along the blade (u: 0 stem, 1 tip).
+  const PROF = {
+    lance: (u) => (u <= 0 || u >= 1 ? 0 : Math.pow(Math.sin(Math.PI * Math.pow(u, .85)), .72)),
+    peepal: (u) => {
+      if (u <= 0 || u >= 1) return 0;
+      const b = u / .8;
+      const body = b < 1 ? Math.pow(Math.sin(Math.PI * Math.pow(b, .6)), .6) : 0;
+      const tail = u > .55 ? .075 * (1 - smooth(.8, 1, u)) : 0;
+      return Math.max(body, tail);
+    },
+  };
+  const SHAPES = {
+    dry: [
+      { prof: "lance", w: .24, pet: .12, bend: .06, curl: .45, tone: 0, crinkle: .1 },
+      { prof: "peepal", w: .37, pet: .15, bend: .035, curl: .3, tone: .55, crinkle: .08 }, // sun-bleached, with a drip tip
+      { prof: "lance", w: .21, pet: .09, bend: .13, curl: .62, tone: -.6, crinkle: .14 },  // burnt crescent
+    ],
+    green: [
+      { prof: "lance", w: .2, pet: .11, bend: .045, curl: .08, tone: 0, crinkle: 0 },
+      { prof: "peepal", w: .35, pet: .17, bend: .02, curl: .06, tone: 0, crinkle: 0 },
+    ],
+  };
+  const INKS = {
+    dry: {
+      top: { stem: "#AE7E40", body: "#CDA25A", tip: "#DDB978", rim: "#936730", rimK: .5, rib: "#86602F", ribK: .55, ribMode: "dark", spot: "#9B6B35", spotK: .42, veinK: -.2, alpha: .9, brush: .22, shade: .12 },
+      under: { stem: "#C49C62", body: "#DFC38D", tip: "#E9D3A6", rim: "#B28A52", rimK: .28, rib: "#A47A42", ribK: .5, ribMode: "dark", spot: null, spotK: 0, veinK: -.14, alpha: .82, brush: .16, shade: .05 },
+    },
+    green: {
+      top: { stem: "#56633C", body: "#6C7A4B", tip: "#8A9666", rim: "#4A5634", rimK: .45, rib: "#4A5634", ribK: .3, ribMode: "gap", spot: null, spotK: 0, veinK: -.1, alpha: .9, brush: .1, shade: .16 },
+      under: { stem: "#7C8858", body: "#98A378", tip: "#ADB68D", rim: "#7C875C", rimK: .25, rib: "#66724A", ribK: .45, ribMode: "dark", spot: null, spotK: 0, veinK: -.12, alpha: .82, brush: .08, shade: .06 },
+    },
+  };
+
+  // Paints one leaf, two boneless strokes of watercolour. Lcss: blade length in CSS px.
+  // Returns { cv, ax, ay }, the anchor being the middle of the blade, in device px.
+  function leafSprite(kind, shapeIdx, face, Lcss, dpr, soft, wash, seed) {
+    const sh = SHAPES[kind][shapeIdx], ink = INKS[kind][face];
+    const R = mulberry32(seed), n2 = noise2(R);
+    const ox = R() * 20, oy = R() * 20, ox2 = R() * 20, oy2 = R() * 20, ox3 = R() * 20, oy3 = R() * 20;
+    const Lp = Lcss * dpr, Wp = Lp * sh.w, pet = Lp * sh.pet;
+    const pad = Math.ceil(2 + soft * 2);
+    const bendPx = Math.abs(sh.bend) * Lp;
+    const W = Math.ceil(Lp + pet + pad * 2), H = Math.ceil(2 * Wp + bendPx + pad * 2 + 2);
+    const cv = document.createElement("canvas");
+    cv.width = W; cv.height = H;
+    const ctx = cv.getContext("2d");
+    const img = ctx.createImageData(W, H), o = img.data;
+    const x0 = pad + pet, cy = pad + Wp + bendPx + 1;
+    const prof = PROF[sh.prof];
+    const cStem = hex(ink.stem), cBody = hex(ink.body), cTip = hex(ink.tip), cRim = hex(ink.rim);
+    const cRib = ink.rib ? hex(ink.rib) : null, cSpot = ink.spot ? hex(ink.spot) : null;
+    const edgeW = soft ? 1.7 : .8;
+    const rimW = 1 + .025 * Lp;
+    const hwPet = Math.max(.45 * dpr, .03 * Lp);
+    const veins = Lp >= 22;
+    for (let py = 0; py < H; py++) {
+      for (let px = 0; px < W; px++) {
+        const u = (px - x0) / Lp;
+        const m = -sh.bend * Lp * 4 * Math.min(1, Math.max(0, u)) * (1 - Math.min(1, Math.max(0, u)));
+        const v = py - cy - m;
+        let col = null, A = 0;
+        if (u > -.02 && u < 1.01) {
+          const side = v < 0 ? -1 : 1;
+          const pr = prof(Math.min(1, Math.max(0, u)));
+          const crk = sh.crinkle ? 1 + sh.crinkle * (n2(u * 7 + ox + (side < 0 ? 9 : 0), 3.3 + oy, 2) - .5) * 2 : 1;
+          const hw = Wp * pr * (side < 0 ? 1 - sh.curl : 1) * crk;
+          const d = hw - Math.abs(v);
+          const aShape = smooth(-edgeW * .5, edgeW, d);
+          if (aShape > .002) {
+            const vn = hw > 0 ? Math.abs(v) / hw : 1;
+            // Wet-in-wet tone: more pigment at the stem, more water at the tip.
+            col = mixc(mixc(cStem, cBody, smooth(0, .3, u)), cTip, smooth(.45, 1, u));
+            // Per-shape tone: pale sun-bleached chandan (+) to deeper, burnt chandan (-).
+            if (sh.tone > 0) col = mixc(col, PAPER_RGB, sh.tone * .28);
+            if (sh.tone < 0) col = mixc(col, cRim, -sh.tone * .3);
+            // Two strokes, one per half: the shade half carries a little more pigment.
+            if (side < 0) col = mixc(col, cRim, ink.shade);
+            const n1 = n2(u * 2.2 + ox, (v / Wp) * .9 + oy);
+            col = mixc(col, cRim, Math.max(0, (n1 - .45)) * .5);
+            // Pigment pools at the drying edge: the one cue that says "watercolour".
+            let rimK = ink.rimK * Math.exp(-Math.max(d, 0) / rimW);
+            if (kind === "dry" && side < 0 && face === "top") rimK = Math.min(1, rimK + .22);
+            col = mixc(col, cRim, rimK * (soft ? .5 : 1));
+            if (cSpot) { const n3 = n2(u * 4 + ox3, (v / Wp) * 2.5 + oy3); col = mixc(col, cSpot, smooth(.58, .76, n3) * ink.spotK); }
+            let a = ink.alpha;
+            // Dry brush: streaks running along the stroke.
+            const nb = n2(u * 1.3 + ox2, (v / Wp) * 5 + oy2);
+            a *= 1 - ink.brush + ink.brush * smooth(.28, .7, nb);
+            // Midrib: a dark hairline on dry leaves; on fresh leaves a line where the two strokes part.
+            const ribRange = smooth(.03, .12, u) * (1 - smooth(.7, .95, u));
+            const rib = Math.exp(-Math.pow(v / (.45 * dpr + .01 * Lp), 2)) * ribRange;
+            if (ink.ribMode === "dark" && cRib) col = mixc(col, cRib, rib * ink.ribK);
+            else if (ink.ribMode === "gap") { const g = Math.exp(-Math.pow(v / (.35 * dpr + .006 * Lp), 2)) * ribRange; a *= 1 - g * ink.ribK; col = mixc(col, cRib, g * .25); }
+            if (veins) {
+              const s = u * 5.5 - vn * 1.5;
+              const f = Math.abs((s - Math.floor(s)) - .5) * 2;
+              const vein = Math.pow(1 - f, 10) * smooth(.12, .3, vn) * (1 - smooth(.7, .95, vn)) * ribRange;
+              if (ink.veinK < 0 && cRib) col = mixc(col, cRib, vein * -ink.veinK);
+              else a *= 1 - vein * ink.veinK;
+            }
+            A = a * aShape;
+          }
+        }
+        // Petiole: a short curved hair of the stem colour.
+        if (u < .04 && u > -pet / Lp - .01) {
+          const up = (px - (x0 - pet)) / pet;
+          const vp = py - (cy + .35 * Wp * .25 * up * up);
+          const ap = smooth(-.6, .5, hwPet * (1 - .4 * Math.max(0, 1 - up)) - Math.abs(vp)) * .85;
+          if (ap > A) { col = mixc(cStem, cRim, .35); A = Math.max(A, ap); }
+        }
+        if (A > .003) {
+          if (wash) col = mixc(col, PAPER_RGB, wash);
+          const i = (py * W + px) * 4;
+          o[i] = col[0]; o[i + 1] = col[1]; o[i + 2] = col[2]; o[i + 3] = A * 255;
+        }
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+    return { cv, ax: x0 + Lp * .45, ay: cy };
+  }
+
+  // Flowers: five translucent dabs of kumkum around a chandan heart. Variant 1 is half-turned,
+  // one petal folded.
+  const FLOWERS = [
+    { n: 5, c: .5, ra: .4, rt: .36, squash: 1, small: -1 },
+    { n: 5, c: .46, ra: .42, rt: .33, squash: .78, small: 2 },
+  ];
+  function flowerSprite(variant, Dcss, dpr, soft, wash, seed) {
+    const F = FLOWERS[variant], R = mulberry32(seed);
+    const Rp = Dcss * dpr / 2, pad = Math.ceil(2 + soft * 2);
+    const S = Math.ceil(2 * Rp + pad * 2);
+    const cv = document.createElement("canvas");
+    cv.width = S; cv.height = S;
+    const ctx = cv.getContext("2d");
+    const img = ctx.createImageData(S, S), o = img.data;
+    const c0 = S / 2;
+    const rot = R() * 6.283;
+    const petals = [];
+    for (let j = 0; j < F.n; j++) {
+      const ang = rot + j * 6.283 / F.n + (R() - .5) * .22;
+      const k = (.86 + R() * .26) * (j === F.small ? .68 : 1);
+      petals.push({ ang, cx: Math.cos(ang) * F.c * Rp * .9 * k, cy: Math.sin(ang) * F.c * Rp * .9 * k * F.squash, ra: F.ra * Rp * k, rt: F.rt * Rp * k, ph: R() * 6.283, wob: .07 + R() * .06 });
+    }
+    const cIn = hex("#C94B3D"), cMid = hex("#B32620"), cRim = hex("#8C1A14"), cHeart = hex("#D6A650");
+    const edgeW = soft ? 1.6 : .75, pA = .66;
+    for (let py = 0; py < S; py++) {
+      for (let px = 0; px < S; px++) {
+        const x = px + .5 - c0, y = py + .5 - c0, r = Math.hypot(x, y);
+        let C = [0, 0, 0], A = 0;
+        for (const p of petals) {
+          const dx = x - p.cx, dy = y - p.cy;
+          const ca = Math.cos(p.ang), sa = Math.sin(p.ang);
+          const pr = dx * ca + dy * sa, pt = -dx * sa + dy * ca;
+          const e = Math.hypot(pr / p.ra, pt / p.rt) * (1 + p.wob * Math.sin(3 * Math.atan2(pt, pr) + p.ph));
+          const dp = (1 - e) * Math.min(p.ra, p.rt);
+          const ap = smooth(-edgeW * .5, edgeW, dp) * pA;
+          if (ap <= 0) continue;
+          let col = mixc(cIn, cMid, smooth(.1 * Rp, .6 * Rp, r));
+          col = mixc(col, cRim, .6 * Math.exp(-Math.max(dp, 0) / (.9 + .04 * Rp)) * (soft ? .5 : 1));
+          C = mixc(C, col, ap / Math.max(1e-6, ap + A * (1 - ap)));
+          A = ap + A * (1 - ap);
+        }
+        // A darker ring where the petals meet, then a soft chandan heart.
+        if (A > 0) C = mixc(C, cRim, .3 * Math.exp(-Math.pow((r - .24 * Rp) / (.08 * Rp + .5), 2)));
+        const h = smooth(.12 * Rp + .7, .12 * Rp - .5, r);
+        if (h > 0) { C = mixc(C, cHeart, h * .85); A = Math.max(A, h * .9); }
+        if (A > .003) {
+          if (wash) C = mixc(C, PAPER_RGB, wash);
+          const i = (py * S + px) * 4;
+          o[i] = C[0]; o[i + 1] = C[1]; o[i + 2] = C[2]; o[i + 3] = A * 255;
+        }
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+    return { cv, ax: S / 2, ay: S / 2 };
+  }
+
+  // Depth: far ones are smaller, paler, slower and softer, and ride higher in the band.
+  // lo/hi: the lane's share of the band; lift: how far a gust raises it; ampK: how much it wanders.
+  const CLASSES = [
+    { scale: .62, alpha: .6, speedK: .72, wash: .3, lo: 0, hi: .55, lift: .1, ampK: .7 },   // far
+    { scale: .85, alpha: .9, speedK: 1, wash: .1, lo: .1, hi: .8, lift: .13, ampK: 1 },     // mid
+    { scale: 1.12, alpha: .92, speedK: 1.3, wash: 0, lo: .4, hi: .9, lift: .16, ampK: 1 },  // near
+  ];
+  const SINK = { dry: .1, green: .16, flower: -.03 }; // how far (share of the band) it settles by the far edge; flowers float
+  // Who crosses, by screen: [kind, depth]. Dry leaves lead; flowers are the rarest accent.
+  const SLOTS = {
+    wide: [["dry", 0], ["dry", 1], ["dry", 1], ["dry", 2], ["green", 0], ["green", 1], ["green", 2], ["flower", 1], ["flower", 1], ["flower", 2]],
+    medium: [["dry", 0], ["dry", 1], ["dry", 1], ["dry", 2], ["green", 1], ["green", 2], ["flower", 1], ["flower", 2]],
+    small: [["dry", 0], ["dry", 1], ["dry", 2], ["green", 1], ["green", 1], ["flower", 1], ["flower", 2]],
+  };
+  const M = 48; // off-screen margin, px
+  const SHED = true; // the strongest gust of each swell shakes one blossom off the downwind bough
+
+  const drift = document.querySelector(".drift");
+  let dctx = null;
+  try { dctx = drift.getContext("2d", { alpha: true }); } catch (e) { dctx = null; }
+  if (!dctx) drift.remove();
+  const listEl = document.querySelector(".areas__list");
+  const socialEls = [...document.querySelectorAll(".social")];
+
+  // stillT: the one moment shown when nothing moves (reduced motion, or ?freeze).
+  let windOn = false, stillT = reduced ? T_STILL : FREEZE !== null ? FREEZE / 1000 : null;
+  let vw = innerWidth, vh = innerHeight, fine = false, dDpr = 1, dTop = 0, Lb = 27, SC = 1, vBase = 80;
+  let bandTop = 0, bandBot = 0, bandH = 1, slots = [], drawn = 0, past4 = false;
+  const sprites = { dry: null, green: null, flower: null };
+  let bakedKey = "", bakeGen = 0;
+  const keep = new Float32Array(5 * 12);
+  let nKeep = 0;
+
+  function driftTop() {
+    if (!windOn || !dctx) return;
+    dTop = innerHeight - drift.clientHeight;
+    keepDirty = true;
+  }
+  function measure() {
+    vw = innerWidth; vh = innerHeight;
+    fine = matchMedia("(pointer: fine)").matches;
+    dDpr = Math.min(window.devicePixelRatio || 1, fine ? 2 : 1.5);
+    const cssH = drift.clientHeight;
+    dTop = vh - cssH;
+    drift.width = Math.round(vw * dDpr); drift.height = Math.round(cssH * dDpr);
+    drawn = 0;
+    Lb = clamp(.03 * Math.min(vw, vh), 20, 32); // blade length, px
+    SC = Lb / 27;
+    vBase = vw / clamp(6 + vw / 120, 9, 20); // a mid leaf crosses in 9 to 20 wind-seconds
+    keepDirty = true;
+  }
+
+  // The sprites, painted once per layout: dry [shape][top, under][depth], green the same,
+  // flowers [variant][depth]. Painted a tenth larger than their usual size, so they are
+  // rarely scaled up, in device pixels.
+  const bakeLeaves = (kind) => SHAPES[kind].map((_, sh) => ["top", "under"].map((face) => CLASSES.map((c, ci) =>
+    leafSprite(kind, sh, face, Lb * c.scale * 1.1, dDpr, ci === 0, c.wash,
+      7000 + (kind === "dry" ? 0 : 100) + 10 * sh + (face === "under" ? 5 : 0) + ci))));
+  const bakeFlowers = () => FLOWERS.map((_, v) => CLASSES.map((c, ci) =>
+    flowerSprite(v, Math.max(10, .52 * Lb) * c.scale * 1.1, dDpr, ci === 0, c.wash, 7500 + 10 * v + ci)));
+  function bake(sync) {
+    const key = dDpr + ":" + Math.round(Lb);
+    if (key === bakedKey) return;
+    bakedKey = key;
+    const gen = ++bakeGen;
+    const jobs = [["dry", () => bakeLeaves("dry")], ["green", () => bakeLeaves("green")], ["flower", bakeFlowers]];
+    if (sync) { jobs.forEach(([k, f]) => { sprites[k] = f(); }); return; }
+    // Live, in idle moments, long before the first leaf is due.
+    const idle = window.requestIdleCallback ? (f) => requestIdleCallback(f, { timeout: 1200 }) : (f) => setTimeout(f, 30);
+    let j = 0;
+    const next = () => {
+      if (gen !== bakeGen) return;
+      const [k, f] = jobs[j++];
+      sprites[k] = f();
+      if (j < jobs.length) idle(next);
+    };
+    idle(next);
+  }
+
+  // Each slot sends one leaf or flower across, pass after pass: over the page in its own
+  // crossing time, then a rest off-screen. Its pass k draws fresh looks from a seed of (slot, k).
+  function buildSlots() {
+    const set = vw >= 1000 && vh >= 460 ? SLOTS.wide : vw >= 600 && vh >= 460 ? SLOTS.medium : SLOTS.small;
+    // The first leaf rides in as the veil lifts; a flower and a green leaf follow. The rest arrive
+    // spread over one whole pass, every third in turn so the kinds mix (3 shares no factor with
+    // 4, 5 or 7), so the scene fills evenly and never empties all at once.
+    const intro = { dry: 4.2, flower: 4.9, green: 5.6 }, nRest = set.length - 3;
+    let j = 0;
+    slots = set.map(([kind, ci], i) => {
+      const R = mulberry32(4001 + 17 * i), rv = R(), rc = R(), rs = R();
+      const c = CLASSES[ci], v = vBase * c.speedK * (.9 + .2 * rv);
+      const C = (vw + 2 * M) / v * (1.5 + .6 * rc); // wind-seconds per pass
+      let tau0;
+      if (ci === 1 && intro[kind]) { tau0 = windRun(intro[kind]); intro[kind] = 0; }
+      else tau0 = windRun(6.5) + ((3 * j++) % nRest + .6 * rs) / nRest * C;
+      return { i, kind, ci, c, v, C, tau0, n: noise1(mulberry32(9001 + i)), k: NaN, h: new Float32Array(12), on: false, x: 0, y: 0, rot: 0, sx: 1, sy: 1, s: 1, alpha: 0, spr: null };
+    });
+  }
+
+  // The words the leaves pass behind, and the band they keep to. Read only when something moved.
+  function readKeep() {
+    keepDirty = false;
+    nKeep = 0;
+    const add = (l, t, r, b, pad, floor) => {
+      if (r <= l || nKeep * 5 >= keep.length) return;
+      const o = nKeep++ * 5;
+      keep[o] = l - pad; keep[o + 1] = t - pad; keep[o + 2] = r + pad; keep[o + 3] = b + pad; keep[o + 4] = floor;
+    };
+    const box = (el, pad, floor) => { const r = el.getBoundingClientRect(); add(r.left, r.top, r.right, r.bottom, pad, floor); return r; };
+    box(nameVis, 14, .3);
+    const list = box(listEl, 10, .3);
+    let l = Infinity, t = Infinity, r = -Infinity, b = -Infinity;
+    for (const s of socialEls) {
+      const q = s.getBoundingClientRect();
+      l = Math.min(l, q.left); t = Math.min(t, q.top); r = Math.max(r, q.right); b = Math.max(b, q.bottom);
+    }
+    add(l, t, r, b, 6, .5);
+    for (const a of areas) {
+      if (a.classList.contains("is-open") || (fine && a.matches(":hover")) || a.matches(":focus-within")) box(a.querySelector(".sub"), 12, .18);
+    }
+    if (focus.classList.contains("is-live")) box(focus, 12, .18);
+    if (credsOpen) for (const c of creds.querySelectorAll(".cred")) box(c, 10, .15);
+    bandBot = .95 * innerHeight;
+    bandTop = list.bottom + 24;
+    if (bandBot - bandTop < 56) bandTop = bandBot - 56;
+    bandTop = Math.max(bandTop, dTop + 40);
+    bandH = bandBot - bandTop;
+  }
+  // Near words a leaf fades to a ghost, never out, so nothing blinks.
+  function keepK(x, y) {
+    let k = 1;
+    for (let j = 0; j < nKeep; j++) {
+      const o = j * 5, f = keep[o + 4];
+      const dx = Math.max(keep[o] - x, 0, x - keep[o + 2]), dy = Math.max(keep[o + 1] - y, 0, y - keep[o + 3]);
+      k = Math.min(k, f + (1 - f) * smooth(0, 44, Math.hypot(dx, dy)));
+    }
+    return k;
+  }
+  const softplus = (z) => (z > 20 ? z : Math.log1p(Math.exp(z)));
+  const atLeast = (v, lo) => (v < 0 ? -1 : 1) * Math.max(lo, Math.abs(v));
+
+  // Places slot s at t (run = windRun(t)); false while it is off-screen or not yet due.
+  function poseSlot(s, t, run) {
+    const set = sprites[s.kind];
+    if (!set || (reduced && s.i % 2)) return false;
+    const rel = run - s.tau0;
+    if (rel < 0) return false;
+    const k = Math.floor(rel / s.C), xh = -M + s.v * (rel - k * s.C);
+    if (xh > vw + M) return false; // resting between passes
+    // The gust reaches it lag(x) after the left bough.
+    const tl = t - lag(xh), age = windRun(tl) - s.tau0 - k * s.C;
+    if (age < 0) return false;
+    if (k !== s.k) {
+      s.k = k;
+      const R = mulberry32((s.i * 7919 + k * 104729 + 31337) | 0);
+      for (let j = 0; j < 12; j++) s.h[j] = R();
+    }
+    const h = s.h, c = s.c, x = -M + s.v * age, g = breeze(tl);
+    const lam = (.55 + .35 * h[1]) * vw;
+    let y = bandTop + bandH * (c.lo + (c.hi - c.lo) * h[0])
+      + bandH * c.ampK * (.12 * Math.sin(TAU * x / lam + TAU * h[2]) + .045 * Math.sin(TAU * x / (.37 * lam) + TAU * h[3]))
+      - c.lift * bandH * g + SINK[s.kind] * bandH * clamp(x / vw, 0, 1);
+    y = bandTop + 8 * softplus((y - bandTop) / 8);
+    y = bandBot - 8 * softplus((bandBot - y) / 8);
+    let rot, sx = 1, sy = 1;
+    if (s.kind === "dry") {
+      // A dry leaf tumbles, end over end or edge over edge, turning as it goes.
+      const cs = Math.cos(TAU * age / (1.8 + 1.6 * h[6]) + TAU * h[7]), f = Math.sign(cs) * Math.pow(Math.abs(cs), .55);
+      if (h[8] < .7) sy = f; else sx = f;
+      rot = TAU * h[9] + (h[11] < .5 ? -1 : 1) * (.6 + h[10]) * age + .35 * Math.sin(TAU * age / 3.1 + 6 * h[3]) + .25 * s.n(.7 * age + 13 * k);
+    } else if (s.kind === "green") {
+      // A fresh leaf glides and rocks, like a feather.
+      const ph = TAU * age / (1.6 + .8 * h[6]) + TAU * h[7], cs = .35 + .65 * Math.cos(ph / 2 + TAU * h[8]);
+      rot = .15 + (h[9] - .5) + .55 * Math.sin(ph) + .2 * s.n(.7 * age + 13 * k) - .2 * g;
+      sy = Math.sign(cs) * Math.pow(Math.abs(cs), .55);
+      y += .167 * Lb * Math.sin(2 * ph);
+    } else {
+      // A blossom wheels flat on the air and never turns edge-on.
+      rot = TAU * h[9] + (h[11] < .5 ? -1 : 1) * (1 + 1.2 * h[10]) * age;
+      sy = .725 + .275 * Math.cos(TAU * age / 2.6 + TAU * h[7]);
+      y += 3 * SC * Math.sin(TAU * age / 1.7 + TAU * h[2]);
+    }
+    const lo = reduced ? .6 : .12; // the still frame shows no edge-on slivers
+    sx = atLeast(sx, lo); sy = atLeast(sy, lo);
+    const v = Math.floor((s.kind === "dry" ? 3 : 2) * h[4]);
+    s.spr = s.kind === "flower" ? set[v][s.ci] : set[v][sx * sy < 0 ? 1 : 0][s.ci];
+    s.alpha = Math.min(.92, c.alpha * keepK(x, y) * (.75 + .25 * smooth(.12, .6, Math.min(Math.abs(sx), Math.abs(sy)))));
+    s.x = x; s.y = y; s.rot = rot; s.sx = sx; s.sy = sy; s.s = (.85 + .3 * h[5]) / 1.1;
+    return true;
+  }
+
+  // The shed blossom: the strongest gust of each swell (stronger than the gusts either side of
+  // it) shakes one kumkum flower off the downwind bough, just as that bough bends furthest.
+  // Landscape only: from the left bough it would cross the name.
+  const shed = { k: NaN, ok: false, X0: 0, Y0: 0, ph: 0, v: 0, dir: 1, x: 0, y: 0, rot: 0, sx: 1, sy: 1, s: 1 / 1.1, alpha: 0, spr: null };
+  const shedsAt = (k) => { const g = gustK(gustTop(k)); return g >= gustK(gustTop(k - 1)) && g > gustK(gustTop(k + 1)); };
+  function letGo(k) {
+    shed.k = k; shed.ok = false;
+    const pool = boughs[1].querySelectorAll('.bough__blooms circle[fill="url(#r-hr)"]');
+    const R = mulberry32(1000 + 97 * k), n = pool.length;
+    const idx = Math.floor(R() * n);
+    shed.ph = R(); shed.v = R() < .5 ? 0 : 1; shed.dir = R() < .5 ? -1 : 1;
+    if (!n) return;
+    const r = pool[idx].getBoundingClientRect(); // once per shed, with the bough as it sways now
+    shed.X0 = r.left + r.width / 2; shed.Y0 = r.top + r.height / 2;
+    shed.ok = shed.Y0 >= dTop + 8;
+  }
+  function poseShed(t) {
+    if (!SHED || reduced || !boughs || vw <= vh || vh < 460 || !sprites.flower) return false;
+    const kNow = Math.floor(((t - .3) * GUST + .6 - Math.PI / 2) / TAU); // the last gust already past its top
+    for (let k = kNow; k >= kNow - 1; k--) {
+      if (k < 1 || !shedsAt(k)) continue;
+      const ts = gustTop(k) + .3, d = t - ts;
+      if (d < 0 || d >= 14) continue;
+      if (k !== shed.k) letGo(k);
+      if (!shed.ok) return false;
+      // It lets go at rest and eases up to the wind while it sinks, a little faster at first.
+      const run0 = windRun(ts), ease = 1 - Math.exp(-d / .7), psi = windRun(t) - run0;
+      const x = shed.X0 + .9 * vBase * (psi - windSpeed(ts) * .7 * ease);
+      if (x > vw + M) return false;
+      const y = shed.Y0 + 26 * SC * (d - .5 * (1 - Math.exp(-d / .5)))
+        + 5 * SC * Math.sin(Math.PI * d + TAU * shed.ph) * (1 - Math.exp(-d / .8)) - .06 * bandH * breeze(t) * ease;
+      shed.x = x; shed.y = y;
+      shed.rot = TAU * shed.ph + shed.dir * 1.6 * psi;
+      shed.sy = .725 + .275 * Math.cos(TAU * psi / 2.6 + TAU * shed.ph);
+      shed.spr = sprites.flower[shed.v][1];
+      shed.alpha = .9 * smooth(0, .25, d) * (1 - smooth(10, 14, d)) * (1 - smooth(bandBot - 10, bandBot + 10, y)) * keepK(x, y);
+      return shed.alpha > .003;
+    }
+    return false;
+  }
+
+  function paint(p) {
+    const cr = Math.cos(p.rot) * p.s, sr = Math.sin(p.rot) * p.s;
+    dctx.globalAlpha = p.alpha;
+    dctx.setTransform(cr * p.sx, sr * p.sx, -sr * p.sy, cr * p.sy, p.x * dDpr, (p.y - dTop) * dDpr);
+    dctx.drawImage(p.spr.cv, -p.spr.ax, -p.spr.ay);
+  }
+  function drawDrift(t) {
+    if (!dctx || !windOn) return;
+    const run = windRun(t);
+    let n = 0;
+    for (const s of slots) if ((s.on = poseSlot(s, t, run))) n++;
+    const shedOn = poseShed(t);
+    if (shedOn) n++;
+    if (!n && !drawn) return;
+    dctx.setTransform(1, 0, 0, 1, 0, 0);
+    dctx.clearRect(0, 0, drift.width, drift.height);
+    for (let ci = 0; ci < 3; ci++) {
+      for (const s of slots) if (s.on && s.ci === ci) paint(s);
+      if (ci === 1 && shedOn) paint(shed); // among the mid leaves, behind the near ones
+    }
+    dctx.globalAlpha = 1;
+    drawn = n;
+  }
+
+  // Everything the wind moves, at one moment t.
+  function renderAll(t) {
+    if (dctx && windOn) {
+      if (!past4 && t >= 4) { past4 = true; keepDirty = true; } // the nav has settled
+      if (keepDirty) readKeep();
+    }
+    if (!reduced) swayBoughs(t);
+    poseStrata(t);
+    drawDrift(t);
+  }
+
+  // One loop for the boughs, the mist and the leaves. Phones, and machines that fall behind,
+  // draw at 30 fps; a hidden tab stops it, and the wind's clock waits.
+  let cap30 = true, lastDraw = 0, lastNow = 0, ema = 16.7, slow = 0;
+  function windTick(now) {
+    requestAnimationFrame(windTick);
+    const dt = now - lastNow;
+    lastNow = now;
+    if (dt > 0 && dt < 250) {
+      ema = .95 * ema + .05 * dt;
+      slow = ema > 22 ? slow + 1 : 0;
+      if (slow >= 90) cap30 = true;
+    }
+    if (cap30 && now - lastDraw < 31) return;
+    lastDraw = now;
+    renderAll(windT(now));
+  }
+
+  function layoutDrift() {
+    if (!windOn || !dctx) return;
+    measure();
+    buildSlots();
+    bake(stillT !== null);
+    if (stillT !== null) renderAll(stillT);
+  }
+  function startWind() {
+    windOn = true;
+    cap30 = !(matchMedia("(pointer: fine)").matches && (navigator.hardwareConcurrency || 4) >= 4);
+    layoutDrift(); // under reduced motion or ?freeze this also draws the one still frame
+    if (stillT === null) requestAnimationFrame(windTick);
+  }
+  // ?freeze: once the intro animations are paused, draw the wind at the same moment.
+  function freezeWind() {
+    keepDirty = true;
+    renderAll(stillT);
+    window.__wind = { render: (s) => { stillT = s; renderAll(s); }, visible: () => drawn };
+  }
+  if (dctx) {
+    drift.addEventListener("contextrestored", () => {
+      bakedKey = "";
+      bake(stillT !== null);
+      if (stillT !== null) renderAll(stillT);
+    });
+    const dirty = () => { keepDirty = true; };
+    areas.forEach((a) => { a.addEventListener("pointerenter", dirty); a.addEventListener("pointerleave", dirty); });
+    document.addEventListener("focusin", dirty);
+    document.addEventListener("focusout", dirty);
+  }
+
+  /* ---------- Music: "Soft Touch", looped, from the first moment the browser allows ---------- */
+  // It starts by itself on load wherever the browser permits autoplay (a site the visitor
+  // already plays sound on). Everywhere else browsers hold all sound until the first press,
+  // tap or key, so that gesture releases it; the track is already loaded by then. Each pass
+  // crossfades into the next, so the 41 s track never seams. The bars in the corner turn it
+  // off and on, and the choice is remembered for this visitor.
+  const TRACK = "Soft Touch.mp3", VOL = .45, FADE = 2.5, XFADE = 4;
+  const soundBtn = document.querySelector(".sound");
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  let actx = null, master = null, track = null, loading = null, nextPass = 0, looping = false;
+  let playing = false, muted = false;
+  try { muted = localStorage.getItem("aok-music") === "off"; } catch (e) { /* storage blocked */ }
+
+  const showSound = (on) => {
+    soundBtn.classList.toggle("is-on", on);
+    soundBtn.setAttribute("aria-pressed", String(on));
+    soundBtn.setAttribute("aria-label", on ? "Pause music" : "Play music");
+  };
+  const context = () => {
+    if (!actx) {
+      actx = new AudioCtx();
+      master = actx.createGain();
+      master.gain.value = 0;
+      master.connect(actx.destination);
+    }
+    return actx;
+  };
+  const loadTrack = () => loading || (loading = fetch(encodeURI(TRACK))
+    .then((r) => r.arrayBuffer())
+    .then((bytes) => new Promise((res, rej) => context().decodeAudioData(bytes, res, rej)))
+    .then((buf) => (track = buf)));
+  // Resolves once the browser lets the context run (immediately, or at the first gesture).
+  const running = () => new Promise((res) => {
+    if (actx.state === "running") return res();
+    const check = () => {
+      if (actx.state !== "running") return;
+      actx.removeEventListener("statechange", check);
+      res();
+    };
+    actx.addEventListener("statechange", check);
+  });
+  const rampTo = (v, secs) => {
+    const now = actx.currentTime;
+    master.gain.cancelScheduledValues(now);
+    master.gain.setValueAtTime(master.gain.value, now);
+    master.gain.linearRampToValueAtTime(v, now + secs);
+  };
+  // One pass of the track: fades in, and fades out over its last XFADE seconds while the next begins.
+  const pass = (at) => {
+    const src = actx.createBufferSource(), g = actx.createGain();
+    src.buffer = track;
+    src.connect(g);
+    g.connect(master);
+    const d = track.duration;
+    g.gain.setValueAtTime(0, at);
+    g.gain.linearRampToValueAtTime(1, at + XFADE);
+    g.gain.setValueAtTime(1, at + d - XFADE);
+    g.gain.linearRampToValueAtTime(0, at + d);
+    src.start(at);
+    return at + d - XFADE;
+  };
+  const keepLooping = () => {
+    while (nextPass < actx.currentTime + 6) nextPass = pass(nextPass);
+    setTimeout(keepLooping, 2000);
+  };
+  async function play(pressed) {
+    if (!AudioCtx || playing) return;
+    playing = true;
+    if (pressed) showSound(true);
+    context().resume().catch(() => {}); // allowed only on autoplay-friendly sites or inside a gesture
+    try { await loadTrack(); } catch (e) { playing = false; showSound(false); return; }
+    await running();
+    if (!playing) return; // switched off while waiting
+    showSound(true);
+    if (!looping) { looping = true; nextPass = actx.currentTime + .05; keepLooping(); }
+    rampTo(VOL, FADE);
+  }
+  function pause() {
+    playing = false;
+    showSound(false);
+    if (!actx) return;
+    rampTo(0, .9);
+    setTimeout(() => { if (!playing) actx.suspend(); }, 950);
+  }
+
+  soundBtn.addEventListener("click", () => {
+    muted = playing;
+    if (playing) pause();
+    else { context().resume().catch(() => {}); play(true); }
+    try { localStorage.setItem("aok-music", muted ? "off" : "on"); } catch (e) { /* storage blocked */ }
+  });
+  // Every early gesture re-asks the browser; the first one it accepts releases the sound.
+  const release = (e) => {
+    if (muted || !actx || actx.state === "running") return;
+    if (e.type === "keydown" && e.key === "Escape") return;
+    if (e.target.closest && e.target.closest('.sound, a[target="_blank"]:not([href="#"])')) return;
+    actx.resume().catch(() => {});
+    play(false);
+  };
+  ["pointerdown", "mousedown", "pointerup", "touchend", "click", "keydown"].forEach((t) => addEventListener(t, release, true));
+  document.addEventListener("visibilitychange", () => {
+    if (!actx || !playing) return;
+    if (document.hidden) actx.suspend(); else actx.resume();
+  });
+  if (AudioCtx && !muted && FREEZE === null) play(false);
+
+  // Placeholder links (href="#") stay put until real URLs are filled in.
+  document.querySelectorAll('a[href="#"]').forEach((a) => a.addEventListener("click", (e) => e.preventDefault()));
+})();
+</script>
+</body>
+</html>
