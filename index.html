@@ -4,8 +4,18 @@
 <meta charset="utf-8">
 <script>
   document.documentElement.classList.replace("no-js", "js");
+  // The mist gate holds the page until the first touch (not under ?freeze, which checks frames).
+  try {
+    var f = new URLSearchParams(location.search).get("freeze");
+    if (f === null || f === "" || !isFinite(f)) document.documentElement.classList.add("gate");
+  } catch (e) { /* no gate: the safety net below still runs */ }
   // Safety net: never leave the page hidden if the main script fails.
-  setTimeout(function () { document.documentElement.classList.add("in"); }, 4500);
+  setTimeout(function () {
+    var h = document.documentElement;
+    if (h.classList.contains("gate-live")) return; // the gate opens the page on the first touch
+    h.classList.remove("gate");
+    h.classList.add("in");
+  }, 4500);
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ashutosh Om Kumar</title>
@@ -18,7 +28,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Jost:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Jost:wght@400;500&family=Gotu&display=swap">
 <style>
   *, *::before, *::after { box-sizing: border-box; }
 
@@ -31,10 +41,14 @@
     --thread: rgba(20, 18, 16, .4);
     --chandan: #DDAF55;
     --kumkum: #B32620;
+    --chandan-ink: #B0894F; /* the Journey's hairlines, Sanskrit and chapter titles */
+    --muted: #8A7D6B;
+    --flame: #D9853B;
 
     --display: "Italiana", "Cormorant Garamond", Georgia, serif;
     --serif: "Cormorant Garamond", Georgia, serif;
     --sans: "Jost", "Futura", "Avenir Next", "Century Gothic", system-ui, sans-serif;
+    --deva: "Gotu", "Noto Serif Devanagari", "Kohinoor Devanagari", "Nirmala UI", "Mangal", serif;
 
     --ease-out: cubic-bezier(.16, 1, .3, 1);
     --ease: cubic-bezier(.45, 0, .2, 1);
@@ -152,6 +166,76 @@
   .w { display: inline-block; letter-spacing: var(--name-ls); margin-right: calc(-1 * var(--name-ls)); }
   .w + .w { margin-left: .3em; }
   .l { display: inline-block; }
+
+  /* Two lines of intent under the name, on every screen (portrait caps the size so line one never wraps). */
+  .tagline {
+    margin: calc(var(--name) * .34) auto 0; max-width: min(92vw, 44em);
+    font-family: var(--serif); font-style: italic; font-weight: 400; font-size: var(--desc);
+    line-height: 1.45; letter-spacing: .01em; color: var(--ink-3); text-align: center; text-wrap: balance;
+  }
+  .tagline__line { display: block; }
+  /* After the Journey's ending, its closing line stands where the tagline was, set as the tagline
+     is, with two small links beneath it in the menu's letters, a dot of chandan between them. */
+  .closing { margin: calc(var(--name) * .34) auto 0; text-align: center; opacity: 0; }
+  .closing[hidden] { display: none; }
+  .closing__line {
+    margin: 0; font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: var(--desc); line-height: 1.45; letter-spacing: .01em; color: var(--ink-2);
+  }
+  .closing__links { margin: .55em 0 0; display: flex; justify-content: center; align-items: center; gap: 1.2em; }
+  .closing__link {
+    padding: 8px 0 8px .24em; /* left pad balances the trailing tracking */
+    font-family: var(--sans); font-weight: 400; font-size: calc(var(--label) * .82); line-height: 1;
+    letter-spacing: .24em; text-transform: uppercase; color: var(--ink-3);
+    text-decoration: underline; text-decoration-color: rgba(176, 137, 79, .5);
+    text-decoration-thickness: 1px; text-underline-offset: 5px;
+    transition: color .35s var(--ease), text-decoration-color .35s var(--ease);
+  }
+  .closing__dot { width: 3px; height: 3px; border-radius: 50%; background: var(--chandan); opacity: .85; }
+  @media (hover: hover) and (pointer: fine) {
+    .closing__link:hover { color: var(--ink); text-decoration-color: var(--chandan-ink); }
+  }
+
+  /* ---------- Leaving: before a link takes the visitor to another site, a small card asks ---------- */
+  .leave { width: min(88vw, 400px); padding: 0; border: 0; background: transparent; color: var(--ink); overflow: visible; }
+  .leave::backdrop { background: rgba(241, 236, 227, .55); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+  .leave__card {
+    margin: 0; padding: 30px 28px 18px; text-align: center; background: var(--paper);
+    border: 1px solid rgba(176, 137, 79, .34); border-radius: 3px;
+    box-shadow: 0 22px 60px rgba(20, 18, 16, .13), 0 2px 10px rgba(20, 18, 16, .06);
+  }
+  .leave__tilak { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 0 auto 16px; }
+  .leave__tilak i { display: block; width: 7px; height: 7px; border-radius: 50%; }
+  .leave__tilak i:first-child { background: radial-gradient(circle at 38% 34%, #E9C77F 0%, #DDAF55 50%, #CC9C45 100%); }
+  .leave__tilak i:last-child { background: radial-gradient(circle at 38% 34%, #C43A2F 0%, #B32620 52%, #981C17 100%); }
+  .leave__title { margin: 0; font-family: var(--display); font-weight: 400; font-size: 25px; line-height: 1.2; letter-spacing: .02em; }
+  .leave__text {
+    margin: .7em auto 0; max-width: 20em; font-family: var(--serif); font-style: italic; font-size: 17px;
+    line-height: 1.45; color: var(--ink-2); text-wrap: balance;
+  }
+  .leave__actions { margin: 20px 0 0; display: flex; justify-content: center; align-items: center; gap: 34px; }
+  .leave__btn {
+    appearance: none; -webkit-appearance: none; margin: 0; border: 0; background: none; cursor: pointer;
+    padding: 10px 0 10px .24em; font-family: var(--sans); font-weight: 400; font-size: 11px; line-height: 1;
+    letter-spacing: .24em; text-transform: uppercase; color: var(--ink-3); text-decoration: none;
+    transition: color .35s var(--ease), text-decoration-color .35s var(--ease);
+  }
+  .leave__go {
+    color: var(--ink); text-decoration: underline; text-decoration-color: rgba(176, 137, 79, .6);
+    text-decoration-thickness: 1px; text-underline-offset: 6px;
+  }
+  .leave__go svg { width: 8px; height: 8px; margin-left: .45em; vertical-align: .05em; overflow: visible; }
+  @media (hover: hover) and (pointer: fine) {
+    .leave__btn:hover { color: var(--ink); }
+    .leave__go:hover { text-decoration-color: var(--chandan-ink); }
+  }
+  .leave[open] .leave__card { animation: leave-in .6s var(--ease-out) both; }
+  .leave[open]::backdrop { animation: leave-fade .45s var(--ease) both; }
+  .leave.is-closing .leave__card { animation: leave-out .26s var(--ease) both; }
+  .leave.is-closing::backdrop { animation: leave-fade .26s var(--ease) reverse both; }
+  @keyframes leave-in { from { opacity: 0; transform: translateY(10px) scale(.985); filter: blur(4px); } }
+  @keyframes leave-out { to { opacity: 0; transform: translateY(-4px); filter: blur(3px); } }
+  @keyframes leave-fade { from { opacity: 0; } }
 
   /* The stage a section takes over on touch screens (see "Touch: the name becomes the page"). */
   .focus {
@@ -407,7 +491,7 @@
   .dot-flight { position: fixed; z-index: 12; border-radius: 50%; pointer-events: none; will-change: transform; }
   .boughs { transition: opacity .8s var(--ease), filter .8s var(--ease); }
   .boughs.is-hushed { opacity: 0; filter: blur(4px); }
-  .areas { transition: transform .9s var(--ease); }
+  .areas { transition: transform .9s var(--ease), opacity .9s var(--ease) .35s, visibility 0s; }
   .creds-open #sub-credentials { display: none !important; }
   @keyframes bead-now { 0% { opacity: .45; transform: scale(1); } 70%, 100% { opacity: 0; transform: scale(2.6); } }
 
@@ -436,6 +520,8 @@
     .name { line-height: 1.1; }
     .w1 { display: block; }
     .w2 { margin-left: 0; }
+    .tagline { margin-top: calc(var(--name) * .3); font-size: min(var(--desc), 4.4vw); }
+    .tagline__line { white-space: nowrap; }
     .art { width: 54vw; height: 50vh; height: 50svh; }
   }
 
@@ -456,7 +542,7 @@
     .sub { display: none !important; }
   }
   @media (hover: none) and (min-aspect-ratio: 1/1), (pointer: coarse) and (min-aspect-ratio: 1/1) {
-    .id__slot { min-height: calc(var(--name) * 1.1 + 3.7em); display: flex; align-items: center; justify-content: center; }
+    .id__slot { min-height: calc(var(--name) * 1.1 + 3.7em); display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .focus__desc span { display: inline; }
     .focus__desc { max-width: 60ch; }
   }
@@ -465,10 +551,11 @@
   @media (max-height: 460px) and (min-aspect-ratio: 1/1) {
     :root { --thread-h: 10px; --desc: 13.5px; --sub: 17px; }
     .sub__desc, .sub__note { margin-top: 5px; line-height: 1.35; }
+    .tagline { margin-top: .5em; }
   }
 
   /* ---------- Intro ---------- */
-  .js .art, .js .dot, .js .l, .js .area, .js .social, .js .clouds, .js .sound { opacity: 0; }
+  .js .art, .js .dot, .js .l, .js .tagline, .js .area, .js .social, .js .clouds, .js .sound { opacity: 0; }
   .js.smoke-on .art { opacity: 1; transition: opacity .6s var(--ease); }
   .js.no-smoke .art { animation: art-in 2.8s var(--ease) .1s both; }
   .js.in .clouds { animation: fade-in 3.2s var(--ease) 1.2s both; }
@@ -478,9 +565,16 @@
   .js.in .dot--chandan::after { animation: bloom 1.8s var(--ease-out) .3s both; }
   .js.in .dot--kumkum::after { animation: bloom 1.8s var(--ease-out) .6s both; }
   .js.in .name .l { animation: letter-in 1.4s var(--ease-out) calc(.8s + var(--d, 0ms)) both; }
+  .js.in .tagline { animation: rise-in 1.2s var(--ease-out) 1.5s both; }
   .js.in .area { animation: rise-in 1s var(--ease-out) calc(1.8s + var(--i, 0) * 90ms) both; }
   .js.in .social { animation: rise-in 1s var(--ease-out) calc(2.3s + var(--i, 0) * 70ms) both; }
   .js.in .sound { animation: fade-in 1.2s var(--ease) 2.8s both; }
+  /* A narrow window with a mouse hangs every caption from .areas (see "Phones"), so there the
+     labels rise without a lasting transform: a filled one would make each label the frame of
+     its own caption, and lift the caption over the tagline. */
+  @media (max-width: 599px) and (hover: hover) and (pointer: fine) {
+    .js.in .area { animation-name: fade-in; }
+  }
 
   @keyframes dot-in { from { opacity: 0; transform: scale(.3); } to { opacity: 1; transform: none; } }
   @keyframes bloom { from { opacity: .42; transform: scale(1); } to { opacity: 0; transform: scale(3.4); } }
@@ -498,8 +592,289 @@
   @keyframes sound-bar { from { transform: scaleY(.25); } to { transform: scaleY(1); } }
   @keyframes cloud-bob { from { transform: translateY(-3px); } to { transform: translateY(4px); } }
 
+  /* ---------- The gate: "Welcome to my world", and a touch parts the mist ---------- */
+  /* Until the first touch the page waits under a mist (.mist, drawn from script) with only the
+     chandan bindu and an invitation showing through it; a transparent button over everything
+     takes the touch, click or key. */
+  .threshold, .invite, .mist { display: none; }
+  .mist { position: fixed; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; }
+  .js.gate .mist, .js.parting .mist { display: block; }
+  /* Without WebGL the mist is still. */
+  .mist.is-flat {
+    background:
+      radial-gradient(60% 42% at 28% 34%, rgba(255, 254, 251, .85), rgba(255, 254, 251, 0) 72%),
+      radial-gradient(54% 38% at 74% 60%, rgba(255, 254, 251, .75), rgba(255, 254, 251, 0) 72%),
+      radial-gradient(90% 50% at 50% 104%, rgba(229, 222, 210, .55), rgba(229, 222, 210, 0) 70%),
+      rgba(241, 236, 227, .93);
+  }
+  .js.gate .threshold, .js.parting .threshold {
+    display: block; position: fixed; inset: 0; z-index: 20; width: 100%; height: 100%;
+    margin: 0; padding: 0; border: 0; border-radius: 0; background: none; cursor: pointer;
+    -webkit-appearance: none; appearance: none;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+  }
+  .js.parting .threshold { cursor: default; }
+  .threshold:focus-visible { outline: none; }
+  .js.gate:has(.threshold:focus-visible) .dot--chandan { outline: 1px solid var(--ink-3); outline-offset: calc(var(--dot) * .75); }
+  .js.gate .name, .js.gate .tagline, .js.gate .dot--kumkum, .js.gate .areas, .js.gate .socials, .js.gate .sound { visibility: hidden; }
+
+  /* The invitation stands where the name will condense, and goes up in smoke before it does. */
+  .js.gate .invite, .js.parting .invite { display: flex; }
+  .invite {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: max-content; max-width: 96vw; margin: 0; flex-direction: column; align-items: center; text-align: center;
+    pointer-events: none;
+  }
+  /* The welcome is set as the name is, so one hands over to the other in the same place. */
+  .invite__main {
+    font-family: var(--display); font-weight: 400; font-size: var(--name); line-height: 1.04;
+    color: var(--ink); white-space: nowrap; font-synthesis: none; font-kerning: normal;
+  }
+  .invite__w { display: inline-block; letter-spacing: var(--name-ls); margin-right: calc(-1 * var(--name-ls)); }
+  /* The prompt is set as the tagline is: small, lower-case, in the page's own italic. */
+  .invite__sub {
+    margin-top: .8em; font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: var(--desc); line-height: 1.4; letter-spacing: .01em; color: var(--ink-3);
+  }
+  .js .invite__main { visibility: hidden; }
+  .js.gate-shown .invite__main { visibility: visible; }
+  .js.gate-shown .invite .l { animation: letter-in 1.5s var(--ease-out) calc(.5s + var(--d, 0ms)) both; }
+  .js .invite__sub { opacity: 0; }
+  .js.gate-shown .invite__sub { animation: rise-in 1.4s var(--ease-out) 1.5s both; }
+
+  /* The bindu breathes, and each out-breath sends a ring from it: touch here. */
+  .js.gate .dot--chandan { box-shadow: 0 0 calc(var(--dot) * 1.4) calc(var(--dot) * .2) rgba(221, 175, 85, .3); }
+  .js.gate.gate-shown .dot--chandan { animation: dot-in 1.1s var(--ease-out) .1s both, bindu-breathe 5.6s ease-in-out 1.2s infinite; }
+  .js.gate.gate-shown .dot--chandan::after { animation: bindu-ripple 5.6s linear 1.2s infinite; }
+  /* The touch settles it where it stands, with the bloom the intro gives it. */
+  .js.entered .dot--chandan { opacity: 1; animation: bindu-settle 1.1s var(--ease-out) both; }
+  .js.entered .dot--chandan::after { animation: bloom 1.8s var(--ease-out) both; }
+
+  @keyframes bindu-breathe { 0%, 100% { transform: scale(1); } 45% { transform: scale(1.32); } }
+  @keyframes bindu-ripple {
+    0%, 44% { opacity: 0; transform: scale(1); }
+    46% { opacity: .42; transform: scale(1); animation-timing-function: cubic-bezier(.16, 1, .3, 1); }
+    100% { opacity: 0; transform: scale(4.2); }
+  }
+  @keyframes bindu-settle {
+    from { transform: var(--from, none); box-shadow: 0 0 calc(var(--dot) * 1.4) calc(var(--dot) * .2) rgba(221, 175, 85, .3); }
+    to { transform: none; box-shadow: 0 0 0 0 rgba(221, 175, 85, 0); }
+  }
+
+  @media (max-aspect-ratio: 1/1) {
+    .invite__main { line-height: 1.1; }
+    .invite__a, .invite__b { display: block; }
+  }
+
+  /* ---------- Journey: nine rings, walked inward to the bindu ---------- */
+  /* The landing recedes behind a paper veil (under the smoke, so its puffs still show) while
+     the Journey holds the page; at the ending the veil leaves only paper and the bindu. */
+  .jr-veil {
+    position: fixed; inset: 0; z-index: 1; background: var(--paper); opacity: 0; pointer-events: none;
+    transition: opacity 1.4s var(--ease) .25s;
+  }
+  .journey-open .jr-veil { opacity: .62; }
+  .journey-end .jr-veil { opacity: .97; transition: opacity 2.4s var(--ease); }
+  .socials { transition: opacity .9s var(--ease) .5s, visibility 0s; }
+  .journey-open .areas, .journey-open .socials {
+    opacity: 0; visibility: hidden; transition: opacity .5s var(--ease), visibility 0s linear .5s;
+  }
+  .journey-open #sub-journey { display: none !important; }
+
+  .journey {
+    position: fixed; inset: 0; z-index: 11; display: none; overflow: hidden;
+    touch-action: none; -webkit-user-select: none; user-select: none;
+  }
+  .journey.is-open { display: block; }
+  .journey:focus { outline: none; }
+  .journey :focus-visible { outline: 1px solid var(--chandan-ink); outline-offset: 3px; }
+  .jr-safe {
+    position: absolute; left: 0; top: 0; visibility: hidden; pointer-events: none;
+    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+  }
+
+  .jr-paint, .jr-img { position: absolute; left: 0; top: 0; display: block; opacity: 0; pointer-events: none; transform-origin: 50% 50%; }
+  .jr-img {
+    border-radius: 50%; object-fit: cover; mix-blend-mode: multiply; /* its white paper takes the page's */
+    -webkit-mask-image: radial-gradient(closest-side, #000 86%, transparent);
+            mask-image: radial-gradient(closest-side, #000 86%, transparent);
+  }
+  .jr-img[hidden] { display: none; }
+  /* Hairlines in chandan, multiplied, so over a painting they sit in it like pen on a wash. */
+  .jr-rings { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; mix-blend-mode: multiply; }
+  .jr-ring { fill: none; stroke: var(--chandan-ink); stroke-width: .75; stroke-linecap: round; stroke-linejoin: round; }
+  .jr-ring path, .jr-ripple { vector-effect: non-scaling-stroke; }
+  .jr-ring .jr-faint { stroke-opacity: .55; }
+  /* Dots are round-capped strokes, so they keep one size on screen through every zoom. */
+  .jr-ring .jr-dot1 { stroke-width: 1.3; stroke-opacity: .5; }
+  .jr-ring .jr-dot2 { stroke-width: 1.9; stroke-opacity: .8; }
+  .jr-ring .jr-dot3 { stroke-width: 2.5; }
+  .jr-flame { fill: var(--flame); stroke: none; }
+  .jr-flame-glow { fill: url(#jr-glow); stroke: none; opacity: .75; transform-box: fill-box; transform-origin: center; }
+  .jr-ring--4.is-lit .jr-flame-glow { animation: jr-flicker 3.2s ease-in-out infinite; }
+  .jr-ripple { fill: none; stroke: var(--chandan-ink); stroke-width: .75; }
+  @keyframes jr-flicker {
+    0%, 100% { opacity: .6; transform: scale(1); }
+    22% { opacity: .95; transform: scale(1.14); }
+    47% { opacity: .55; transform: scale(.94); }
+    71% { opacity: .85; transform: scale(1.07); }
+  }
+
+  /* The bindu (the kumkum dot) and me (the chandan dot), flown out of the tilak. */
+  .jr-dot { position: fixed; left: 0; top: 0; z-index: 12; border-radius: 50%; pointer-events: none; will-change: transform; }
+  .jr-dot::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: inherit; opacity: 0; pointer-events: none; }
+  .jr-dot--bindu {
+    width: 14px; height: 14px; background: radial-gradient(circle at 38% 34%, #C43A2F 0%, #B32620 52%, #981C17 100%);
+    box-shadow: 0 0 0 0 rgba(221, 175, 85, 0), 0 0 0 0 rgba(179, 38, 32, 0); transition: box-shadow 2s var(--ease);
+  }
+  /* Met on the bindu, the two give off a still warmth. */
+  .jr-dot--bindu.is-whole { box-shadow: 0 0 16px 5px rgba(221, 175, 85, .32), 0 0 40px 14px rgba(179, 38, 32, .1); }
+  .jr-dot--me {
+    width: 9px; height: 9px; background: radial-gradient(circle at 38% 34%, #E9C77F 0%, #DDAF55 50%, #CC9C45 100%);
+    box-shadow: 0 0 0 1.5px rgba(241, 236, 227, .8), 0 0 10px 1px rgba(221, 175, 85, .38);
+  }
+
+  /* A verse hangs on the bindu: the Sanskrit above it, the rendition below. */
+  .jr-halo {
+    position: absolute; left: 0; top: 0; width: min(96vw, 760px); height: 300px; transform: translate(-50%, -50%);
+    opacity: 0; pointer-events: none;
+    background: radial-gradient(closest-side, rgba(241, 236, 227, .93), rgba(241, 236, 227, .8) 50%, rgba(241, 236, 227, 0));
+  }
+  .jr-verse { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; --gap-up: 24px; --gap-down: 24px; }
+  .jr-verse__sa, .jr-verse__en { position: absolute; left: -50vw; width: 100vw; margin: 0; text-align: center; }
+  .jr-verse__sa {
+    bottom: var(--gap-up); font-family: var(--deva); font-weight: 400; font-size: clamp(18px, min(2.25vw, 3.8vh), 31px);
+    line-height: 1.7; color: var(--chandan-ink); opacity: 0;
+  }
+  .jr-verse__sa span { display: block; max-width: var(--fit, none); margin: 0 auto; text-wrap: balance; }
+  .jr-verse__lines span { display: block; }
+  .jr-verse__en { top: var(--gap-down); }
+  .jr-verse__lines {
+    margin: 0 auto; max-width: min(88vw, 25em, var(--fit, 100vw)); font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: clamp(17px, min(1.6vw, 2.9vh), 23px); line-height: 1.42; color: var(--ink); text-wrap: balance; opacity: 0;
+  }
+  .jr-verse__lines span + span { margin-top: .3em; }
+  .jr-verse__ref { margin: 1.1em 0 0; font-family: var(--sans); font-size: 11px; letter-spacing: .14em; color: var(--muted); opacity: 0; }
+  /* Until the visitor has sent one verse on, this says how, as the gate says it. */
+  .jr-cue {
+    margin: 1.6em 0 0; font-family: var(--serif); font-style: italic; font-size: var(--desc); color: var(--ink-3);
+    opacity: 0; transition: opacity 1.8s var(--ease);
+  }
+  .jr-cue.is-on { opacity: .62; }
+  .jr-cue span { display: inline-block; }
+  .jr-cue.is-on span { animation: jr-breathe 5.2s ease-in-out 2s infinite; }
+  .jr-verse.is-final { --gap-up: 30px; --gap-down: 30px; }
+  .jr-verse.is-final .jr-verse__sa { font-size: clamp(20px, min(2.75vw, 4.5vh), 38px); }
+  .jr-verse.is-final .jr-verse__lines { max-width: min(90vw, 27em); font-size: clamp(18px, min(1.9vw, 3.3vh), 27px); }
+
+  /* Below the mandala: the chapter's title, then its caption. */
+  .jr-caption { position: absolute; left: 50%; top: 0; width: min(92vw, 34em); margin: 0; transform: translateX(-50%); text-align: center; pointer-events: none; }
+  .jr-caption__title {
+    margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(17px, min(1.5vw, 2.7vh), 23px);
+    line-height: 1.2; letter-spacing: .035em; color: var(--chandan-ink); opacity: 0;
+  }
+  .jr-num { margin-right: 1em; letter-spacing: .1em; }
+  .jr-caption__text {
+    margin: .6em auto 0; max-width: 22.5em; font-family: var(--serif); font-style: italic; font-size: var(--desc);
+    line-height: 1.5; color: var(--ink-2); text-wrap: balance; opacity: 0;
+  }
+  /* At the foot of the page, small and centred: who is in the photo, where to read on, whom to thank.
+     A small title, then soft italic. On a phone they rest just above the mala (placeNotes). */
+  .jr-notes { position: absolute; left: 0; bottom: 0; margin: 0; text-align: center; opacity: 0; pointer-events: none; }
+  .jr-note {
+    margin: 0; font-family: var(--serif); font-style: italic; font-size: max(11px, calc(var(--desc) * .72));
+    line-height: 1.4; color: var(--ink-3); text-wrap: balance;
+  }
+  .jr-note + .jr-note { margin-top: .15em; }
+  .jr-note__label {
+    margin-right: .9em; font-family: var(--sans); font-style: normal; font-size: 8.5px; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--chandan-ink); vertical-align: .16em;
+  }
+  .jr-link {
+    pointer-events: auto; color: var(--ink-2); text-decoration: underline; text-decoration-color: rgba(176, 137, 79, .55);
+    text-decoration-thickness: 1px; text-underline-offset: 3px; white-space: nowrap;
+    transition: color .35s var(--ease), text-decoration-color .35s var(--ease);
+  }
+  .jr-link svg { width: .6em; height: .6em; margin-left: .25em; vertical-align: .06em; overflow: visible; }
+  @media (hover: hover) and (pointer: fine) {
+    .jr-link:hover { color: var(--ink); text-decoration-color: var(--chandan-ink); }
+  }
+  .jr-hint {
+    position: absolute; left: 0; right: 0; top: 0; margin: 0; padding-top: .9em; text-align: center;
+    font-family: var(--serif); font-style: italic; font-size: var(--desc); color: var(--ink-3);
+    opacity: 0; pointer-events: none; transition: opacity 1.4s var(--ease);
+  }
+  .jr-hint.is-on { opacity: .75; transition-delay: .2s; }
+  .jr-hint span { display: inline-block; }
+  .jr-hint.is-on span { animation: jr-breathe 5.2s ease-in-out 1.6s infinite; }
+  @keyframes jr-breathe { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+
+  /* Leave by the mark in the corner, set as the music is in the other. */
+  .jr-close {
+    position: absolute; z-index: 1;
+    top: calc(max(10px, 2.2vh) + env(safe-area-inset-top)); left: calc(max(10px, 1.8vw) + env(safe-area-inset-left));
+    width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%;
+    background: none; cursor: pointer; color: rgba(43, 39, 35, .62);
+    opacity: 0; visibility: hidden; transition: opacity .8s var(--ease), visibility 0s linear .8s, color .35s var(--ease);
+  }
+  .jr-close svg { width: 12px; height: 12px; overflow: visible; transition: transform .6s var(--ease-out); }
+  .jr-close path { fill: none; stroke: currentColor; stroke-width: 1.1; stroke-linecap: round; }
+  @media (hover: hover) and (pointer: fine) {
+    .jr-close:hover { color: var(--ink); }
+    .jr-close:hover svg { transform: rotate(90deg); }
+  }
+
+  /* The japa mala (see buildJapa): a loop of rudraksha seeds that turns one seed for every
+     step, the sumeru’s tassel hanging from it; seeds pale until counted, then oiled brown. */
+  .jr-mala {
+    position: absolute; right: calc(max(16px, 2vw) + env(safe-area-inset-right)); bottom: calc(max(36px, 5vh) + env(safe-area-inset-bottom));
+    width: 80px; height: 80px; opacity: 0; visibility: hidden; transition: opacity .9s var(--ease), visibility 0s linear .9s;
+  }
+  .journey.is-ui .jr-close, .journey.is-ui .jr-mala { opacity: 1; visibility: visible; transition-delay: 0s; }
+  .jr-mala__loop { position: absolute; inset: 0; transform-origin: 50% 50%; }
+  .jr-mala__cord, .jr-mala__tassel { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .jr-cord { fill: none; stroke: #9C6A3C; stroke-width: 1; opacity: .6; }
+  .jr-tassel__sway { transform-box: fill-box; transform-origin: 50% 0; }
+  .jr-tassel path { fill: none; stroke: #C4924A; stroke-width: .7; stroke-linecap: round; }
+  .jr-tassel rect { fill: #B0894F; }
+  .jr-mala__list { list-style: none; margin: 0; padding: 0; }
+  .jr-seed {
+    position: absolute; left: 0; top: 0; width: 21px; height: 21px; margin: 0; padding: 0;
+    border: 0; border-radius: 50%; background: none; cursor: pointer; transform: translate(-50%, -50%);
+  }
+  .jr-seed canvas {
+    position: absolute; left: 50%; top: 50%; display: block; pointer-events: none;
+    transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
+    filter: sepia(.45) saturate(.6) brightness(1.3) contrast(.82); opacity: .82;
+    transition: filter 1.4s var(--ease), opacity 1.4s var(--ease), transform .7s var(--ease-out);
+  }
+  .jr-seed.is-counted canvas { filter: none; opacity: 1; }
+  @media (hover: hover) and (pointer: fine) {
+    .jr-seed:hover canvas { transform: translate(-50%, -50%) rotate(var(--rot, 0deg)) scale(1.12); }
+  }
+  .jr-spacer {
+    position: absolute; left: 0; top: 0; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%;
+    background: radial-gradient(circle at 38% 34%, #E9C77F 0%, #DDAF55 50%, #CC9C45 100%);
+    opacity: .6; transition: opacity 1.2s var(--ease);
+  }
+  .jr-spacer.is-counted { opacity: 1; }
+  .jr-tip {
+    position: absolute; top: 0; right: 0; margin: 0; white-space: nowrap;
+    font-family: var(--serif); font-style: italic; font-size: 15px; line-height: 1; color: var(--ink-2);
+    opacity: 0; transform: translateX(4px); pointer-events: none; transition: opacity .35s var(--ease), transform .45s var(--ease-out);
+  }
+  .jr-tip.is-on { opacity: 1; transform: none; }
+  .jr-tip b { margin-right: .7em; font-family: var(--display); font-weight: 400; font-style: normal; letter-spacing: .08em; color: var(--chandan-ink); }
+
   @media (prefers-reduced-motion: reduce) {
-    .js .art, .js .dot, .js .l, .js .area, .js .social, .js .clouds, .js .sound { opacity: 1 !important; animation: none !important; }
+    .jr-hint.is-on span, .jr-cue.is-on span, .jr-ring--4.is-lit .jr-flame-glow { animation: none !important; }
+    .leave .leave__card, .leave::backdrop { animation: none !important; }
+    /* The name's letters cannot fade here (see below), so the Journey hides them outright. */
+    .journey-open .id__slot { visibility: hidden; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .art, .js .dot, .js .l, .js .tagline, .js .invite__sub, .js .area, .js .social, .js .clouds, .js .sound { opacity: 1 !important; animation: none !important; }
     .sound.is-on .sound__bars i { animation: none !important; transform: scaleY(.7); }
     .creds__cue i { animation: none !important; top: 11px; }
     .js .dot::after, .bough__in, .bough path, .bough circle, .stratum, .cloud__bob { animation: none !important; }
@@ -508,11 +883,15 @@
 </style>
 </head>
 <body>
+  <!-- The gate: until the first touch, this transparent button lies over everything. -->
+  <button class="threshold" type="button" aria-label="Welcome to my world. Continue, with music"></button>
   <div class="art art--l" aria-hidden="true"><canvas></canvas></div>
   <div class="art art--r" aria-hidden="true"><canvas></canvas></div>
   <div class="clouds" aria-hidden="true"></div>
   <canvas class="drift" aria-hidden="true"></canvas>
+  <div class="jr-veil" aria-hidden="true"></div>
   <canvas class="smoke" aria-hidden="true"></canvas>
+  <canvas class="mist" aria-hidden="true"></canvas>
   <div class="vignette" aria-hidden="true"></div>
   <div class="boughs" aria-hidden="true"></div>
 
@@ -527,6 +906,12 @@
           <span class="sr-only">Ashutosh Om Kumar</span>
           <span class="name__vis" aria-hidden="true"><span class="w w1">Ashutosh</span><span class="w w2">Om</span><span class="w w3">Kumar</span></span>
         </h1>
+        <p class="tagline">
+          <span class="tagline__line"><span>Part time Metabolic health nerd,</span> <span>Part time AI tinkerer,</span></span>
+          <span class="tagline__line"><span>Full time seeker</span></span>
+        </p>
+        <div class="closing" hidden><p class="closing__line"></p><p class="closing__links"></p></div>
+        <p class="invite" aria-hidden="true"><span class="invite__main"><span class="invite__a">Welcome</span> <span class="invite__b">to my world</span></span><span class="invite__sub">tap anywhere to continue</span></p>
         <div class="focus" id="focus" aria-live="polite"></div>
       </div>
     </header>
@@ -758,6 +1143,51 @@
     </div>
     </div>
   </section>
+
+  <!-- Journey: opened in place by the JOURNEY label. Nine rings walked inward to the bindu; the
+       rings, the chapter beads and every word are filled from script (see JOURNEY). -->
+  <section class="journey" id="journey" aria-label="Journey" aria-hidden="true" tabindex="-1">
+    <i class="jr-safe" aria-hidden="true"></i>
+    <canvas class="jr-paint" aria-hidden="true"></canvas>
+    <img class="jr-img" alt="" aria-hidden="true" hidden>
+    <svg class="jr-rings" aria-hidden="true" focusable="false"></svg>
+    <div class="jr-halo" aria-hidden="true"></div>
+    <div class="jr-verse" aria-hidden="true">
+      <p class="jr-verse__sa" lang="sa"></p>
+      <div class="jr-verse__en"></div>
+    </div>
+    <div class="jr-caption" aria-hidden="true">
+      <p class="jr-caption__title"></p>
+      <p class="jr-caption__text"></p>
+    </div>
+    <div class="jr-notes"></div>
+    <p class="jr-hint" aria-hidden="true"><span>scroll or tap to go inward</span></p>
+    <button class="jr-close" type="button" aria-label="Leave the journey" title="Leave">
+      <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1 1 11"/></svg>
+    </button>
+    <div class="jr-mala">
+      <svg class="jr-mala__tassel" aria-hidden="true" focusable="false"></svg>
+      <div class="jr-mala__loop">
+        <svg class="jr-mala__cord" aria-hidden="true" focusable="false"></svg>
+        <ol class="jr-mala__list" aria-label="Chapters"></ol>
+      </div>
+      <p class="jr-tip" aria-hidden="true"></p>
+    </div>
+    <p class="sr-only jr-live" aria-live="polite"></p>
+  </section>
+
+  <!-- Before any link takes the visitor to another site, this asks them first. -->
+  <dialog class="leave" aria-labelledby="leave-title" aria-describedby="leave-text">
+    <form class="leave__card" method="dialog">
+      <span class="leave__tilak" aria-hidden="true"><i></i><i></i></span>
+      <p class="leave__title" id="leave-title">Leave for <span class="leave__host"></span>?</p>
+      <p class="leave__text" id="leave-text"><span class="leave__name"></span> opens in a new tab. This page will be here when you return.</p>
+      <p class="leave__actions">
+        <button class="leave__btn" value="stay">Stay</button>
+        <a class="leave__btn leave__go" target="_blank" rel="noopener">Continue<svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.2 7.8 7.8 2.2M3.4 2.2h4.4v4.4"/></svg></a>
+      </p>
+    </form>
+  </dialog>
 
   <!-- Social links: replace each href="#" with the real profile URL. -->
   <footer class="socials" aria-label="Social links">
@@ -1194,6 +1624,7 @@
 
   const boughLayer = document.querySelector(".boughs");
   const nameVis = document.querySelector(".name__vis");
+  const taglineEl = document.querySelector(".tagline");
   const tilakEl = document.querySelector(".tilak");
   let boughs = null;
   function placeBoughs() {
@@ -1250,14 +1681,13 @@
 
   /* ---------- Smoke: a paper-coloured veil that thins into wisps ---------- */
   const VERT = "attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}";
-  const FRAG = `
+  // Value noise and a five-octave fbm, shared by the smoke and the gate's mist.
+  const GLSL_NOISE = `
     #ifdef GL_FRAGMENT_PRECISION_HIGH
     precision highp float;
     #else
     precision mediump float;
     #endif
-    uniform vec2 uRes; uniform float uTime; uniform float uReveal; uniform float uPortrait;
-    uniform vec3 uPaper; uniform vec2 uSeed; uniform vec4 uPuff; uniform float uWind;
     float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
     float noise(vec2 p){
       vec2 i = floor(p), f = fract(p), u = f * f * (3.0 - 2.0 * f);
@@ -1267,7 +1697,10 @@
       float v = 0.0, a = 0.5; mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
       for (int i = 0; i < 5; i++) { v += a * noise(p); p = m * p; a *= 0.5; }
       return v;
-    }
+    }`;
+  const FRAG = `${GLSL_NOISE}
+    uniform vec2 uRes; uniform float uTime; uniform float uReveal; uniform float uPortrait;
+    uniform vec3 uPaper; uniform vec2 uSeed; uniform vec4 uPuff; uniform float uWind;
     void main(){
       vec2 uv = gl_FragCoord.xy / uRes;
       vec2 p = vec2(uv.x * uRes.x / uRes.y, uv.y) * 2.4 + uSeed;
@@ -1307,7 +1740,8 @@
       gl_FragColor = vec4(col * a, a);
     }`;
 
-  function startSmoke(canvas, onFirstFrame) {
+  // A fragment shader over one triangle that covers the canvas; null where WebGL is missing.
+  function glFill(canvas, frag) {
     let gl = null;
     try {
       gl = canvas.getContext("webgl", { alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false, powerPreference: "low-power" });
@@ -1323,7 +1757,7 @@
     const prog = gl.createProgram();
     try {
       gl.attachShader(prog, compile(gl.VERTEX_SHADER, VERT));
-      gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FRAG));
+      gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, frag));
       gl.linkProgram(prog);
       if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error("link");
     } catch (e) { return null; }
@@ -1333,7 +1767,13 @@
     const loc = gl.getAttribLocation(prog, "p");
     gl.enableVertexAttribArray(loc);
     gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-    const U = (n) => gl.getUniformLocation(prog, n);
+    return { gl, U: (n) => gl.getUniformLocation(prog, n) };
+  }
+
+  function startSmoke(canvas, onFirstFrame) {
+    const g = glFill(canvas, FRAG);
+    if (!g) return null;
+    const { gl, U } = g;
     const uRes = U("uRes"), uTime = U("uTime"), uReveal = U("uReveal"), uPortrait = U("uPortrait"), uPuff = U("uPuff"), uWind = U("uWind");
     gl.uniform3f(U("uPaper"), 241 / 255, 236 / 255, 227 / 255);
     gl.uniform2f(U("uSeed"), Math.random() * 40, Math.random() * 40);
@@ -1384,6 +1824,255 @@
     };
   }
 
+  /* ---------- The gate: "Welcome to my world", and a touch parts the mist ----------
+     Until the first touch, click or key the page waits under its own mist, with only the
+     chandan bindu breathing and an invitation where the name will be (a mouse stirs the mist).
+     Browsers hold sound until such a gesture, so the music starts with it. Then the mist
+     parts from the touch: a ring runs out through it, a clearing opens behind with a
+     billowing edge, the rest breaks into wisps, and the intro plays as before. */
+  const MIST_OPEN = 3.6; // s for the mist to part
+  const MIST_FRAG = `${GLSL_NOISE}
+    uniform vec2 uRes; uniform float uTime; uniform vec2 uSeed; uniform vec3 uPaper;
+    uniform vec3 uTap; uniform vec3 uPtr; uniform float uFar; uniform float uIn;
+    // Seen whole rather than through a threshold, the mist wants a smoother fade than the
+    // smoke's: the quintic one leaves no creases along the noise lattice.
+    float vnoise(vec2 p){
+      vec2 i = floor(p), f = fract(p), u = f * f * f * (f * (f * 6.0 - 15.0) + 10.0);
+      return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x), u.y);
+    }
+    float mfbm(vec2 p){ // four octaves: mist has no fine grain
+      float v = 0.0, a = 0.5; mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
+      for (int i = 0; i < 4; i++) { v += a * vnoise(p); p = m * p; a *= 0.5; }
+      return v / 0.9375;
+    }
+    void main(){
+      vec2 uv = gl_FragCoord.xy / uRes;
+      float asp = uRes.x / uRes.y, t = uTime;
+      vec2 s = vec2(uv.x * asp, uv.y); // in screen heights
+      vec2 tp = vec2(uTap.x * asp, uTap.y);
+      float age = uTap.z; // s since the touch; below 0 before it
+      float open = clamp(age / ${MIST_OPEN.toFixed(1)}, 0.0, 1.0);
+      float eo = 1.0 - pow(1.0 - open, 2.4); // quick, then settling
+      vec2 dv = s - tp;
+      float dist = length(dv);
+      vec2 dir = dv / max(dist, 1e-4);
+
+      // The touch sends a ring out through the mist and blows it away from that point.
+      float rr = (dist - 1.6 * age) / 0.08;
+      float ring = age < 0.0 ? 0.0 : exp(-rr * rr) * (1.0 - smoothstep(0.1, 1.2, age));
+      vec2 w = tp + dv / (1.0 + 0.8 * eo) - dir * 0.06 * ring;
+      // A mouse stirs it: pushed aside, turned a little, and thinned where it passes.
+      vec2 pv = s - vec2(uPtr.x * asp, uPtr.y);
+      float stir = uPtr.z * exp(-dot(pv, pv) / 0.035);
+      w -= (pv * 0.7 + vec2(-pv.y, pv.x) * 1.1) * stir;
+
+      vec2 p = vec2(w.x * 1.05, w.y * 1.4) + uSeed; // banks a little longer than tall
+      vec2 q = vec2(mfbm(p + vec2(-0.045 * t, 0.01 * t)), mfbm(p + vec2(5.2, 1.3) + vec2(-0.03 * t, -0.015 * t)));
+      float n = mfbm(p * 1.3 + 1.2 * q + vec2(-0.025 * t, 0.006 * t));
+
+      // A clearing runs out from the touch with a billowing edge, while the rest thins into
+      // wisps on the smoke's own even-paced threshold.
+      float R = -0.3 + (uFar * 1.3 + 0.35) * eo;
+      float edge = dist + (n - 0.5) * 0.6;
+      float front = age < 0.0 ? 1.0 : smoothstep(R - 0.2, R + 0.14, edge);
+      float thin = smoothstep(0.2, 1.0, open);
+      float th = thin <= 0.001 ? -1.0 : (thin >= 0.999 ? 2.0 : 0.484 + 0.064 * log(thin / (1.0 - thin)));
+      float dens = smoothstep(th - 0.09, th + 0.09, n);
+
+      // Thick in the banks and thinner in the hollows, where the ranges ghost through.
+      float a = mix(0.74, 0.96, smoothstep(0.3, 0.7, n)) * (1.0 - 0.5 * stir) * front * dens * uIn;
+      float light = smoothstep(0.36, 0.86, n), shade = smoothstep(0.54, 0.18, n);
+      vec3 col = mix(uPaper, vec3(0.996, 0.993, 0.986), 0.6 * light) * (1.0 - 0.045 * shade);
+      // Faint grey wisps along the parting edge and wherever it breaks up; a lighter ring.
+      float rim = age < 0.0 ? 0.0 : (1.0 - smoothstep(0.0, 0.2, abs(edge - R))) * (1.0 - eo);
+      float wisp = (1.0 - smoothstep(0.0, 0.09, abs(n - th))) * 0.16 * pow(sin(3.14159 * thin), 0.8);
+      col = mix(col * (1.0 - 0.05 * rim - 0.4 * wisp), vec3(1.0), 0.4 * ring);
+      gl_FragColor = vec4(col * a, a);
+    }`;
+
+  // still: one frame, no drift (reduced motion). Returns null where WebGL is missing.
+  function startMist(canvas, still) {
+    const g = glFill(canvas, MIST_FRAG);
+    if (!g) return null;
+    const { gl, U } = g;
+    const uRes = U("uRes"), uTime = U("uTime"), uTap = U("uTap"), uPtr = U("uPtr"), uFar = U("uFar"), uIn = U("uIn");
+    gl.uniform3f(U("uPaper"), 241 / 255, 236 / 255, 227 / 255);
+    gl.uniform2f(U("uSeed"), Math.random() * 40, Math.random() * 40);
+    gl.uniform1f(uFar, 1);
+    const tap = { x: .5, y: .5, at: 0 };
+    const ptr = { x: .5, y: .5, tx: .5, ty: .5, k: 0, on: false };
+    const t0 = performance.now();
+    let raf = 0, prev = 0, lastDraw = 0, opening = false, onGone = null, lost = false, stopped = false;
+    const frame = (now) => {
+      const age = opening ? (now - tap.at) / 1000 : -1;
+      gl.uniform1f(uTime, still ? 12 : (now - t0) / 1000);
+      gl.uniform1f(uIn, still ? 1 : smooth(0, 1100, now - t0));
+      gl.uniform3f(uTap, tap.x, tap.y, age);
+      gl.uniform3f(uPtr, ptr.x, ptr.y, ptr.k);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      return age;
+    };
+    const draw = (now) => {
+      raf = requestAnimationFrame(draw);
+      const dt = prev ? Math.min(100, now - prev) : 16.7;
+      prev = now;
+      // The stir trails the mouse a little, and settles within a second.
+      const f = 1 - Math.exp(-dt / 110);
+      ptr.x += (ptr.tx - ptr.x) * f;
+      ptr.y += (ptr.ty - ptr.y) * f;
+      ptr.k *= Math.exp(-dt / 700);
+      if (!opening && ptr.k < .02 && now - lastDraw < 32) return; // drifting on its own: ~30 fps
+      lastDraw = now;
+      if (frame(now) > MIST_OPEN) {
+        cancelAnimationFrame(raf); raf = 0;
+        if (onGone) onGone();
+      }
+    };
+    // Half resolution, like the smoke: mist is soft.
+    const fit = () => {
+      const w = Math.max(2, Math.round(innerWidth / 2)), h = Math.max(2, Math.round(innerHeight / 2));
+      if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+      gl.viewport(0, 0, w, h);
+      gl.uniform2f(uRes, w, h);
+      if (still && !lost) frame(performance.now());
+    };
+    fit();
+    addEventListener("resize", fit);
+    if (!still) raf = requestAnimationFrame(draw);
+    canvas.addEventListener("webglcontextlost", (e) => {
+      if (stopped) return;
+      e.preventDefault();
+      cancelAnimationFrame(raf); raf = 0; lost = true;
+      if (onGone) onGone(); else canvas.classList.add("is-flat");
+    });
+    return {
+      get lost() { return lost; },
+      stir(x, y, moved) {
+        ptr.tx = x / innerWidth; ptr.ty = 1 - y / innerHeight;
+        if (!ptr.on) { ptr.on = true; ptr.x = ptr.tx; ptr.y = ptr.ty; }
+        ptr.k = Math.min(1, ptr.k + moved / 260);
+      },
+      // Resolves once the mist has gone.
+      open(x, y) {
+        return new Promise((res) => {
+          tap.x = x / innerWidth; tap.y = 1 - y / innerHeight; tap.at = performance.now();
+          const asp = innerWidth / innerHeight, tx = tap.x * asp, ty = tap.y;
+          gl.uniform1f(uFar, Math.max(Math.hypot(tx, ty), Math.hypot(asp - tx, ty), Math.hypot(tx, 1 - ty), Math.hypot(asp - tx, 1 - ty)));
+          onGone = res; opening = true;
+          if (!raf) raf = requestAnimationFrame(draw);
+        });
+      },
+      stop() {
+        stopped = true; onGone = null;
+        cancelAnimationFrame(raf); raf = 0;
+        removeEventListener("resize", fit);
+        const lose = gl.getExtension("WEBGL_lose_context");
+        if (lose) lose.loseContext();
+      },
+    };
+  }
+
+  // Words stay whole, so a line can break between them; each letter still arrives on its own.
+  const splitWords = (el, R, spread) => {
+    const words = el.textContent.trim().split(/\s+/);
+    el.textContent = "";
+    words.forEach((word, i) => {
+      if (i) el.append(" ");
+      const w = document.createElement("span");
+      w.className = "invite__w";
+      w.textContent = word;
+      splitLetters(w, R, spread);
+      el.append(w);
+    });
+  };
+
+  // Resolves when the visitor enters (at once when there is no gate).
+  function startGate(fontsOrLate) {
+    const btn = document.querySelector(".threshold"), invite = document.querySelector(".invite");
+    const canvas = document.querySelector(".mist"), bindu = document.querySelector(".dot--chandan");
+    if (!html.classList.contains("gate") || !btn || !invite || !canvas || !bindu) {
+      html.classList.remove("gate");
+      [btn, invite, canvas].forEach((el) => el && el.remove());
+      return Promise.resolve();
+    }
+    html.classList.add("gate-live"); // the head script's safety net stands down
+    const behind = [...document.body.children].filter((el) => el !== btn && el.tagName !== "SCRIPT");
+    behind.forEach((el) => { el.inert = true; });
+    const R = mulberry32(7);
+    invite.querySelectorAll(".invite__a, .invite__b").forEach((el) => splitWords(el, R, 700));
+    fontsOrLate.then(() => requestAnimationFrame(() => html.classList.add("gate-shown")));
+
+    const mist = startMist(canvas, reduced);
+    if (!mist) canvas.classList.add("is-flat");
+    if (mist && !reduced && matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      let lx = null, ly = 0;
+      btn.addEventListener("pointermove", (e) => {
+        const moved = lx === null ? 0 : Math.hypot(e.clientX - lx, e.clientY - ly);
+        lx = e.clientX; ly = e.clientY;
+        mist.stir(lx, ly, moved);
+      });
+    }
+
+    let opened = null, entered = false, pressing = false, upAt = 0;
+    const done = new Promise((res) => { opened = res; });
+    const binduAt = () => { const r = bindu.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
+    const finish = () => {
+      html.classList.remove("parting");
+      if (mist) mist.stop();
+      invite.remove();
+      canvas.remove();
+    };
+    const enter = (x, y) => {
+      if (entered) return;
+      entered = true;
+      // Sound first, while the browser still counts this as the visitor's own gesture.
+      try { startMusic(); } catch (e) { /* the music never set up: go in regardless */ }
+      try {
+        const tf = getComputedStyle(bindu).transform;
+        bindu.style.setProperty("--from", tf && tf !== "none" ? tf : "none");
+      } catch (e) { /* settle from rest */ }
+      html.classList.remove("gate");
+      html.classList.add("entered", "parting");
+      behind.forEach((el) => { el.inert = false; });
+      btn.blur();
+      opened();
+      // The button keeps taking touches until this one is over, so its click cannot land
+      // on a section label rising underneath.
+      const drop = () => (pressing || performance.now() - upAt < 250 ? setTimeout(drop, 120) : btn.remove());
+      setTimeout(drop, 1300);
+      // The invitation goes up in smoke where the name is about to condense.
+      try {
+        const r = invite.getBoundingClientRect();
+        if (smoke) smoke.puff(r.left + r.width / 2, r.top + r.height / 2, Math.max(r.width, 160) * .42);
+        if (reduced) invite.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, fill: "forwards" });
+        else {
+          const ease = "cubic-bezier(.5,0,.75,.25)";
+          invite.querySelectorAll(".l").forEach((l) => tween(l, OUT, { duration: 560, delay: Math.random() * 240, easing: ease }));
+          tween(invite.querySelector(".invite__sub"), OUT, { duration: 640, delay: 90, easing: ease });
+        }
+      } catch (e) { invite.style.visibility = "hidden"; }
+      if (mist && !reduced && !mist.lost) mist.open(x, y).then(finish);
+      else canvas.animate([{ opacity: 1 }, { opacity: 0, transform: reduced ? "none" : "scale(1.06)" }],
+        { duration: reduced ? 700 : 1600, easing: "cubic-bezier(.45,0,.2,1)", fill: "forwards" }).finished.then(finish, finish);
+    };
+    btn.addEventListener("pointerdown", (e) => {
+      if (e.button > 0) return;
+      pressing = true;
+      enter(e.clientX, e.clientY);
+    });
+    const up = () => { pressing = false; upAt = performance.now(); };
+    addEventListener("pointerup", up, true);
+    addEventListener("pointercancel", up, true);
+    // A click without a pointerdown first is Enter or Space on the button, or a screen reader.
+    btn.addEventListener("click", (e) => (e.detail ? enter(e.clientX, e.clientY) : enter(...binduAt())));
+    document.addEventListener("keydown", (e) => {
+      if (!html.classList.contains("gate") || (e.key !== "Enter" && e.key !== " ")) return;
+      e.preventDefault();
+      enter(...binduAt());
+    });
+    return done;
+  }
+
   /* ---------- Intro ---------- */
   let smoke = null;
   if (!reduced) {
@@ -1391,7 +2080,9 @@
     if (!smoke) html.classList.add("no-smoke");
   }
   const fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
-  Promise.race([fontsReady, new Promise((r) => setTimeout(r, 1600))])
+  const fontsOrLate = Promise.race([fontsReady, new Promise((r) => setTimeout(r, 1600))]);
+  // The intro waits for the fonts, and for the visitor to come through the gate.
+  Promise.all([fontsOrLate, startGate(fontsOrLate)])
     .then(() => requestAnimationFrame(() => {
       html.classList.add("in"); clk0 = performance.now();
       plantBoughs();
@@ -1418,7 +2109,7 @@
      a kumkum bindu marks the chosen word. Tap the word again, the tilak or the paper
      to bring the name back. */
   const focus = document.getElementById("focus");
-  const nameLetters = [...document.querySelectorAll(".name .l")];
+  const nameLetters = [...document.querySelectorAll(".name .l, .tagline")];
   const kumkum = document.querySelector(".dot--kumkum");
   const OUT = { opacity: 0, filter: "blur(8px)", transform: "translateY(-0.22em)" };
   const IN = { opacity: 1, filter: "blur(0px)", transform: "translateY(0em)" };
@@ -1589,7 +2280,7 @@
     if (credsOpen && !(e.target.closest && e.target.closest(".creds__scroll"))) credsScroll.scrollTop += e.deltaY;
   }, { passive: true });
   addEventListener("keydown", (e) => {
-    if (!credsOpen || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (!credsOpen || leave.open || e.altKey || e.ctrlKey || e.metaKey) return;
     const page = credsScroll.clientHeight * .85;
     const by = { ArrowDown: 60, ArrowUp: -60, PageDown: page, PageUp: -page, End: 1e5, Home: -1e5 }[e.key];
     if (by === undefined) return;
@@ -1717,8 +2408,1508 @@
   }));
   addEventListener("resize", () => { if (credsOpen) requestAnimationFrame(layoutCreds); });
 
+  /* ---------- Journey: a walk inward through nine rings, to the bindu ----------
+     Nothing navigates and the music plays on. The name goes up in smoke, the kumkum dot glides
+     to the centre and becomes the bindu, the chandan dot (me) goes to the gate at the top of the
+     outer ring, and the rings draw themselves out from the bindu, innermost first. Each step in
+     zooms the world about the still bindu until the next ring frames the page, and carries me a
+     ninth of a turn along one spiral, to rest on that ring's own line. The chapter's verse waits
+     at the centre until the visitor moves on; then its painting spreads from the bindu like wet
+     paint, and its caption settles below. After the ninth ring the last ninth of the turn brings
+     me home onto the bindu itself, inside a closing lotus: chandan on kumkum, the two met at the
+     centre, where all is whole. From there the rings go out like ripples, 18.66 stands alone,
+     and the two rise apart into the tilak above the name. Every word lives in JOURNEY and BINDU. */
+  // wash: the colours of the stand-in shown until journey/journey-N.webp (or .png) is in place.
+  // notes: small lines under a caption, each with a small title; [words](https://…) in one is a
+  // link, which asks the visitor before it opens.
+  const JOURNEY = [
+    {
+      num: "I", title: "The dress",
+      caption: "The dress was too big for me, and so was the world. I never quite fit either. So I did what misfits do: I built worlds of my own, first in drawings, then on glowing screens.",
+      verse: { ref: "3.35", sa: ["श्रेयान्स्वधर्मो विगुणः परधर्मात्स्वनुष्ठितात् ॥"], en: ["Better your own path, walked unsteadily,", "than a borrowed life, however well it fits."] },
+      wash: ["#6B5A8C", "#A99CC2"],
+    },
+    {
+      num: "II", title: "The metamorphosis year",
+      caption: "Then my own world broke, and I learned that people are not okay, and neither was I. Yoga found me there. Slowly, the light won.",
+      verse: { ref: "6.35", sa: ["असंशयं महाबाहो मनो दुर्निग्रहं चलम् ।", "अभ्यासेन तु कौन्तेय वैराग्येण च गृह्यते ॥"], en: ["The mind is wind; no fist can hold it.", "Return to the Divine, again and again, let go, again and again, and the wind grows still."] },
+      wash: ["#6E6964", "#B7B1AA"],
+    },
+    {
+      num: "III", title: "The medal",
+      caption: "So I studied the body the way others pray. The gold medal made everyone proud. It didn’t answer the question I carried: why do people suffer?",
+      verse: { ref: "12.18", sa: ["समः शत्रौ च मित्रे च तथा मानापमानयोः ॥"], en: ["Honour and dishonour, gold and dust:", "whoever stays unmoved by both has found what no medal holds."] },
+      wash: ["#9A7432", "#D9BF86"],
+    },
+    {
+      num: "IV", title: "The lab",
+      caption: "I went looking in genes and neurons. I learned the body keeps a record of everything we live through, and that what is written can be rewritten. It was the first answer that felt like hope.",
+      verse: { ref: "13.2", sa: ["इदं शरीरं कौन्तेय क्षेत्रमित्यभिधीयते ॥"], en: ["This body is a field; I studied every furrow.", "But who is the one who knows the field?"] },
+      wash: ["#4C8581", "#9CC3B6"],
+    },
+    {
+      num: "V", title: "The team",
+      caption: "I walked into Dr. Anuj’s clinic as a patient and stayed to build something with him. AnubhutiHealth became the world I’d been trying to build since the dress: a place where people get well, and nobody has to fit.",
+      verse: { ref: "2.47", sa: ["कर्मण्येवाधिकारस्ते मा फलेषु कदाचन ।", "मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि ॥"], en: ["Yours is the work, never its fruit.", "Give as a lamp gives light, never asking whom it reaches."] },
+      notes: [
+        { label: "In the photo", text: "The AnubhutiHealth team, with the renowned Dr. Kumar Anuj, DM (Endocrinology)" },
+        { label: "Visit", text: "[AnubhutiHealth](https://anubhutihealth.in)" },
+      ],
+      wash: ["#66783F", "#B79C5A"],
+    },
+    {
+      num: "VI", title: "IIT Patna",
+      caption: "The boy who lived in screens has come back to them, this time to build tools that let care reach people I’ll never meet.",
+      verse: { ref: "2.50", sa: ["तस्माद्योगाय युज्यस्व योगः कर्मसु कौशलम् ॥"], en: ["Yoke yourself to the Divine, and work.", "The yoga is in the skill of the doing."] },
+      wash: ["#44506A", "#A7B1C7"],
+    },
+    {
+      num: "VII", title: "The conversations",
+      caption: "So I started talking, to anyone who has ever felt the dress didn’t fit. Healing the body is half the work. The other half is being understood.",
+      verse: { ref: "6.32", sa: ["आत्मौपम्येन सर्वत्र समं पश्यति योऽर्जुन ॥"], en: ["Whoever feels another’s sorrow as their own,", "and their joy as their own, has truly seen."] },
+      notes: [{ label: "In the photo", text: "In conversation with the renowned gynaecologist Dr. Khushbu Tewary, on women’s public health" }],
+      wash: ["#B06E6C", "#D9AA99"],
+    },
+    {
+      num: "VIII", title: "The mountains",
+      caption: "In the mountains, not fitting in stops mattering. Silence asks nothing of you. This is where I come to hear myself.",
+      verse: { ref: "6.10", sa: ["योगी युञ्जीत सततमात्मानं रहसि स्थितः ॥"], en: ["Alone, in a quiet place, the heart turns home.", "What the crowd called strange, the silence calls whole."] },
+      wash: ["#5F7896", "#A2B2C4"],
+    },
+    {
+      num: "IX", title: "Grace",
+      caption: "And then a hand held out a flower. Everything I had been searching for had a path: my Guru and the scriptures. The seeking didn’t end. It finally had somewhere to go.",
+      verse: { ref: "4.34", sa: ["तद्विद्धि प्रणिपातेन परिप्रश्नेन सेवया ॥"], en: ["Bow, and ask, and serve, until you are empty enough", "for those who have seen to pour the seeing into you."] },
+      notes: [{ label: "Read", text: "[The secret of happiness](https://os.me/the-secret-of-happiness)" }],
+      wash: ["#C4843A", "#E4BC7E"],
+    },
+  ];
+  // The centre, where I come home to the bindu. The meeting is silent; 18.66 follows it. Then the
+  // closing line stands under the name, with its links beneath (an empty href follows the Email link).
+  const BINDU = {
+    title: "Here, now",
+    caption: "Every thread meets here: the science, the clinic, the mind, the machine. Now I’m building care that treats the whole person, and reaches further than one clinic can.",
+    notes: [{ label: "Special thanks", text: "to [Dr. Jeetu Pathak](https://drjeetupathak.com/), a scientist turned full-time seeker, who helped me find the thread of my own story" }],
+    closing: "Where do we begin?",
+    links: [{ text: "Work together", href: "" }, { text: "Coaching", href: "" }],
+    verse: { ref: "18.66", sa: ["सर्वधर्मान्परित्यज्य मामेकं शरणं व्रज ।", "अहं त्वां सर्वपापेभ्यो मोक्षयिष्यामि मा शुचः ॥"], en: ["Let every path, every duty, every name you gave yourself fall away, and give yourself to the Divine alone.", "It will free you from all that binds you. Do not grieve."] },
+  };
+  // Every duration of the walk, in ms. A verse stays until the visitor moves on.
+  const JT = {
+    zoom: 1600,     // one step in or out, with me gliding a ninth of a turn
+    paint: 1400,    // a painting spreading from the bindu
+    idle: 11000,    // the wind waits this long, then turns the page on its next gust
+    verseLock: 900, // a verse takes no input this soon after it begins to appear
+    endLock: 3000,  // ...and 18.66 none this soon
+  };
+
+  const bezier = (x1, y1, x2, y2) => {
+    const at = (t, a, b) => ((1 - 3 * b + 3 * a) * t * t + (3 * b - 6 * a) * t + 3 * a) * t;
+    return (x) => {
+      if (x <= 0) return 0;
+      if (x >= 1) return 1;
+      let lo = 0, hi = 1, t = x;
+      for (let i = 0; i < 22; i++) { const v = at(t, x1, x2); if (Math.abs(v - x) < 1e-5) break; if (v < x) lo = t; else hi = t; t = (lo + hi) / 2; }
+      return at(t, y1, y2);
+    };
+  };
+  const E_EASE = bezier(.45, 0, .2, 1), E_SWIFT = bezier(.65, 0, .25, 1);
+  const sleep = (v) => new Promise((r) => setTimeout(r, v));
+  const DEG = Math.PI / 180, TOP = -Math.PI / 2;
+
+  /* The nine rings and the bindu's own lotus, each drawn from its chapter: pixels on a thread, a
+     spiral, a measuring dial, a faltering line with one small flame, cells, a double helix,
+     hanging banyan roots, an open lotus, a bus of circuitry, and eight petals closing on the
+     bindu. Units are a 600-unit mandala centred on the bindu. */
+  const JR = [280, 250, 220, 190, 160, 130, 100, 70, 44, 22];
+  const NINTH = TAU / 9; // I go a ninth of a turn a ring, so the walk to the bindu is one whole turn
+  const meAngle = (k) => TOP + (clamp(k, 1, 10) - 1) * NINTH;
+  const spiralR = (t) => 239 + 22 * t + 1.6 * Math.sin(t * TAU * 5.5 + 1.1);
+  // Where I rest on each ring: always on a line the ring draws, never between two.
+  const REST = [
+    280,                        // I: the thread the pixels hang on
+    spiralR((1 + 1 / 9) / 3),   // II: the spiral's middle turn, where I cross it
+    220, 190,                   // III: the dial; IV: the faltering line, whole where I stand
+    160,                        // V: the heart of a cell
+    130,                        // VI: where the strands cross
+    100, 57, 44,                // VII: the bough; VIII: the lotus's ring; IX: the bus
+  ];
+  const f2 = (v) => v.toFixed(2);
+  const at = (r, a) => [r * Math.cos(a), r * Math.sin(a)];
+  const lineD = (pts) => "M" + pts.map(([x, y]) => f2(x) + " " + f2(y)).join("L");
+  const circleD = (x, y, r) => `M${f2(x + r)} ${f2(y)}A${f2(r)} ${f2(r)} 0 1 1 ${f2(x - r)} ${f2(y)}A${f2(r)} ${f2(r)} 0 1 1 ${f2(x + r)} ${f2(y)}Z`;
+  const dotD = (x, y) => `M${f2(x)} ${f2(y)}h.01`;
+  const petalsD = (n, rb, rt, spread, bulge, phase) => {
+    let d = "";
+    for (let i = 0; i < n; i++) {
+      const c = TOP + phase + (i * TAU) / n, h = (spread * Math.PI) / n, m = rb + (rt - rb) * .48, k = rt - (rt - rb) * .2;
+      const [b1, b2, tip, c1, c2, t1, t2] = [at(rb, c - h), at(rb, c + h), at(rt, c), at(m, c - h * bulge), at(m, c + h * bulge), at(k, c - h * .34), at(k, c + h * .34)];
+      d += `M${f2(b1[0])} ${f2(b1[1])}C${f2(c1[0])} ${f2(c1[1])} ${f2(t1[0])} ${f2(t1[1])} ${f2(tip[0])} ${f2(tip[1])}`
+        + `C${f2(t2[0])} ${f2(t2[1])} ${f2(c2[0])} ${f2(c2[1])} ${f2(b2[0])} ${f2(b2[1])}`;
+    }
+    return d;
+  };
+  const RINGS = [
+    // I. The Screen: 72 pixels on a thread, with a gate at each cardinal point.
+    () => {
+      let d = "";
+      for (let i = 0; i < 84; i++) {
+        const j = i % 21;
+        if (j === 0 || j === 1 || j === 20) continue;
+        const a = TOP + (i * TAU) / 84, c = Math.cos(a), s = Math.sin(a), h = 2.9;
+        d += lineD([[-h, -h], [h, -h], [h, h], [-h, h]].map(([u, v]) => [(280 + u) * c - v * s, (280 + u) * s + v * c])) + "Z";
+      }
+      return { paths: [{ d }, { d: circleD(0, 0, 280), cls: "jr-faint" }], rIn: 275, rOut: 285 };
+    },
+    // II. The Spiral: one loose line, three times round.
+    () => {
+      const pts = [];
+      for (let i = 0; i <= 900; i++) { const t = i / 900; pts.push(at(spiralR(t), TOP + t * 3 * TAU)); }
+      return { paths: [{ d: lineD(pts) }], rIn: 235, rOut: 265 };
+    },
+    // III. The Skeptic: a dial of 120 ticks, every tenth long.
+    () => {
+      let d = circleD(0, 0, 220);
+      for (let i = 0; i < 120; i++) { const a = TOP + (i * TAU) / 120; d += lineD([at(220, a), at(220 - (i % 10 ? 5 : 12), a)]); }
+      return { paths: [{ d }], rIn: 206, rOut: 222 };
+    },
+    // IV. The Dark Year: a dotted line that falters (though never where I stand), and one
+    // small flame at the top.
+    () => {
+      const R = mulberry32(44), dots = ["", "", ""], rest = meAngle(4) - TOP;
+      for (let a = 4 * DEG; a < TAU - 4 * DEG;) {
+        a += (2.3 + R() * 1.7) * DEG;
+        if (R() < .15 && Math.abs(a - rest) > 9 * DEG) { a += (3 + R() * 7) * DEG; continue; }
+        const [x, y] = at(190 + (R() - .5) * 2.4, TOP + a);
+        dots[R() < .45 ? 0 : R() < .7 ? 1 : 2] += dotD(x, y);
+      }
+      return { paths: dots.map((d, i) => ({ d, cls: "jr-dot" + (i + 1) })), flame: at(190, TOP), rIn: 183, rOut: 197 };
+    },
+    // V. The Body: 36 cells, each with its nucleus; I take the nucleus's place in one.
+    () => {
+      const R = mulberry32(55), mine = Math.round((meAngle(5) - TOP) / (TAU / 36));
+      let cells = "", nuclei = "";
+      for (let i = 0; i < 36; i++) {
+        const on = i === mine, j1 = R(), j2 = R(), j3 = R();
+        const [x, y] = at(on ? 160 : 160 + (j1 - .5) * 3, TOP + (i * TAU) / 36 + (on ? 0 : (j2 - .5) * .03)), r = on ? 6 : 4.6 + j3 * 1.5;
+        cells += circleD(x, y, r);
+        const na = R() * TAU, nr = R() * r * .35;
+        if (!on) nuclei += dotD(x + nr * Math.cos(na), y + nr * Math.sin(na));
+      }
+      return { paths: [{ d: cells }, { d: nuclei, cls: "jr-dot2" }], rIn: 151, rOut: 169 };
+    },
+    // VI. The Lab: a double helix woven round, with rungs; its strands cross where I stand.
+    () => {
+      const s1 = [], s2 = [], N = 18, A = 6.5, t0 = meAngle(6) - TOP;
+      for (let i = 0; i <= 1440; i++) {
+        const t = (i / 1440) * TAU, w = Math.sin(N * (t - t0));
+        s1.push(at(130 + A * w, TOP + t));
+        s2.push(at(130 - A * w, TOP + t));
+      }
+      let rungs = "";
+      for (let j = 0; j < N * 6; j++) {
+        const t = ((j + .5) / (N * 6)) * TAU, w = Math.sin(N * (t - t0));
+        if (Math.abs(w) > .35) rungs += lineD([at(130 + A * w * .8, TOP + t), at(130 - A * w * .8, TOP + t)]);
+      }
+      return { paths: [{ d: lineD(s1) }, { d: lineD(s2) }, { d: rungs, cls: "jr-faint" }], rIn: 120, rOut: 140 };
+    },
+    // VII. The Clinic: a bough of banyan with 24 roots hanging in.
+    () => {
+      const R = mulberry32(77);
+      let d = circleD(0, 0, 100);
+      for (let i = 0; i < 24; i++) {
+        const a0 = TOP + ((i + .5) * TAU) / 24 + (R() - .5) * .06, L = 9 + R() * 13, w1 = (R() - .5) * 2.6, w2 = (R() - .5) * 1.4;
+        const pts = [];
+        for (let k = 0; k <= 8; k++) {
+          const u = k / 8, r = 100 - L * u;
+          pts.push(at(r, a0 + (w1 * Math.sin(Math.PI * u) + w2 * Math.sin(TAU * u)) / r));
+        }
+        d += lineD(pts);
+      }
+      return { paths: [{ d }], rIn: 74, rOut: 103 };
+    },
+    // VIII. The Monk: sixteen petals, open.
+    () => ({ paths: [{ d: circleD(0, 0, 57) + petalsD(16, 57, 80, .94, 1.14, 0) }], rIn: 53, rOut: 83 }),
+    // IX. The Machine: a bus of circuitry, its traces turning in to their pads (none where I stand).
+    () => {
+      const R = mulberry32(99), rest = meAngle(9) - TOP;
+      let d = circleD(0, 0, 44), pads = "";
+      for (let i = 0; i < 20; i++) {
+        const a = TOP + rest + ((i + .5) * TAU) / 20, r1 = 44 - (4.5 + R() * 5.5), turn = (R() < .5 ? -1 : 1) * (4 + R() * 6) * DEG;
+        const [x0, y0] = at(44, a), [x1, y1] = at(r1, a), [x2, y2] = at(r1, a + turn);
+        d += `M${f2(x0)} ${f2(y0)}L${f2(x1)} ${f2(y1)}A${f2(r1)} ${f2(r1)} 0 0 ${turn > 0 ? 1 : 0} ${f2(x2)} ${f2(y2)}`;
+        pads += circleD(x2, y2, 1.15);
+      }
+      return { paths: [{ d }, { d: pads }], rIn: 31, rOut: 46 };
+    },
+    // The bindu's own lotus, cupped round it: eight petals, and eight smaller between them.
+    () => ({ paths: [{ d: circleD(0, 0, 8.5) + petalsD(8, 8.5, 24, .9, 1.28, 0) }, { d: petalsD(8, 8.5, 17.5, .78, 1.22, TAU / 16), cls: "jr-faint" }], rIn: 3, rOut: 26 }),
+  ];
+
+  const svgEl = (name, attrs) => {
+    const n = document.createElementNS(NS, name);
+    if (attrs) for (const k in attrs) n.setAttribute(k, attrs[k]);
+    return n;
+  };
+  const journeyEl = document.getElementById("journey");
+  const jSvg = journeyEl.querySelector(".jr-rings");
+  const jPaintCv = journeyEl.querySelector(".jr-paint"), jImg = journeyEl.querySelector(".jr-img");
+  const jHalo = journeyEl.querySelector(".jr-halo"), jVerse = journeyEl.querySelector(".jr-verse");
+  const jSa = jVerse.querySelector(".jr-verse__sa"), jEn = jVerse.querySelector(".jr-verse__en");
+  const jCap = journeyEl.querySelector(".jr-caption");
+  const jCapTitle = jCap.querySelector(".jr-caption__title"), jCapText = jCap.querySelector(".jr-caption__text");
+  const jNotes = journeyEl.querySelector(".jr-notes");
+  const jHint = journeyEl.querySelector(".jr-hint"), jClose = journeyEl.querySelector(".jr-close");
+  const jMala = journeyEl.querySelector(".jr-mala"), jMalaList = jMala.querySelector(".jr-mala__list"), jMalaSvg = jMala.querySelector(".jr-mala__cord");
+  const jTip = jMala.querySelector(".jr-tip"), jLive = journeyEl.querySelector(".jr-live"), jSafe = journeyEl.querySelector(".jr-safe");
+  const journeyArea = document.getElementById("sub-journey").closest(".area");
+  const stageEl = document.querySelector(".stage"), socialsEl = document.querySelector(".socials");
+  const closingEl = document.querySelector(".closing");
+  const emailLink = document.querySelector('.social[aria-label="Email"]');
+  closingEl.querySelector(".closing__line").textContent = BINDU.closing;
+  const closingLinks = BINDU.links.map(({ text, href }) => {
+    const a = document.createElement("a");
+    a.className = "closing__link";
+    a.textContent = text;
+    a.href = href || (emailLink && emailLink.getAttribute("href")) || "#";
+    if (/^https?:/.test(a.getAttribute("href"))) { a.target = "_blank"; a.rel = "noopener"; }
+    return a;
+  });
+  closingLinks.forEach((a, i) => {
+    if (i) {
+      const dot = document.createElement("i");
+      dot.className = "closing__dot";
+      dot.setAttribute("aria-hidden", "true");
+      closingEl.lastElementChild.append(dot);
+    }
+    closingEl.lastElementChild.append(a);
+  });
+  const closingLink = closingLinks[0];
+
+  const J = {
+    open: false, leaving: false, busy: false, flying: false, tok: 0, state: 0, ended: false,
+    cx: 0, cy: 0, S: 1, capTop: 0, phone: false,
+    s: 1, rot: 0, dim: 0, all: 1, focusRing: 0, rip: 0, ripO: 0,
+    ring: JR.map(() => ({ o: 0, x: 1, r: 0 })),
+    me: { free: true, x: 0, y: 0, r: JR[0], a: TOP, k: 1, o: 1 },
+    bindu: { x: 0, y: 0, k: 1, o: 1 },
+    paintK: 0, pf: null, paintO: 1, skip: null, wind: true, windTimer: 0, hintDone: false, taught: false,
+  };
+  // The frame ring shrinks from 47% of the square at chapter I to 25% at IX (phones zoom a fifth
+  // less by then); the bindu's lotus takes 26%, room for the tilak inside it.
+  const scaleOf = (k) => {
+    if (k <= 0) return .43 * J.S / JR[0];
+    if (k >= 10) return .26 * J.S / JR[9];
+    return (.47 - .22 * (k - 1) / 8) * J.S / JR[k - 1] * (J.phone ? 1 - .2 * (k - 1) / 8 : 1);
+  };
+  const restR = (k) => (k < 1 ? JR[0] : k <= 9 ? REST[k - 1] : 0); // at the bindu, on it
+  // Where I rest at stop k, from the bindu, in px.
+  const restAt = (k) => { const r = restR(k) * scaleOf(k), a = meAngle(k); return [r * Math.cos(a), r * Math.sin(a)]; };
+  const ringTarget = (k, i) => (k === 0 ? .85 : i + 1 < k ? 0 : i + 1 === k ? 1 : .35);
+
+  /* One small tween clock for the whole walk: every value it moves is drawn by renderJ(). */
+  const jTweens = new Set();
+  let jRaf = 0, MD = null;
+  const jTick = (now) => {
+    jRaf = 0;
+    for (const tw of [...jTweens]) {
+      if (now < tw.t0) continue;
+      const p = Math.min(1, (now - tw.t0) / tw.dur);
+      tw.fn(tw.ease(p), p);
+      if (p >= 1) { jTweens.delete(tw); tw.done(); }
+    }
+    renderJ();
+    if (jTweens.size) jRaf = requestAnimationFrame(jTick);
+  };
+  const anim = (dur, ease, fn, delay = 0) => new Promise((done) => {
+    jTweens.add({ t0: performance.now() + delay, dur: Math.max(1, dur), ease, fn, done });
+    if (!jRaf) jRaf = requestAnimationFrame(jTick);
+  });
+
+  function buildMandala() {
+    const defs = svgEl("defs"), glow = svgEl("radialGradient", { id: "jr-glow" });
+    [["0", .6], [".45", .22], ["1", 0]].forEach(([o, a]) => glow.append(svgEl("stop", { offset: o, "stop-color": "#E0913F", "stop-opacity": a })));
+    defs.append(glow);
+    const zoom = svgEl("g");
+    const rings = RINGS.map((make, i) => {
+      const spec = make(), g = svgEl("g", { class: "jr-ring jr-ring--" + (i + 1), opacity: 0 });
+      spec.paths.forEach((p) => g.append(svgEl("path", p.cls ? { d: p.d, class: p.cls } : { d: p.d })));
+      if (spec.flame) {
+        const [x, y] = spec.flame.map(f2);
+        g.append(svgEl("circle", { class: "jr-flame-glow", cx: x, cy: y, r: 7.5 }), svgEl("circle", { class: "jr-flame", cx: x, cy: y, r: 2.1 }));
+      }
+      // The opening traces each ring from its top both ways, like the mala's thread; the three
+      // arcs of the mask, each a little longer and fainter, soften the tracing edge.
+      const rm = (spec.rIn + spec.rOut) / 2;
+      const mask = svgEl("mask", { id: "jr-draw-" + (i + 1), maskUnits: "userSpaceOnUse", x: -340, y: -340, width: 680, height: 680 });
+      const arcs = [1, .5, .18].map((a) => svgEl("circle", { r: rm, fill: "none", stroke: "#fff", "stroke-opacity": a, "stroke-width": spec.rOut - spec.rIn + 14, transform: "rotate(-90)", "stroke-dasharray": "0 1e5" }));
+      mask.append(...arcs.slice().reverse());
+      defs.append(mask);
+      zoom.append(g);
+      return { g, arcs, C: TAU * rm, o: -1, t: "" };
+    });
+    const ripple = svgEl("circle", { class: "jr-ripple", r: 1, opacity: 0 });
+    zoom.append(ripple);
+    jSvg.append(defs, zoom);
+    return { zoom, rings, ripple, flame: rings[3].g, ripR: -1, ripO: -1 };
+  }
+  // p: how far this ring has traced, 0 to 1.
+  function traceRing(ring, p) {
+    const half = ring.C / 2, step = ring.C * 5 / 360, L = p * (half + 2 * step);
+    ring.arcs.forEach((c, j) => {
+      const l = clamp(L - (2 - j) * step, 0, half);
+      c.setAttribute("stroke-dasharray", `${f2(l)} ${f2(ring.C - 2 * l)} ${f2(l)} 0`);
+    });
+  }
+
+  let jBindu = null, jMe = null;
+  const makeDots = () => {
+    if (!jBindu) { jBindu = document.createElement("i"); jBindu.className = "jr-dot jr-dot--bindu"; jBindu.setAttribute("aria-hidden", "true"); }
+    if (!jMe) { jMe = document.createElement("i"); jMe.className = "jr-dot jr-dot--me"; jMe.setAttribute("aria-hidden", "true"); }
+    document.body.append(jBindu, jMe);
+  };
+  const mePos = () => {
+    if (J.me.free) return [J.me.x, J.me.y];
+    const a = J.me.a + J.rot, rr = J.me.r * J.s;
+    return [J.cx + rr * Math.cos(a), J.cy + rr * Math.sin(a)];
+  };
+  const paintEl = () => (painter && !painter.lost ? jPaintCv : jImg);
+
+  function renderJ() {
+    if (!MD) return;
+    MD.zoom.setAttribute("transform", `translate(${f2(J.cx)} ${f2(J.cy)}) rotate(${(J.rot / DEG).toFixed(3)}) scale(${J.s.toFixed(5)})`);
+    for (let i = 0; i < 10; i++) {
+      const r = MD.rings[i], st = J.ring[i];
+      const o = Math.round(st.o * (i + 1 > J.focusRing ? 1 - .62 * J.dim : 1) * 1000) / 1000;
+      if (o !== r.o) { r.o = o; r.g.setAttribute("opacity", o); r.g.style.display = o < .003 ? "none" : ""; }
+      const t = (st.r ? `rotate(${st.r.toFixed(3)})` : "") + (Math.abs(st.x - 1) > 1e-4 ? `scale(${st.x.toFixed(4)})` : "");
+      if (t !== r.t) { r.t = t; if (t) r.g.setAttribute("transform", t); else r.g.removeAttribute("transform"); }
+    }
+    if (J.rip !== MD.ripR || J.ripO !== MD.ripO) {
+      MD.ripR = J.rip; MD.ripO = J.ripO;
+      MD.ripple.setAttribute("r", Math.max(.1, J.rip).toFixed(2));
+      MD.ripple.setAttribute("opacity", J.ripO.toFixed(3));
+    }
+    jSvg.style.opacity = J.all < 1 ? J.all.toFixed(3) : "";
+    // A painting on its way out stays with its ring: it grows past me, or recedes, as it fades.
+    if (J.pf) {
+      const el = paintEl();
+      el.style.transform = `scale(${(J.s / J.pf.s0 * J.ring[J.pf.k - 1].x).toFixed(4)})`;
+      el.style.opacity = J.paintO.toFixed(3);
+    }
+    if (jBindu) {
+      jBindu.style.transform = `translate(${f2(J.bindu.x - 7)}px, ${f2(J.bindu.y - 7)}px) scale(${J.bindu.k.toFixed(3)})`;
+      jBindu.style.opacity = J.bindu.o.toFixed(3);
+    }
+    if (jMe) {
+      const [x, y] = mePos();
+      jMe.style.transform = `translate(${f2(x - 4.5)}px, ${f2(y - 4.5)}px) scale(${J.me.k.toFixed(3)})`;
+      jMe.style.opacity = J.me.o.toFixed(3);
+    }
+  }
+
+  // Room below the mandala for the longest caption at this size, read off a hidden copy.
+  let jMeasure = null;
+  function captionRoom() {
+    if (!jMeasure) {
+      jMeasure = jCap.cloneNode(true);
+      Object.assign(jMeasure.style, { position: "fixed", top: "0px", visibility: "hidden" });
+      document.body.append(jMeasure);
+    }
+    const t = jMeasure.querySelector(".jr-caption__title"), x = jMeasure.querySelector(".jr-caption__text");
+    let h = 0;
+    for (const ch of [...JOURNEY, BINDU]) {
+      t.textContent = ch.title;
+      x.textContent = ch.caption;
+      h = Math.max(h, jMeasure.offsetHeight);
+    }
+    return Math.ceil(h);
+  }
+  // The notes sit at the foot of the page, small and centred: under the caption and clear of the
+  // mala, or on a phone held upright (where the mala has the bottom corner) just above it. Returns
+  // how far up they sit and what the tallest ones need.
+  let jNotesMeasure = null;
+  function placeNotes(W, H, sab) {
+    const sp = getComputedStyle(jSafe), sal = parseFloat(sp.paddingLeft) || 0, sar = parseFloat(sp.paddingRight) || 0;
+    const malaW = jMala.offsetWidth || 86, malaH = jMala.offsetHeight || 86, edge = Math.max(16, W * .02);
+    let width, foot;
+    if (J.phone) {
+      width = W - 32 - sal - sar;
+      foot = sab + Math.max(36, H * .05) + malaH + 8;
+    } else {
+      width = Math.min(W - 2 * (edge + Math.max(sal, sar) + malaW + 24), 600);
+      foot = sab + Math.max(12, H * .02);
+    }
+    Object.assign(jNotes.style, { left: f2((W - width) / 2) + "px", width: f2(width) + "px", bottom: f2(foot) + "px" });
+    if (!jNotesMeasure) {
+      jNotesMeasure = jNotes.cloneNode(false);
+      Object.assign(jNotesMeasure.style, { position: "fixed", top: "0px", bottom: "auto", visibility: "hidden" });
+      document.body.append(jNotesMeasure);
+    }
+    jNotesMeasure.style.width = jNotes.style.width;
+    let h = 0;
+    for (const ch of [...JOURNEY, BINDU]) {
+      fillNotes(jNotesMeasure, ch.notes);
+      h = Math.max(h, jNotesMeasure.offsetHeight);
+    }
+    jNotesMeasure.textContent = "";
+    return { foot, h: Math.ceil(h) };
+  }
+  // The mandala and its paintings take a square centred above the caption: the full width on a
+  // phone held upright, and the short side (less the caption) everywhere else.
+  function layoutJ() {
+    const W = innerWidth, H = innerHeight, sp = getComputedStyle(jSafe);
+    const sat = parseFloat(sp.paddingTop) || 0, sab = parseFloat(sp.paddingBottom) || 0;
+    J.phone = W < 700 && H > W;
+    const capH = captionRoom(), nt = placeNotes(W, H, sab);
+    const top = sat + (J.phone ? 52 : Math.max(18, H * .03));
+    // The bottom keeps the room of the notes, and on a phone the mala's below them.
+    const bot = J.phone ? Math.max(sab + 130, nt.foot + nt.h + 12)
+      : nt.h ? nt.foot + nt.h + 14 : sab + Math.max(18, H * .03);
+    const cap = Math.max(J.phone ? 150 : 134, capH + 4), gap = J.phone ? 8 : 12, room = H - top - bot;
+    J.S = Math.max(150, Math.min(J.phone ? W : W - 96, room - cap - gap));
+    const y0 = top + Math.max(0, (room - (J.S + gap + cap)) / 2);
+    J.cx = W / 2; J.cy = y0 + J.S / 2; J.capTop = y0 + J.S + gap;
+    jSvg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    jCap.style.top = J.capTop.toFixed(1) + "px";
+    jHint.style.top = J.capTop.toFixed(1) + "px";
+    placeJapa();
+  }
+
+  /* ---------- The paintings: watercolour that spreads from the bindu like wet paint ---------- */
+  // Each painting is square, fades to blank paper at its edges, and has its one red detail at its
+  // exact centre, which lands on the bindu. Its own paper is mapped onto this page's paper.
+  const PAD = 1.1; // the canvas reaches a tenth past the frame ring, for the soft edge
+  const PAINT_FRAG = `
+    #ifdef GL_FRAGMENT_PRECISION_HIGH
+    precision highp float;
+    #else
+    precision mediump float;
+    #endif
+    uniform vec2 uRes; uniform float uGrow; uniform float uFrame; uniform vec2 uTurn;
+    uniform sampler2D uTex; uniform sampler2D uField; uniform float uHasTex; uniform vec3 uPaper; uniform vec3 uPaperIn;
+    uniform vec3 uTint; uniform vec3 uTint2;
+    // Until a painting is in journey/, a quiet wash in the chapter's colours holds its place.
+    vec3 wash(float d, vec3 n){
+      float body = 1.0 - smoothstep(0.1, 0.96, d + (n.x - 0.5) * 0.6);
+      float dens = body * (0.36 + 0.64 * smoothstep(0.3, 0.7, n.z));
+      vec3 c = mix(uPaper, uTint, 0.78 * dens);
+      c = mix(c, uTint2, 0.5 * smoothstep(0.52, 0.82, n.y) * body);
+      c *= 1.0 - 0.07 * (1.0 - smoothstep(0.0, 0.028, abs(n.z - 0.57))) * body; // where a layer dried
+      return c;
+    }
+    void main(){
+      vec2 p = (gl_FragCoord.xy / uRes * 2.0 - 1.0) / uFrame; // the frame ring at radius 1
+      float d = length(p);
+      // Three still noise fields, baked once (see bakeFields); each chapter turns them its own way.
+      vec3 n = texture2D(uField, mat2(uTurn.x, uTurn.y, -uTurn.y, uTurn.x) * p / 2.5 + 0.5).rgb;
+      // The wet front: lobes where the paint blooms, a fine fringe where it creeps.
+      float edge = d + (n.x - 0.5) * 0.46 + (n.y - 0.5) * 0.1;
+      float inside = -0.32 + 1.9 * uGrow - edge;
+      float m = smoothstep(-0.012, 0.03, inside);
+      float drying = 1.0 - smoothstep(0.62, 1.0, uGrow);
+      float wet = (1.0 - smoothstep(0.0, 0.5, inside)) * drying;
+      float rim = smoothstep(0.0, 0.02, inside) * (1.0 - smoothstep(0.02, 0.11, inside)) * drying;
+      // It keeps inside its ring, with a soft, uneven edge.
+      float frame = 1.0 - smoothstep(0.9, 1.03, d + (n.x - 0.5) * 0.09);
+      vec3 col;
+      if (uHasTex > 0.5) {
+        vec2 t = vec2(p.x, -p.y) * 0.5 + 0.5;
+        float b = 0.003 + 0.012 * wet;
+        vec3 c0 = texture2D(uTex, t).rgb;
+        vec3 cb = 0.25 * (texture2D(uTex, t + vec2(b, 0.0)).rgb + texture2D(uTex, t - vec2(b, 0.0)).rgb
+                        + texture2D(uTex, t + vec2(0.0, b)).rgb + texture2D(uTex, t - vec2(0.0, b)).rgb);
+        col = mix(c0, cb, smoothstep(0.0, 0.6, wet));
+        col = clamp(col / max(uPaperIn, vec3(0.4)), 0.0, 1.0) * uPaper;
+      } else {
+        col = wash(d, n);
+      }
+      // Wet paint sits a shade deeper and dries lighter; pigment pools at the travelling edge.
+      float pig = clamp(1.0 - dot(col, vec3(0.333)) / dot(uPaper, vec3(0.333)), 0.0, 1.0);
+      col *= 1.0 - (0.05 + 0.12 * pig) * wet;
+      col *= 1.0 - (0.07 + 0.3 * pig) * rim;
+      float a = m * frame;
+      gl_FragColor = vec4(col * a, a);
+    }`;
+
+  // The three still noise fields the paintings use (the wet front's lobes, its fringe, and the
+  // stand-in wash's layers), baked once into one small texture: noise worked out in the shader
+  // would cost a phone far more, and can crease along its lattice.
+  function bakeFields() {
+    const N = 256, out = new Uint8Array(N * N * 4);
+    const fa = makeFbm(mulberry32(301)), fb = makeFbm(mulberry32(302)), fc = makeFbm(mulberry32(303));
+    for (let y = 0; y < N; y++) {
+      for (let x = 0; x < N; x++) {
+        const u = (x / (N - 1)) * 2.5 - 1.25, v = (y / (N - 1)) * 2.5 - 1.25, i = (y * N + x) * 4;
+        out[i] = 255 * clamp(fa(u * 1.7 + 11.3, v * 1.7 + 7.9) / .9375, 0, 1);
+        out[i + 1] = 255 * clamp(fb(u * 6.5 + 3.7, v * 6.5 + 5.1) / .9375, 0, 1);
+        out[i + 2] = 255 * clamp(fc(u * 3.1 + 9.2, v * 3.1 + 2.6) / .9375, 0, 1);
+        out[i + 3] = 255;
+      }
+    }
+    return out;
+  }
+
+  // The shader compiles off the main thread where the browser allows, and is first asked about
+  // once the opening has played, so the opening never waits on it.
+  function startPaint(canvas) {
+    let gl = null;
+    try {
+      gl = canvas.getContext("webgl", { alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false, powerPreference: "low-power" });
+    } catch (e) { gl = null; }
+    if (!gl) return null;
+    const par = gl.getExtension("KHR_parallel_shader_compile");
+    const prog = gl.createProgram();
+    [[gl.VERTEX_SHADER, VERT], [gl.FRAGMENT_SHADER, PAINT_FRAG]].forEach(([type, src]) => {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src);
+      gl.compileShader(s);
+      gl.attachShader(prog, s);
+    });
+    gl.linkProgram(prog);
+    let lost = false, held = null, u = null, ok = null, w = 1, h = 1;
+    const texture = (unit, filter) => {
+      gl.activeTexture(gl.TEXTURE0 + unit);
+      gl.bindTexture(gl.TEXTURE_2D, gl.createTexture());
+      [[gl.TEXTURE_MIN_FILTER, filter], [gl.TEXTURE_MAG_FILTER, filter], [gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE]]
+        .forEach(([k, v]) => gl.texParameteri(gl.TEXTURE_2D, k, v));
+    };
+    const setup = () => {
+      if (lost || !gl.getProgramParameter(prog, gl.LINK_STATUS)) return false;
+      gl.useProgram(prog);
+      gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      const loc = gl.getAttribLocation(prog, "p");
+      gl.enableVertexAttribArray(loc);
+      gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+      const U = (n) => gl.getUniformLocation(prog, n);
+      u = { res: U("uRes"), grow: U("uGrow"), turn: U("uTurn"), has: U("uHasTex"), paperIn: U("uPaperIn"), tint: U("uTint"), tint2: U("uTint2") };
+      gl.uniform3f(U("uPaper"), 241 / 255, 236 / 255, 227 / 255);
+      gl.uniform1f(U("uFrame"), 1 / PAD);
+      gl.uniform1i(U("uTex"), 0);
+      gl.uniform1i(U("uField"), 1);
+      texture(1, gl.LINEAR);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 256, 256, 0, gl.RGBA, gl.UNSIGNED_BYTE, bakeFields());
+      texture(0, gl.LINEAR); // unit 0 stays active, for the paintings
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([241, 236, 227, 255]));
+      return true;
+    };
+    canvas.addEventListener("webglcontextlost", (e) => { e.preventDefault(); lost = true; });
+    const draw = (grow) => {
+      if (lost || !u) return;
+      gl.viewport(0, 0, w, h);
+      gl.uniform2f(u.res, w, h);
+      gl.uniform1f(u.grow, grow);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+    };
+    return {
+      get lost() { return lost; },
+      // Resolves true once the painter can paint.
+      ready: () => ok || (ok = new Promise((res) => {
+        const poll = () => {
+          if (!lost && par && !gl.getProgramParameter(prog, par.COMPLETION_STATUS_KHR)) { setTimeout(poll, 60); return; }
+          res(setup());
+        };
+        poll();
+      })),
+      // One unseen draw, so the graphics driver builds the shader before a painting is due.
+      warm() { if (u) { w = h = 2; canvas.width = canvas.height = 2; draw(0); } },
+      size(cw, ch) {
+        w = cw; h = ch;
+        if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+      },
+      use(item, tints, seed) {
+        if (!u) return;
+        if (item && item.im !== held) {
+          try { gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, item.im); held = item.im; } catch (e) { item = null; }
+        }
+        gl.uniform1f(u.has, item ? 1 : 0);
+        const pp = item ? item.paper : [1, 1, 1], t1 = hex(tints[0]), t2 = hex(tints[1]);
+        gl.uniform3f(u.paperIn, pp[0], pp[1], pp[2]);
+        gl.uniform3f(u.tint, t1[0] / 255, t1[1] / 255, t1[2] / 255);
+        gl.uniform3f(u.tint2, t2[0] / 255, t2[1] / 255, t2[2] / 255);
+        gl.uniform2f(u.turn, Math.cos(seed * 2.4), Math.sin(seed * 2.4));
+      },
+      draw,
+    };
+  }
+  let painter = null;
+
+  // The painting's own paper, read from its corners (white if they are not paper).
+  function paperOf(im) {
+    try {
+      const c = document.createElement("canvas");
+      c.width = c.height = 24;
+      const x = c.getContext("2d", { willReadFrequently: true });
+      x.drawImage(im, 0, 0, 24, 24);
+      const d = x.getImageData(0, 0, 24, 24).data;
+      let r = 0, g = 0, b = 0;
+      const px = [[0, 0], [1, 0], [0, 1], [23, 0], [22, 0], [23, 1], [0, 23], [1, 23], [0, 22], [23, 23], [22, 23], [23, 22]];
+      for (const [x0, y0] of px) { const i = (y0 * 24 + x0) * 4; r += d[i]; g += d[i + 1]; b += d[i + 2]; }
+      r /= px.length * 255; g /= px.length * 255; b /= px.length * 255;
+      return Math.min(r, g, b) > .72 ? [r, g, b] : [1, 1, 1];
+    } catch (e) { return [1, 1, 1]; }
+  }
+  const jImgs = new Map();
+  // Resolves to { im, paper }, or null while the painting is not in journey/ yet.
+  function loadPainting(k) {
+    if (k < 1 || k > 9) return Promise.resolve(null);
+    if (!jImgs.has(k)) jImgs.set(k, new Promise((res) => {
+      const next = (exts) => {
+        if (!exts.length) return res(null);
+        const im = new Image();
+        im.decoding = "async";
+        im.onload = () => (im.decode ? im.decode() : Promise.resolve()).catch(() => {}).then(() => res({ im, paper: paperOf(im) }));
+        im.onerror = () => next(exts.slice(1));
+        im.src = `journey/journey-${k}.${exts[0]}`;
+      };
+      next(["webp", "png"]);
+    }));
+    return jImgs.get(k);
+  }
+  // Sizes the painting to chapter k's frame ring, centred on the bindu.
+  function placePaint(k) {
+    const css = Math.ceil(2 * JR[k - 1] * scaleOf(k) * PAD);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2, 2600 / css);
+    for (const el of [jPaintCv, jImg]) {
+      el.style.width = el.style.height = css + "px";
+      el.style.left = f2(J.cx - css / 2) + "px";
+      el.style.top = f2(J.cy - css / 2) + "px";
+    }
+    if (painter) painter.size(Math.round(css * dpr), Math.round(css * dpr));
+  }
+  async function spreadPainting(k, my) {
+    const [item, can] = await Promise.all([loadPainting(k), painter ? painter.ready() : false]);
+    if (my !== J.tok) return;
+    if (painter && !can) painter = null; // the shader would not build: plain circles from here on
+    placePaint(k);
+    J.pf = null; J.paintK = k;
+    const el = paintEl();
+    el.style.transform = "";
+    if (el === jPaintCv) {
+      jImg.hidden = true;
+      painter.use(item, JOURNEY[k - 1].wash, k);
+      if (reduced) {
+        painter.draw(1);
+        await anim(600, E_EASE, (e) => { el.style.opacity = e.toFixed(3); });
+      } else {
+        painter.draw(0);
+        el.style.opacity = "1";
+        await anim(JT.paint, (p) => 1 - Math.pow(1 - p, 1.7), (e) => painter.draw(e));
+      }
+    } else if (item) {
+      // Without WebGL the painting opens as a plain circle.
+      jImg.src = item.im.src;
+      jImg.hidden = false;
+      await anim(reduced ? 600 : JT.paint, E_EASE, (e) => {
+        jImg.style.opacity = e.toFixed(3);
+        if (!reduced) jImg.style.clipPath = `circle(${(e * 72).toFixed(2)}% at 50% 50%)`;
+      });
+    }
+  }
+  function paintAway(dur) {
+    if (!J.paintK) return;
+    J.pf = { k: J.paintK, s0: J.s };
+    J.paintK = 0; J.paintO = 1;
+    anim(dur, E_EASE, (e) => { J.paintO = 1 - e; });
+  }
+
+  /* ---------- Words: verses on the bindu, captions below ---------- */
+  const SOFT_IN = { opacity: 0, filter: "blur(0px)", transform: "translateY(0em)" };
+  const appear = (el, delay = 0, dur = 1000) => tween(el, IN, { duration: reduced ? 600 : dur, delay, easing: SETTLE }, reduced ? SOFT_IN : START);
+  const vanish = (el, delay = 0, dur = 480) => tween(el, reduced ? SOFT_IN : OUT, { duration: reduced ? 400 : dur, delay, easing: "cubic-bezier(.5,0,.75,.25)" });
+  const live = (text) => { jLive.textContent = ""; setTimeout(() => { jLive.textContent = text; }, 80); };
+  // Each chapter is announced whole: its title, its verse's rendition and its caption. The verse
+  // shows first, so it is announced with the title, and the caption follows on its own.
+  const announce = (k, afterVerse) => {
+    const ch = JOURNEY[k - 1];
+    live(afterVerse ? ch.caption : `Chapter ${k} of 9: ${ch.title}. ${ch.caption}${ch.verse ? " " + ch.verse.en.join(" ") : ""}`);
+  };
+  const announceVerse = (k) => {
+    const ch = JOURNEY[k - 1];
+    live(`Chapter ${k} of 9: ${ch.title}. Bhagavad Gita ${ch.verse.ref}: ${ch.verse.en.join(" ")} Press Enter to go on.`);
+  };
+  const bloom = (el, k = 3.4, dur = 1600) => {
+    try { el.animate([{ opacity: .45, transform: "scale(1)" }, { opacity: 0, transform: `scale(${k})` }], { duration: dur, easing: "cubic-bezier(.16,1,.3,1)", pseudoElement: "::after" }); } catch (e) { /* no pseudo-element animation: skip the bloom */ }
+  };
+
+  function showCaption(ch) {
+    jCapTitle.textContent = "";
+    if (ch.num) {
+      const num = document.createElement("span");
+      num.className = "jr-num";
+      num.textContent = ch.num;
+      jCapTitle.append(num);
+    }
+    jCapTitle.append(ch.title);
+    jCapText.textContent = ch.caption;
+    fillNotes(jNotes, ch.notes);
+    jNotes.inert = false;
+    appear(jCapTitle, 0, 1000);
+    appear(jCapText, 280, 1100);
+    if (ch.notes) appear(jNotes, 700, 1100);
+  }
+  const hideCaption = () => {
+    vanish(jCapTitle, 0, 420);
+    vanish(jCapText, 60, 420);
+    jNotes.inert = true; // its links go quiet with it
+    vanish(jNotes, 100, 420);
+  };
+  // A caption's notes: a small title, then the words, where [words](https://…) becomes a link.
+  const ARROW = '<svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.2 7.8 7.8 2.2M3.4 2.2h4.4v4.4"/></svg>';
+  function fillNotes(el, notes) {
+    el.textContent = "";
+    (notes || []).forEach(({ label, text }) => {
+      const p = document.createElement("p"), b = document.createElement("span");
+      p.className = "jr-note";
+      b.className = "jr-note__label";
+      b.textContent = label;
+      p.append(b);
+      const re = /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g;
+      let at = 0, m;
+      while ((m = re.exec(text))) {
+        p.append(text.slice(at, m.index));
+        const a = document.createElement("a");
+        a.className = "jr-link";
+        a.href = m[2];
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.textContent = m[1];
+        a.insertAdjacentHTML("beforeend", ARROW);
+        p.append(a);
+        at = re.lastIndex;
+      }
+      p.append(text.slice(at));
+      el.append(p);
+    });
+  }
+  function showHint() {
+    if (!J.hintDone) jHint.classList.add("is-on");
+  }
+  function hideHint() {
+    J.hintDone = true;
+    jHint.classList.remove("is-on");
+  }
+
+  function fillVerse(v, final) {
+    jVerse.classList.toggle("is-final", !!final);
+    jSa.textContent = "";
+    v.sa.forEach((line) => { const s = document.createElement("span"); s.textContent = line; jSa.append(s); });
+    const lines = document.createElement("p"), ref = document.createElement("p"), cue = document.createElement("p");
+    lines.className = "jr-verse__lines";
+    v.en.forEach((line) => { const s = document.createElement("span"); s.textContent = line; lines.append(s); });
+    ref.className = "jr-verse__ref";
+    ref.textContent = "Bhagavad Gita " + v.ref;
+    cue.className = "jr-cue";
+    cue.innerHTML = "<span>tap to continue</span>";
+    jEn.textContent = "";
+    jEn.append(lines, ref, cue);
+  }
+  // Hangs a verse on the bindu. In chapter k its lines keep inside my ring where they can (the
+  // deep rings are too small to hold them), and narrow to pass by the place I rest; returns false if they still cannot, and I step back
+  // while it shows. The last verse (final) hangs on the two of us, met on the bindu.
+  function placeVerse(k, final) {
+    const bx = J.bindu.x, by = J.bindu.y;
+    jVerse.style.left = jHalo.style.left = f2(bx) + "px";
+    jVerse.style.top = jHalo.style.top = f2(by) + "px";
+    let clear = true;
+    if (final || !k) jVerse.style.removeProperty("--fit");
+    else {
+      const wide = innerWidth * .9, cap = Math.round(Math.max(Math.min(280, wide), Math.min(wide, 2 * JR[k - 1] * scaleOf(k) * .9)));
+      jVerse.style.setProperty("--fit", cap + "px");
+      const [dx, dy] = restAt(k), mx = bx + dx, mz = by + dy, R = 4.5 + 12;
+      const hits = () => [...jVerse.querySelectorAll(".jr-verse__sa span, .jr-verse__lines span, .jr-verse__ref, .jr-cue span")].some((el) => {
+        const rg = document.createRange();
+        rg.selectNodeContents(el);
+        return [...rg.getClientRects()].some((r) => mx + R > r.left && mx - R < r.right && mz + R > r.top && mz - R < r.bottom);
+      });
+      if (hits()) {
+        const w = Math.floor(2 * (Math.abs(dx) - R));
+        if (w >= 220 && w < cap) jVerse.style.setProperty("--fit", w + "px");
+        clear = !hits();
+      }
+    }
+    const cs = getComputedStyle(jVerse), up = parseFloat(cs.getPropertyValue("--gap-up")) || 24, down = parseFloat(cs.getPropertyValue("--gap-down")) || 24;
+    jHalo.style.height = Math.round(2 * Math.max(jSa.offsetHeight + up, jEn.offsetHeight + down) + 110) + "px";
+    return clear;
+  }
+  // A verse stays until the visitor moves on: any tap, scroll, swipe or key, once it has had a
+  // moment to appear. Resolves to the way they moved (1 in, -1 back), or 0 if the walk ended
+  // meanwhile. Until they have sent one verse on, a quiet cue says how.
+  async function playVerse(v, my, delay, final, k) {
+    if (delay) { await sleep(delay); if (my !== J.tok) return 0; }
+    fillVerse(v, final);
+    const clear = placeVerse(k, final);
+    const [lines, ref, cue] = jEn.children;
+    appear(jSa, 0, 1300);
+    appear(lines, 420, 1300);
+    appear(ref, 900, 1000);
+    anim(900, E_EASE, (e) => { J.dim = e; jHalo.style.opacity = (final ? 0 : e).toFixed(3); });
+    if (!clear) anim(600, E_EASE, (e) => { J.me.o = 1 - e; });
+    await sleep(final ? JT.endLock : JT.verseLock);
+    if (my !== J.tok) return 0;
+    const cueAt = setTimeout(() => { if (my === J.tok && !J.taught) cue.classList.add("is-on"); }, final ? 1500 : 3200);
+    const dir = await new Promise((r) => { J.skip = r; });
+    clearTimeout(cueAt);
+    J.skip = null;
+    J.taught = true;
+    if (my !== J.tok) return 0;
+    cue.classList.remove("is-on");
+    [jSa, lines, ref].forEach((el, i) => vanish(el, i * 80, 700));
+    anim(800, E_EASE, (e) => { J.dim = 1 - e; jHalo.style.opacity = (final ? 0 : 1 - e).toFixed(3); });
+    if (!clear) anim(700, E_EASE, (e) => { J.me.o = e; }, 350);
+    await sleep(560);
+    return my === J.tok ? dir : 0;
+  }
+
+  /* ---------- The japa mala: the walk, counted on rudraksha ----------
+     A loop of nine rudraksha seeds, a chandan spacer and the sumeru with its silk tassel, in the
+     corner. Each seed is painted once, a little different from the next: a ball of warm brown
+     with five deep furrows running from hole to hole, its skin knotted with tubercles, lit from
+     the upper left as the tilak's dots are. The count starts at the sumeru, held at the bottom as
+     fingers would hold it; each step in pulls the loop round by one seed, and the tassel swings
+     on its thread with the pull. At the bindu the sumeru comes round to the fingers again: one
+     whole round, as the dot makes one whole turn. Seeds not yet counted are pale, as if new;
+     counted, they take the oiled brown of a mala in use. */
+  function paintSeed(Dcss, dpr, seed, mukhi) {
+    const R = mulberry32(seed), nz = noise2(R);
+    const px = Math.max(10, Math.round(Dcss * dpr)), S = px + 2, c = S / 2, rad = px / 2;
+    // Turned so that two furrows face the eye, give or take.
+    const flat = .9 + R() * .06, ph = Math.PI / 2 - Math.PI / mukhi + (R() - .5) * .5, ox = R() * 40, oy = R() * 40, tone = 1 + (R() - .5) * .16;
+    const deep = [36, 17, 10], body = [88, 44, 25], warm = [128, 70, 39], ridge = [176, 119, 77];
+    const L = [-.45, -.58, .68], Hv = [-.26, -.34, .9]; // the light, and halfway between it and the eye
+    // Tubercles: a rounded dome on each knot of a jittered lattice, creased where two meet.
+    const cellH = (i, j, s) => {
+      let h = Math.imul(i, 374761393) ^ Math.imul(j, 668265263) ^ Math.imul(s, 1442695041);
+      h = Math.imul(h ^ (h >>> 13), 1274126177);
+      return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+    };
+    const knobs = (u, v, s) => {
+      const iu = Math.floor(u), iv = Math.floor(v);
+      let best = 9, next = 9, tall = 1;
+      for (let a = -1; a <= 1; a++) {
+        for (let b = -1; b <= 1; b++) {
+          const d = Math.hypot(u - (iu + a + .15 + .7 * cellH(iu + a, iv + b, s)), v - (iv + b + .15 + .7 * cellH(iu + a, iv + b, s + 7)));
+          if (d < best) { next = best; best = d; tall = .6 + .4 * cellH(iu + a, iv + b, s + 13); } else if (d < next) next = d;
+        }
+      }
+      return tall * Math.sqrt(Math.max(0, 1 - Math.pow(best / .66, 2))) * smooth(0, .16, next - best);
+    };
+    // The skin at a point of the face (x runs along the hole, the cord's way): its height, how
+    // deep in a furrow, and how high on a knot. Each furrow has a raised lip either side.
+    const skin = (x, y) => {
+      const z = Math.sqrt(Math.max(0, 1 - x * x - y * y)), around = Math.atan2(z, y), fromAxis = Math.hypot(y, z);
+      let dm = 9;
+      for (let j = 0; j < mukhi; j++) dm = Math.min(dm, Math.abs((((around - ph - (j * TAU) / mukhi) % TAU) + TAU * 1.5) % TAU - Math.PI));
+      const f = (dm * fromAxis) / .1, furrow = Math.exp(-f * f), lip = Math.exp(-Math.pow((dm * fromAxis - .17) / .06, 2));
+      const knot = .75 * knobs(around * 2.9 + ox, x * 3 + oy, seed) + .25 * knobs(around * 6.4 + oy, x * 6.6 + ox, seed + 3);
+      const grit = nz(around * 14 + ox, x * 15 + oy, 1) - .5;
+      return [.6 * knot + .05 * grit - 1.2 * furrow + .14 * lip, furrow, knot, z];
+    };
+    const cv = document.createElement("canvas");
+    cv.width = cv.height = S;
+    cv.style.width = cv.style.height = (S / dpr).toFixed(2) + "px";
+    const ctx = cv.getContext("2d"), img = ctx.createImageData(S, S), o = img.data, e = .025;
+    for (let py = 0; py < S; py++) {
+      for (let pxl = 0; pxl < S; pxl++) {
+        let r = 0, g = 0, b = 0, n = 0;
+        for (let sy = 0; sy < 3; sy++) {
+          for (let sx = 0; sx < 3; sx++) {
+            const x = (pxl + (sx + .5) / 3 - c) / (rad * flat), y = (py + (sy + .5) / 3 - c) / rad;
+            // A seed is never quite round.
+            const edge = 1 + .05 * (nz(Math.atan2(y, x) * 1.6 + ox, 7.7, 2) - .5);
+            if (x * x + y * y >= .992 * edge * edge) continue;
+            const xs = x / edge, ys = y / edge;
+            const [h, furrow, knot, z] = skin(xs, ys);
+            const hx = (skin(Math.min(xs + e, .995), ys)[0] - h) / e, hy = (skin(xs, Math.min(ys + e, .995))[0] - h) / e;
+            let nx = xs - .11 * hx, ny = ys - .11 * hy, nzz = z;
+            const nl = Math.hypot(nx, ny, nzz) || 1;
+            nx /= nl; ny /= nl; nzz /= nl;
+            const diff = Math.max(0, nx * L[0] + ny * L[1] + nzz * L[2]);
+            const spec = Math.pow(Math.max(0, nx * Hv[0] + ny * Hv[1] + nzz * Hv[2]), 30) * (1 - furrow);
+            const lum = (.18 + .82 * diff) * (.5 + .5 * smooth(-.5, .45, h)); // the creases hold shadow
+            let col = mixc(deep, body, smooth(.08, .5, lum));
+            col = mixc(col, warm, smooth(.45, .9, lum));
+            col = mixc(col, ridge, .45 * knot * smooth(.5, 1, diff) * (1 - furrow));
+            const k = (1 - .55 * furrow) * (.6 + .4 * z) * tone * (Math.abs(ys) < .14 && Math.abs(xs) > .86 ? .45 : 1);
+            r += col[0] * k + 255 * .2 * spec; g += col[1] * k + 230 * .2 * spec; b += col[2] * k + 196 * .2 * spec;
+            n++;
+          }
+        }
+        if (!n) continue;
+        const i = (py * S + pxl) * 4;
+        o[i] = r / n; o[i + 1] = g / n; o[i + 2] = b / n; o[i + 3] = 255 * n / 9;
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+    return cv;
+  }
+
+  const JM = { R: 0, C: 0, c: 0, D: 0, run: [], th: 0, turning: false, wind: 0 };
+  let jSeeds = [], jLoop = null, jCord = null, jTassel = null, jSway = null, jSpacer = null;
+  function buildJapa() {
+    jLoop = jMala.querySelector(".jr-mala__loop");
+    jCord = svgEl("circle", { class: "jr-cord" });
+    jMalaSvg.append(jCord);
+    jTassel = svgEl("g", { class: "jr-tassel" });
+    jSway = svgEl("g", { class: "jr-tassel__sway" });
+    let strands = "";
+    for (let i = 0; i < 11; i++) {
+      const x0 = (i - 5) * .42, x1 = (i - 5) * 1.25, len = 25 + ((i * 7) % 5);
+      strands += `M${f2(x0)} 8C${f2(x0)} 14 ${f2(x1 * .5)} ${f2(len * .6)} ${f2(x1)} ${f2(len)}`;
+    }
+    jSway.append(svgEl("path", { d: "M0 0V5" }), svgEl("rect", { x: -2.4, y: 4.2, width: 4.8, height: 3.6, rx: 1.3 }), svgEl("path", { d: strands }));
+    jTassel.append(jSway);
+    jMala.querySelector(".jr-mala__tassel").append(jTassel);
+    jSpacer = document.createElement("i");
+    jSpacer.className = "jr-spacer";
+    jSpacer.setAttribute("aria-hidden", "true");
+    jLoop.append(jSpacer);
+    const stops = [...JOURNEY.map((ch, i) => `Chapter ${i + 1}, ${ch.title}`), `The centre, ${BINDU.title}`];
+    jSeeds = stops.map((label, i) => {
+      const li = document.createElement("li"), b = document.createElement("button");
+      b.type = "button";
+      b.className = "jr-seed" + (i === 9 ? " jr-seed--sumeru" : "");
+      b.setAttribute("aria-label", label);
+      b.addEventListener("click", () => {
+        still();
+        if (!J.busy && J.state <= 10 && J.state !== i + 1) goTo(i + 1);
+      });
+      b.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") tip(i); });
+      b.addEventListener("pointerleave", () => tip(-1));
+      b.addEventListener("focus", () => tip(i));
+      b.addEventListener("blur", () => tip(-1));
+      li.append(b);
+      jMalaList.append(li);
+      return b;
+    });
+    // The seeds are painted one a frame, while the opening plays.
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let i = 0;
+    const next = () => {
+      if (i >= jSeeds.length) return;
+      jSeeds[i].prepend(paintSeed(J.phone ? 13 : 15, dpr, 5101 + 37 * i, 5));
+      i++;
+      requestAnimationFrame(next);
+    };
+    requestAnimationFrame(next);
+  }
+  // Nine seeds, the spacer and the sumeru, all one size, round a loop: each placed by its
+  // distance along the cord, the loop turning about its centre.
+  function placeJapa() {
+    if (!jSeeds.length) return;
+    const D = J.phone ? 13 : 15, g = 2.6, sizes = [...Array(9).fill(D), 6, D], run = [0];
+    for (let i = 1; i < 11; i++) run.push(run[i - 1] + (sizes[i - 1] + sizes[i]) / 2 + g);
+    const C = run[10] + (sizes[10] + sizes[0]) / 2 + g, R = C / TAU, box = Math.ceil(2 * R + D + 12), c = box / 2;
+    Object.assign(JM, { run, C, R, c, D });
+    jMala.style.width = jMala.style.height = box + "px";
+    jCord.setAttribute("cx", f2(c));
+    jCord.setAttribute("cy", f2(c));
+    jCord.setAttribute("r", f2(R));
+    const put = (el, i, d) => {
+      const a = -run[i] / R;
+      el.style.left = f2(c + R * Math.cos(a)) + "px";
+      el.style.top = f2(c + R * Math.sin(a)) + "px";
+      if (d) { el.style.width = el.style.height = d + 6 + "px"; el.style.setProperty("--rot", (a / DEG + 90).toFixed(1) + "deg"); }
+    };
+    jSeeds.forEach((b, i) => put(b, i < 9 ? i : 10, D));
+    put(jSpacer, 9);
+    turnJapa(J.state, true);
+  }
+  // Where the count stands at stop k, along the cord: the sumeru, just before seed I, at the
+  // start, and the same sumeru a whole round on at the bindu. The counted seed is held at the
+  // bottom of the loop.
+  const japaAt = (k) => (k <= 0 ? JM.run[10] - JM.C : k <= 9 ? JM.run[k - 1] : JM.run[10]);
+  const E_BEAD = bezier(.5, 0, .22, 1.12); // pulled, and settling into the fingers
+  function turnJapa(k, now) {
+    if (!jLoop) return;
+    const to = Math.PI / 2 + japaAt(Math.min(k, 10)) / JM.R;
+    if (now || reduced) { JM.th = to; spinJapa(); return; }
+    const from = JM.th, n = Math.max(1, Math.round(Math.abs(to - from) / (TAU / 10.5)));
+    JM.turning = true;
+    kickSwing();
+    anim(950 + 240 * (n - 1), E_BEAD, (e) => { JM.th = from + (to - from) * e; spinJapa(); }).then(() => { JM.turning = false; });
+  }
+  function spinJapa() {
+    jLoop.style.transform = `rotate(${(JM.th / DEG).toFixed(2)}deg)`;
+    hangTassel();
+  }
+  // The tassel hangs from the sumeru wherever the count has carried it, swinging on its thread.
+  function hangTassel() {
+    if (!jTassel || !JM.R) return;
+    const a = JM.th - JM.run[10] / JM.R;
+    jTassel.setAttribute("transform", `translate(${f2(JM.c + JM.R * Math.cos(a))} ${f2(JM.c + JM.R * Math.sin(a) + JM.D / 2 - 1)})`);
+    jSway.style.transform = `rotate(${(swing.a / DEG + JM.wind).toFixed(2)}deg)`;
+  }
+  // A pendulum hung from the moving sumeru: it lags as the loop is pulled round, then settles.
+  const swing = { a: 0, v: 0, x: null, vx: 0, last: 0, raf: 0 };
+  const swingTick = (now) => {
+    const dt = clamp((now - (swing.last || now - 16)) / 1000, .005, .05);
+    swing.last = now;
+    const x = JM.R * Math.cos(JM.th - JM.run[10] / JM.R);
+    const vx = swing.x === null ? 0 : (x - swing.x) / dt, ax = swing.x === null ? 0 : (vx - swing.vx) / dt;
+    swing.x = x;
+    swing.vx = vx;
+    swing.v += (-34 * Math.sin(swing.a) - 2.2 * swing.v + .05 * ax * Math.cos(swing.a)) * dt;
+    swing.a = clamp(swing.a + swing.v * dt, -.9, .9);
+    hangTassel();
+    if (JM.turning || Math.abs(swing.a) > .003 || Math.abs(swing.v) > .02) swing.raf = requestAnimationFrame(swingTick);
+    else { swing.raf = 0; swing.x = null; swing.vx = 0; swing.last = 0; }
+  };
+  const kickSwing = () => { if (!swing.raf && !reduced) swing.raf = requestAnimationFrame(swingTick); };
+  // Seeds counted so far are oiled brown; the rest wait, pale.
+  function updateJapa(k) {
+    jSeeds.forEach((b, i) => {
+      b.classList.toggle("is-counted", i < k);
+      if (i + 1 === k) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current");
+    });
+    if (jSpacer) jSpacer.classList.toggle("is-counted", k >= 10);
+  }
+  function tip(i) {
+    if (i < 0 || !jSeeds[i]) { jTip.classList.remove("is-on"); return; }
+    const r = jSeeds[i].getBoundingClientRect(), m = jMala.getBoundingClientRect(), ch = i < 9 ? JOURNEY[i] : BINDU;
+    jTip.textContent = "";
+    if (ch.num) { const b = document.createElement("b"); b.textContent = ch.num; jTip.append(b); }
+    jTip.append(ch.title);
+    jTip.style.right = f2(m.right - r.left + 8) + "px";
+    jTip.style.top = f2(r.top + r.height / 2 - m.top - 8) + "px";
+    jTip.classList.add("is-on");
+  }
+
+  /* ---------- The walk ---------- */
+  function snap(b) {
+    J.s = scaleOf(b);
+    J.ring.forEach((st, i) => { st.o = ringTarget(b, i); st.x = 1; st.r = i === 9 && b === 10 ? 22.5 : 0; });
+    J.me.free = false;
+    J.me.r = restR(b);
+    J.me.a = meAngle(b);
+  }
+  // The world zooms about the bindu, and I glide along my spiral to the ring that will frame it:
+  // a ninth of a turn a step, from one ring's line to the next. Rings I pass drift out past the
+  // edges as they fade; going out, they come back in from beyond them. Coming to the centre, the
+  // bindu's lotus closes with a slight turn.
+  function zoomTo(a, b, dur) {
+    const s0 = J.s, s1 = scaleOf(b), inward = b > a;
+    const o0 = J.ring.map((r) => r.o), x0 = J.ring.map((r) => r.x), q0 = J.ring.map((r) => r.r);
+    const r0 = J.me.r, r1 = restR(b), a0 = J.me.a, a1 = meAngle(b);
+    const moving = [];
+    if (inward) for (let n = Math.max(1, a); n < b; n++) moving.push(n);
+    else for (let n = a - 1; n >= Math.max(1, b); n--) moving.push(n);
+    const lag = moving.length > 1 ? .4 / (moving.length - 1) : 0;
+    return anim(dur, E_EASE, (e, p) => {
+      J.s = s0 * Math.pow(s1 / s0, e);
+      J.me.r = r0 && r1 ? r0 * Math.pow(r1 / r0, e) : r0 + (r1 - r0) * e;
+      J.me.a = a0 + (a1 - a0) * e;
+      for (let i = 0; i < 10; i++) {
+        const st = J.ring[i], to = ringTarget(b, i), j = moving.indexOf(i + 1);
+        st.r = q0[i] + ((i === 9 && b === 10 ? 22.5 : 0) - q0[i]) * e;
+        if (j < 0) { st.o = o0[i] + (to - o0[i]) * e; st.x = x0[i] + (1 - x0[i]) * e; continue; }
+        const q = clamp((p - j * lag) / .6, 0, 1);
+        if (inward) { st.x = 1 + .8 * q * q; st.o = o0[i] * (1 - smooth(0, .85, q)); }
+        else { st.x = 1 + .8 * (1 - q) * (1 - q); st.o = to * smooth(.05, 1, q); }
+      }
+    }).then(() => J.ring.forEach((st) => { if (st.o < .003) st.x = 1; }));
+  }
+
+  // One step in or out (or a jump by seed): leave the stop, zoom and glide, the verse (going
+  // in), the painting and the caption; at the centre, the tilak and its words.
+  async function goTo(b) {
+    const a = J.state;
+    if (!J.open || J.leaving || J.busy || b === a || b < 0 || b > 10) return;
+    const my = ++J.tok;
+    J.busy = true;
+    clearTimeout(J.windTimer);
+    hideHint();
+    tip(-1);
+    jBindu.classList.remove("is-whole");
+    const inward = b > a, single = Math.abs(b - a) === 1;
+    const ch = b >= 1 && b <= 9 ? JOURNEY[b - 1] : null;
+    const verse = inward && single && ch && ch.verse ? ch.verse : null;
+    loadPainting(b);
+    loadPainting(b + 1);
+    if (a) hideCaption();
+    J.focusRing = b;
+    MD.flame.classList.remove("is-lit");
+    turnJapa(b); // one seed on (or back) through the fingers
+    updateJapa(b);
+    if (reduced) {
+      paintAway(300);
+      await anim(300, E_EASE, (e) => { J.all = 1 - e; });
+      if (my !== J.tok) return;
+      snap(b);
+      await anim(300, E_EASE, (e) => { J.all = e; });
+      if (my !== J.tok) return;
+      J.state = b;
+      if (verse) {
+        announceVerse(b);
+        const dir = await playVerse(verse, my, 0, false, b);
+        if (!dir || my !== J.tok) return;
+        if (dir < 0) { J.busy = false; goTo(b - 1); return; } // turned back at the verse
+      }
+    } else {
+      paintAway(inward ? 950 : 800);
+      const zoom = zoomTo(a, b, single ? JT.zoom : JT.zoom * 1.35);
+      const versed = verse ? playVerse(verse, my, JT.zoom * .55, false, b) : null;
+      if (verse) announceVerse(b);
+      await zoom;
+      if (my !== J.tok) return;
+      J.state = b;
+      if (versed) {
+        const dir = await versed;
+        if (!dir || my !== J.tok) return;
+        if (dir < 0) { J.busy = false; goTo(b - 1); return; } // turned back at the verse
+      }
+    }
+    if (my !== J.tok) return;
+    if (ch) {
+      const spread = spreadPainting(b, my);
+      await sleep(reduced ? 0 : JT.paint * .5);
+      if (my !== J.tok) return;
+      showCaption(ch);
+      announce(b, !!verse);
+      await spread;
+      if (my !== J.tok) return;
+      MD.flame.classList.toggle("is-lit", b === 4 && !reduced);
+    } else if (b === 10) {
+      // We meet: I come to rest on the bindu, a whole turn after we parted, and all is whole.
+      bloom(jBindu, 2.6, 1800);
+      bloom(jMe, 2.6, 1800);
+      jBindu.classList.add("is-whole");
+      await sleep(reduced ? 0 : 450);
+      if (my !== J.tok) return;
+      showCaption(BINDU);
+      live(`The centre. ${BINDU.title}. ${BINDU.caption}`);
+      await sleep(reduced ? 0 : 900);
+      if (my !== J.tok) return;
+    } else live("The whole mandala, from the outer ring to the bindu.");
+    J.busy = false;
+    armWind();
+  }
+
+  // From the centre: a ring runs out from the bindu through what is left of the mandala, the
+  // bindu (and I on it) settles at the middle of the screen, 18.66 stands alone around it, and
+  // then we rise home.
+  async function ending() {
+    if (!J.open || J.leaving || J.busy || J.state !== 10) return;
+    const my = ++J.tok;
+    J.busy = true;
+    J.flying = true;
+    clearTimeout(J.windTimer);
+    hideHint();
+    tip(-1);
+    J.state = 11;
+    hideCaption();
+    live(`Bhagavad Gita ${BINDU.verse.ref}. ${BINDU.verse.en.join(" ")} Press Enter to go on.`);
+    html.classList.add("journey-end");
+    journeyEl.classList.remove("is-ui");
+    const o0 = J.ring.map((r) => r.o), far = Math.hypot(innerWidth, innerHeight) / 2 / J.s;
+    const out = reduced
+      ? anim(600, E_EASE, (e) => J.ring.forEach((st, i) => { st.o = o0[i] * (1 - e); }))
+      : anim(2400, bezier(.3, .1, .3, 1), (e) => {
+        const R = 3 + e * far;
+        J.rip = R;
+        J.ripO = .7 * (1 - e) * smooth(0, .05, e);
+        J.ring.forEach((st, i) => { const q = smooth(JR[i] - 5, JR[i] + 12, R); st.o = o0[i] * (1 - q); st.x = 1 + .08 * q; });
+      });
+    const bx = J.bindu.x, by = J.bindu.y, tx = innerWidth / 2, ty = innerHeight / 2, [mx, mz] = mePos();
+    J.me.free = true; J.me.x = mx; J.me.y = mz;
+    anim(reduced ? 1 : 1800, E_EASE, (e) => {
+      J.bindu.x = bx + (tx - bx) * e; J.bindu.y = by + (ty - by) * e;
+      J.me.x = mx + (tx - bx) * e; J.me.y = mz + (ty - by) * e;
+    }, reduced ? 0 : 600);
+    await out;
+    if (my !== J.tok) return;
+    J.ripO = 0;
+    await sleep(reduced ? 200 : 500);
+    if (my !== J.tok) return;
+    if (!(await playVerse(BINDU.verse, my, 0, true, 0))) return;
+    await sleep(reduced ? 100 : 350);
+    if (my !== J.tok) return;
+    await homecoming(my, true);
+  }
+
+  // The two dots rise apart into the tilak above the name, the kumkum dot to its place and I to
+  // mine, and the name condenses beneath them. After the ending, the closing line stands where the tagline was.
+  async function homecoming(my, ended) {
+    J.leaving = true;
+    J.flying = true;
+    jBindu.classList.remove("is-whole"); // the warmth fades as the two part
+    if (ended && !J.ended) {
+      J.ended = true;
+      taglineEl.hidden = true;
+      closingEl.hidden = false;
+      nameLetters.push(closingEl);
+    }
+    const kd = tilakDots[1], cd = tilakDots[0];
+    const [kx, ky] = centre(kd), [hx, hy] = centre(cd), dk = kd.getBoundingClientRect().width || 10;
+    html.classList.remove("journey-open", "journey-end");
+    boughLayer.classList.remove("is-hushed");
+    const b0 = { x: J.bindu.x, y: J.bindu.y, k: J.bindu.k }, [mx, mz] = mePos(), mk = J.me.k, mo = J.me.o;
+    J.me.free = true; J.me.x = mx; J.me.y = mz;
+    const rise = anim(reduced ? 500 : 1300, E_EASE, (e) => {
+      J.bindu.x = b0.x + (kx - b0.x) * e; J.bindu.y = b0.y + (ky - b0.y) * e; J.bindu.k = b0.k + (dk / 14 - b0.k) * e;
+      J.me.x = mx + (hx - mx) * e; J.me.y = mz + (hy - mz) * e; J.me.k = mk + (dk / 9 - mk) * e; J.me.o = mo + (1 - mo) * e;
+    });
+    setTimeout(() => {
+      if (my !== J.tok) return;
+      const slot = document.querySelector(".id__slot").getBoundingClientRect();
+      if (smoke) smoke.puff(slot.left + slot.width / 2, slot.top + slot.height / 2, Math.max(slot.width, 220) * .45);
+      nameLetters.forEach((l) => { if (!(ended && l === closingEl)) tween(l, IN, { duration: ms(1100), delay: ms(Math.random() * 420), easing: SETTLE }); });
+    }, reduced ? 0 : 420);
+    await rise;
+    if (my !== J.tok) return;
+    tilakEl2.classList.remove("is-away");
+    if (ended) { bloom(cd, 3, 1400); bloom(kd, 3, 1400); }
+    jBindu.remove();
+    jMe.remove();
+    const wasHere = journeyEl.contains(document.activeElement);
+    journeyEl.classList.remove("is-open", "is-ui");
+    journeyEl.setAttribute("aria-hidden", "true");
+    stageEl.inert = false;
+    socialsEl.inert = false;
+    J.open = false; J.leaving = false; J.busy = false; J.flying = false;
+    keepDirty = true;
+    if (ended) tween(closingEl, IN, { duration: ms(1300), delay: ms(650), easing: SETTLE }, reduced ? SOFT_IN : START);
+    if (wasHere) (ended ? closingLink : journeyArea.querySelector(".area__label")).focus({ preventScroll: true });
+  }
+
+  async function openJourney() {
+    if (J.open || J.leaving) return;
+    J.open = true;
+    const my = ++J.tok;
+    J.busy = true;
+    J.flying = true;
+    token++; // a touch stage() in flight stops here
+    closeAll();
+    let gone = false;
+    if (credsOpen) {
+      gone = true;
+      await closeCreds(false);
+      if (my !== J.tok) return;
+    }
+    html.classList.add("journey-open");
+    areas.forEach((ar) => { ar.classList.remove("is-active"); ar.querySelector(".area__label").setAttribute("aria-expanded", "false"); });
+    // The name (or a section standing in for it) goes up in smoke.
+    const leaving = shown ? [...focus.querySelectorAll(".l, .focus__desc, .focus__arrow")] : gone ? [] : nameLetters;
+    leaving.forEach((el) => tween(el, OUT, { duration: ms(460), delay: ms(Math.random() * 180), easing: "cubic-bezier(.5,0,.75,.25)" }));
+    if (shown) { shown = null; focus.classList.remove("is-live"); setTimeout(() => { if (!shown) focus.textContent = ""; }, 700); }
+    const slot = document.querySelector(".id__slot").getBoundingClientRect();
+    if (smoke && !gone) smoke.puff(slot.left + slot.width / 2, slot.top + slot.height / 2, Math.max(slot.width, 220) * .55);
+    boughLayer.classList.add("is-hushed");
+
+    layoutJ();
+    if (!MD) { MD = buildMandala(); buildJapa(); placeJapa(); }
+    Object.assign(J, { state: 0, s: scaleOf(0), rot: 0, dim: 0, all: 1, focusRing: 0, rip: 0, ripO: 0, paintK: 0, pf: null, skip: null });
+    J.ring.forEach((st) => { st.o = 0; st.x = 1; st.r = 0; });
+    jPaintCv.style.opacity = "0";
+    jImg.hidden = true;
+    jHalo.style.opacity = "0";
+    updateJapa(0);
+    turnJapa(0, true);
+    journeyEl.classList.add("is-open");
+    journeyEl.setAttribute("aria-hidden", "false");
+    stageEl.inert = true;
+    socialsEl.inert = true;
+    journeyEl.focus({ preventScroll: true });
+    if (document.fonts && document.fonts.load) document.fonts.load('400 1em "Gotu"', "अ").catch(() => {});
+    loadPainting(1);
+    live("Journey, in nine chapters, from the outer ring in to the centre. Scroll, swipe or use the arrow keys to go inward; Escape leaves.");
+
+    // The tilak parts: the kumkum dot glides down to become the bindu, and I go to the gate at
+    // the top of the outer ring.
+    const kd = tilakDots[1], cd = tilakDots[0];
+    const [kx, ky] = centre(kd), [hx, hy] = centre(cd), dk = kd.getBoundingClientRect().width || 10;
+    const gx = J.cx, gy = J.cy - JR[0] * J.s;
+    makeDots();
+    J.bindu = { x: kx, y: ky, k: dk / 14, o: 1 };
+    J.me = { free: true, x: hx, y: hy, r: JR[0], a: TOP, k: dk / 9, o: 1 };
+    tilakEl2.classList.add("is-away");
+    renderJ();
+    if (reduced) {
+      J.bindu = { x: J.cx, y: J.cy, k: 1, o: 0 };
+      Object.assign(J.me, { x: gx, y: gy, k: 1, o: 0 });
+      J.ring.forEach((st) => { st.o = .85; });
+      J.all = 0;
+      await anim(600, E_EASE, (e) => { J.all = e; J.bindu.o = e; J.me.o = e; });
+    } else {
+      await sleep(200);
+      if (my !== J.tok) return;
+      const glide = anim(1200, E_EASE, (e) => {
+        J.bindu.x = kx + (J.cx - kx) * e; J.bindu.y = ky + (J.cy - ky) * e; J.bindu.k = dk / 14 + (1 - dk / 14) * e;
+      });
+      anim(1300, E_EASE, (e) => { J.me.x = hx + (gx - hx) * e; J.me.y = hy + (gy - hy) * e; J.me.k = dk / 9 + (1 - dk / 9) * e; });
+      await glide;
+      if (my !== J.tok) return;
+      // The mandala draws itself out from the bindu: its lotus first, ring I last.
+      bloom(jBindu, 3.6, 1800);
+      MD.rings.forEach((ring, i) => { ring.g.setAttribute("mask", `url(#jr-draw-${i + 1})`); traceRing(ring, 0); J.ring[i].o = .85; });
+      setTimeout(() => { if (my === J.tok) journeyEl.classList.add("is-ui"); }, 1500);
+      await Promise.all(MD.rings.map((ring, i) => anim(900 + 500 * JR[i] / JR[0], E_SWIFT, (e) => traceRing(ring, e), (9 - i) * 200)
+        .then(() => ring.g.removeAttribute("mask"))));
+      if (my !== J.tok) return;
+    }
+    J.me.free = false;
+    J.me.r = JR[0];
+    J.me.a = TOP;
+    J.flying = false;
+    journeyEl.classList.add("is-ui");
+    showHint();
+    J.busy = false;
+    armWind();
+    // The painter's context and shader are made now, while the visitor reads the mandala.
+    if (!painter) painter = startPaint(jPaintCv);
+    if (painter) painter.ready().then((can) => { if (can) painter.warm(); else painter = null; });
+  }
+
+  async function closeJourney() {
+    if (!J.open || J.leaving) return;
+    const my = ++J.tok;
+    J.leaving = true;
+    J.busy = true;
+    J.skip = null;
+    clearTimeout(J.windTimer);
+    jTweens.clear();
+    tip(-1);
+    journeyEl.classList.remove("is-ui");
+    jHint.classList.remove("is-on");
+    hideCaption();
+    [jSa, jEn.children[0], jEn.children[1]].forEach((el) => el && vanish(el, 0, 400));
+    if (jEn.children[2]) jEn.children[2].classList.remove("is-on");
+    // The rings and the painting fold back into the bindu.
+    const pe = paintEl(), p0 = J.pf ? J.paintO : parseFloat(pe.style.opacity) || 0, h0 = parseFloat(jHalo.style.opacity) || 0;
+    const o0 = J.ring.map((r) => r.o), x0 = J.ring.map((r) => r.x), d0 = J.dim;
+    J.pf = null;
+    anim(reduced ? 400 : 850, E_EASE, (e) => {
+      J.ring.forEach((st, i) => { st.o = o0[i] * (1 - e); st.x = x0[i] * (1 - .05 * e); });
+      J.dim = d0 * (1 - e);
+      J.ripO = 0;
+      jHalo.style.opacity = (h0 * (1 - e)).toFixed(3);
+      pe.style.opacity = (p0 * (1 - e)).toFixed(3);
+    });
+    await homecoming(my, false);
+  }
+
+  /* ---------- Moving: one step for every scroll, swipe, tap or key ---------- */
+  // The wind turns the page when no one does: after JT.idle, on the next gust, as far as the
+  // centre. The visitor's first scroll, tap, swipe or key stops it for good.
+  function armWind() {
+    clearTimeout(J.windTimer);
+    if (!J.wind || reduced || !J.open || J.busy || J.state >= 10 || clk0 === null) return;
+    const tw = windT(performance.now()), due = tw + JT.idle / 1000;
+    const k = Math.ceil((due * GUST + .6 - Math.PI / 2) / TAU);
+    J.windTimer = setTimeout(() => {
+      if (!J.wind || !J.open || J.busy || J.leaving) return;
+      // The gust that turns the page leans the mandala a little, as it leans the boughs.
+      anim(2400, (p) => p, (e) => { J.rot = .012 * Math.sin(Math.PI * e) * (1 - .4 * e); });
+      goTo(J.state + 1);
+    }, Math.max(0, (gustTop(k) - tw) * 1000));
+  }
+  const still = () => {
+    if (J.wind) { J.wind = false; clearTimeout(J.windTimer); }
+    hideHint();
+  };
+  // dir: 1 in, -1 out. A verse waiting on the visitor takes the input instead, either way.
+  function jInput(dir) {
+    if (!J.open || J.leaving) return;
+    still();
+    if (J.skip) { const send = J.skip; J.skip = null; send(dir); return; }
+    if (J.busy) return;
+    if (dir > 0 && J.state === 10) ending();
+    else goTo(J.state + dir);
+  }
+  let wAcc = 0, wLast = 0, wSpent = false;
+  // One wheel or trackpad gesture is one step: its inertia runs on until a pause.
+  addEventListener("wheel", (e) => {
+    if (!J.open) return;
+    e.preventDefault();
+    if (leave.open) return;
+    const now = performance.now();
+    if (now - wLast > 240) { wSpent = false; wAcc = 0; }
+    wLast = now;
+    if (wSpent || J.leaving) return;
+    wAcc += e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1);
+    if (Math.abs(wAcc) < 24) return;
+    wSpent = true;
+    jInput(wAcc > 0 ? 1 : -1);
+  }, { passive: false });
+  let jp = null;
+  journeyEl.addEventListener("pointerdown", (e) => {
+    if (!J.open || (e.pointerType === "mouse" && e.button !== 0) || e.target.closest("button, a")) return;
+    jp = { x: e.clientX, y: e.clientY, id: e.pointerId };
+  });
+  journeyEl.addEventListener("pointerup", (e) => {
+    if (!jp || e.pointerId !== jp.id) return;
+    const dx = e.clientX - jp.x, dy = e.clientY - jp.y;
+    jp = null;
+    if (Math.abs(dy) > 34 && Math.abs(dy) > 1.2 * Math.abs(dx)) jInput(dy < 0 ? 1 : -1);
+    else if (Math.hypot(dx, dy) < 16) jInput(1);
+  });
+  journeyEl.addEventListener("pointercancel", () => { jp = null; });
+  document.addEventListener("keydown", (e) => {
+    if (!J.open || J.leaving || leave.open || e.altKey || e.ctrlKey || e.metaKey) return;
+    const k = e.key;
+    if (k === "Escape") { e.preventDefault(); closeJourney(); return; }
+    if ((k === " " || k === "Enter") && e.target.closest && e.target.closest("button, a")) return;
+    const dir = k === "ArrowDown" || k === "ArrowRight" || k === "PageDown" || k === " " || k === "Enter" ? 1
+      : k === "ArrowUp" || k === "ArrowLeft" || k === "PageUp" ? -1 : 0;
+    if (!dir) return;
+    e.preventDefault();
+    jInput(dir);
+  });
+  jClose.addEventListener("click", () => closeJourney());
+
+  /* ---------- Leaving: any link to another site asks first, then opens in a new tab ---------- */
+  const leave = document.querySelector(".leave"), leaveGo = leave.querySelector(".leave__go");
+  const leaveHost = leave.querySelector(".leave__host"), leaveName = leave.querySelector(".leave__name");
+  let leaveFrom = null;
+  const closeLeave = () => {
+    if (!leave.open || leave.classList.contains("is-closing")) return;
+    leave.classList.add("is-closing");
+    setTimeout(() => { leave.classList.remove("is-closing"); leave.close(); }, reduced ? 0 : 260);
+  };
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest && e.target.closest("a[href]");
+    if (!a || a === leaveGo || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    let url;
+    try { url = new URL(a.href, location.href); } catch (err) { return; }
+    if (!/^https?:$/.test(url.protocol) || url.origin === location.origin) return;
+    e.preventDefault();
+    e.stopPropagation();
+    leaveFrom = a;
+    leaveHost.textContent = url.hostname.replace(/^www\./, "");
+    const name = (a.getAttribute("aria-label") || a.textContent || "").trim();
+    leaveName.textContent = name ? `“${name}”` : "The page";
+    leaveGo.href = url.href;
+    leave.classList.remove("is-closing");
+    leave.showModal();
+    leaveGo.focus();
+  }, true);
+  leaveGo.addEventListener("click", () => closeLeave()); // it opens its new tab itself
+  leave.querySelector('button[value="stay"]').addEventListener("click", (e) => { e.preventDefault(); closeLeave(); });
+  leave.addEventListener("cancel", (e) => { e.preventDefault(); closeLeave(); });
+  leave.addEventListener("click", (e) => { if (e.target === leave) closeLeave(); }); // a tap outside the card
+  leave.addEventListener("close", () => {
+    if (leaveFrom && leaveFrom.isConnected && !leaveFrom.closest("[inert]")) leaveFrom.focus({ preventScroll: true });
+    leaveFrom = null;
+  });
+
+  // A new size re-lays the walk; the bindu keeps to the mandala's centre.
+  addEventListener("resize", () => {
+    if (!J.open || J.leaving || !MD) return;
+    layoutJ();
+    if (!J.flying) { J.bindu.x = J.cx; J.bindu.y = J.cy; }
+    if (!J.busy && J.state <= 10) {
+      J.s = scaleOf(J.state);
+      J.me.r = restR(J.state);
+      if (J.paintK) { placePaint(J.paintK); if (painter && !painter.lost) painter.draw(1); }
+    }
+    placeVerse(J.state <= 9 ? J.state : 0, jVerse.classList.contains("is-final"));
+    renderJ();
+  });
+
   areas.forEach((area) => {
     area.querySelector(".area__label").addEventListener("click", (e) => {
+      if (area === journeyArea) { openJourney(); return; }
       if (area === credsArea) { if (credsOpen) closeCreds(); else openCreds(e.detail === 0); return; }
       if (credsOpen) closeCreds(!touchMQ.matches); // on touch the section takes the stage straight over
       if (touchMQ.matches) { stage(shown === area ? null : area); return; }
@@ -1729,13 +3920,14 @@
     area.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") closeAll(area); });
   });
   document.addEventListener("click", (e) => {
+    if (J.open || J.leaving || leave.open) return; // the Journey takes its own clicks, and the leaving card its own
     if (e.target.closest(".area") || e.target.closest(".focus__title") || e.target.closest(".sound") || e.target.closest(".cred")) return;
     closeAll();
     if (credsOpen) closeCreds();
     if (shown) stage(null);
   });
   document.addEventListener("keydown", (e) => {
-    if (e.key !== "Escape") return;
+    if (e.key !== "Escape" || J.open || J.leaving || leave.open) return;
     closeAll();
     if (credsOpen) closeCreds();
     if (shown) stage(null);
@@ -1758,6 +3950,12 @@
     if (credsOpen) {
       const w = breeze(t);
       tasselArt.style.transform = `rotate(${(-(1.2 + 4 * w) * Math.sin(t * 1.3) - 3 * w).toFixed(2)}deg)`;
+    }
+    // So does the tassel of the Journey’s mala.
+    if (J.open && jSway) {
+      const w = breeze(t);
+      JM.wind = -(1.2 + 3.8 * w) * Math.sin(t * 1.25 + .8) - 3.5 * w;
+      hangTassel();
     }
   }
 
@@ -2065,6 +4263,7 @@
     };
     const box = (el, pad, floor) => { const r = el.getBoundingClientRect(); add(r.left, r.top, r.right, r.bottom, pad, floor); return r; };
     box(nameVis, 14, .3);
+    box(taglineEl.hidden ? closingEl : taglineEl, 10, .3);
     const list = box(listEl, 10, .3);
     let l = Infinity, t = Infinity, r = -Infinity, b = -Infinity;
     for (const s of socialEls) {
@@ -2361,8 +4560,16 @@
     else { context().resume().catch(() => {}); play(true); }
     try { localStorage.setItem("aok-music", muted ? "off" : "on"); } catch (e) { /* storage blocked */ }
   });
+  // The gate's touch starts the music, whatever was chosen on an earlier visit: that is what it is for.
+  function startMusic() {
+    if (!AudioCtx) return;
+    muted = false;
+    context().resume().catch(() => {});
+    play(true);
+  }
   // Every early gesture re-asks the browser; the first one it accepts releases the sound.
   const release = (e) => {
+    if (html.classList.contains("gate")) return; // the gate's own touch starts it
     if (muted || !actx || actx.state === "running") return;
     if (e.type === "keydown" && e.key === "Escape") return;
     if (e.target.closest && e.target.closest('.sound, a[target="_blank"]:not([href="#"])')) return;
@@ -2374,10 +4581,18 @@
     if (!actx || !playing) return;
     if (document.hidden) actx.suspend(); else actx.resume();
   });
-  if (AudioCtx && !muted && FREEZE === null) play(false);
+  if (AudioCtx && FREEZE === null) {
+    // Behind the gate the track only loads, so it is ready the moment the mist is touched.
+    if (html.classList.contains("gate")) loadTrack().catch(() => { loading = null; });
+    else if (!muted) play(false);
+  }
 
-  // Placeholder links (href="#") stay put until real URLs are filled in.
-  document.querySelectorAll('a[href="#"]').forEach((a) => a.addEventListener("click", (e) => e.preventDefault()));
+  // Placeholder links (href="#") stay put until real URLs are filled in. Checked at the click, so a
+  // link given its address later (like the leaving card's) goes where it should.
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest && e.target.closest("a[href]");
+    if (a && a.getAttribute("href") === "#") e.preventDefault();
+  });
 })();
 </script>
 </body>
