@@ -779,7 +779,7 @@
     line-height: 1.5; color: var(--ink-2); text-wrap: balance; opacity: 0;
   }
   /* At the foot of the page, small and centred: who is in the photo, where to read on, whom to thank.
-     A small title, then soft italic, just above the lotus (placeNotes). */
+     A small title, then soft italic. On a phone they rest just above the mala (placeNotes). */
   .jr-notes { position: absolute; left: 0; bottom: 0; margin: 0; text-align: center; opacity: 0; pointer-events: none; }
   .jr-note {
     margin: 0; font-family: var(--serif); font-style: italic; font-size: max(11px, calc(var(--desc) * .72));
@@ -799,21 +799,31 @@
   @media (hover: hover) and (pointer: fine) {
     .jr-link:hover { color: var(--ink); text-decoration-color: var(--chandan-ink); }
   }
-  /* The way on, always in one place: centred at the foot, below everything the stop shows, the
-     lotus just above it. A golden thread hangs there, two strands twisted, from a small knot to a
-     frayed end; it turns and sways in the breeze, and a bead runs down it (drawGuide). */
+  /* The way on, always in one place: centred at the foot, just below the lotus (see placeNotes).
+     The left pad balances the trailing tracking, so the words sit true under the flower. */
   .jr-guide {
-    position: absolute; left: 50%; bottom: 0; margin: 0; height: 42px; display: flex; align-items: center; gap: 8px;
-    transform: translateX(-50%); opacity: 0; pointer-events: none; transition: opacity .6s var(--ease);
+    position: absolute; left: 50%; bottom: 0; margin: 0; padding-left: .28em; transform: translateX(-50%);
+    font-family: var(--sans); font-size: 9.5px; line-height: 14px; letter-spacing: .28em; text-transform: uppercase;
+    color: var(--ink-3); white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .5s var(--ease);
   }
-  .jr-guide.is-on { opacity: 1; transition: opacity 1.4s var(--ease) .1s; }
-  .jr-guide svg { width: 18px; height: 42px; overflow: visible; }
-  .jr-guide__strand { fill: none; stroke-linecap: round; }
-  .jr-guide__fray { fill: none; stroke: #C99A4E; stroke-width: .55; stroke-linecap: round; opacity: .85; }
-  .jr-guide span {
-    font-family: var(--sans); font-size: 9.5px; letter-spacing: .28em; text-transform: uppercase;
-    color: var(--ink-3); white-space: nowrap;
+  .jr-guide.is-on { opacity: 1; transition: opacity .6s var(--ease); }
+
+  /* The lotus (see buildLotus): a white lotus on still water, centred just above the guide's
+     words, blooming as the walk goes in. It rises into view as the mandala finishes drawing. */
+  .jr-lotus {
+    position: absolute; left: 0; bottom: 0; width: 72px; height: 43px; pointer-events: none;
+    opacity: 0; visibility: hidden; transform: translateY(8px);
+    transition: opacity .9s var(--ease), transform .9s var(--ease), visibility 0s linear .9s;
   }
+  .journey.is-ui .jr-lotus {
+    opacity: 1; visibility: visible; transform: none;
+    transition: opacity 1.4s var(--ease), transform 1.8s var(--ease-out), visibility 0s;
+  }
+  .jr-lotus svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .jr-petal { stroke: #8B8373; stroke-opacity: .6; stroke-width: .6; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+  .jr-petal__vein, .jr-lotus__ripple { fill: none; stroke: #8B8373; stroke-width: .5; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+  .jr-petal__vein { stroke-opacity: .2; }
+  .jr-lotus__pod { stroke: #8B8373; stroke-opacity: .45; stroke-width: .5; vector-effect: non-scaling-stroke; }
 
   /* Leave by the mark in the corner, set as the music is in the other. */
   .jr-close {
@@ -830,32 +840,48 @@
     .jr-close:hover svg { transform: rotate(90deg); }
   }
 
-  /* The lotus (see buildLotus): nine petals round the kumkum bindu, one for each chapter, centred
-     just above the guide. Its art and its touch targets are placed from script, with a margin
-     round the flower for a finger's reach; it rises into view as the mandala finishes drawing. */
-  .jr-lotus {
-    position: absolute; left: 0; bottom: 0; width: 80px; height: 80px; cursor: pointer;
-    opacity: 0; visibility: hidden; transform: translateY(10px);
-    transition: opacity .9s var(--ease), transform .9s var(--ease), visibility 0s linear .9s;
+  /* The japa mala (see buildJapa): a loop of rudraksha seeds that turns one seed for every
+     step, the sumeru’s tassel hanging from it; seeds pale until counted, then oiled brown. */
+  .jr-mala {
+    position: absolute; right: calc(max(16px, 2vw) + env(safe-area-inset-right)); bottom: calc(max(36px, 5vh) + env(safe-area-inset-bottom));
+    width: 80px; height: 80px; opacity: 0; visibility: hidden; transition: opacity .9s var(--ease), visibility 0s linear .9s;
   }
-  .journey.is-ui .jr-close, .journey.is-ui .jr-lotus { opacity: 1; visibility: visible; transition-delay: 0s; }
-  .journey.is-ui .jr-lotus { transform: none; transition-duration: 1.4s, 1.8s, 0s; transition-timing-function: var(--ease), var(--ease-out); }
-  .jr-lotus__art { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
-  .jr-petal { stroke: var(--chandan-ink); stroke-width: .7; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
-  .jr-petal__rib, .jr-lotus__ripple { fill: none; stroke: var(--chandan-ink); stroke-width: .6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
-  .jr-lotus__pod { fill: #F4ECDC; stroke: var(--chandan-ink); stroke-width: .6; vector-effect: non-scaling-stroke; }
-  .jr-lotus__list { list-style: none; margin: 0; padding: 0; }
-  .jr-stop {
-    position: absolute; left: 0; top: 0; width: 20px; height: 20px; margin: -10px 0 0 -10px; padding: 0;
-    border: 0; border-radius: 50%; background: none; cursor: pointer;
+  .journey.is-ui .jr-close, .journey.is-ui .jr-mala { opacity: 1; visibility: visible; transition-delay: 0s; }
+  .journey.is-ui .jr-mala { transition-duration: .5s; } /* it is carried in from beyond the edge (enterMala) */
+  .jr-mala__hang { position: absolute; inset: 0; }
+  .jr-mala__loop { position: absolute; inset: 0; transform-origin: 50% 50%; }
+  .jr-mala__cord, .jr-mala__tassel { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .jr-cord { fill: none; stroke: #9C6A3C; stroke-width: 1; opacity: .6; }
+  .jr-tassel__sway { transform-box: fill-box; transform-origin: 50% 0; }
+  .jr-tassel path { fill: none; stroke: #C4924A; stroke-width: .7; stroke-linecap: round; }
+  .jr-tassel rect { fill: #B0894F; }
+  .jr-mala__list { list-style: none; margin: 0; padding: 0; }
+  .jr-seed {
+    position: absolute; left: 0; top: 0; width: 21px; height: 21px; margin: 0; padding: 0;
+    border: 0; border-radius: 50%; background: none; cursor: pointer; transform: translate(-50%, -50%);
   }
-  /* A petal's chapter, named beside the flower while a mouse is over the petal. */
+  .jr-seed canvas {
+    position: absolute; left: 50%; top: 50%; display: block; pointer-events: none;
+    transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
+    filter: sepia(.45) saturate(.6) brightness(1.3) contrast(.82); opacity: .82;
+    transition: filter 1.4s var(--ease), opacity 1.4s var(--ease), transform .7s var(--ease-out);
+  }
+  .jr-seed.is-counted canvas { filter: none; opacity: 1; }
+  @media (hover: hover) and (pointer: fine) {
+    .jr-seed:hover canvas { transform: translate(-50%, -50%) rotate(var(--rot, 0deg)) scale(1.12); }
+  }
+  .jr-spacer {
+    position: absolute; left: 0; top: 0; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%;
+    background: radial-gradient(circle at 38% 34%, #E9C77F 0%, #DDAF55 50%, #CC9C45 100%);
+    opacity: .6; transition: opacity 1.2s var(--ease);
+  }
+  .jr-spacer.is-counted { opacity: 1; }
   .jr-tip {
-    position: absolute; left: calc(100% - 2px); top: 50%; margin: 0; white-space: nowrap;
+    position: absolute; top: 0; right: 0; margin: 0; white-space: nowrap;
     font-family: var(--serif); font-style: italic; font-size: 15px; line-height: 1; color: var(--ink-2);
-    opacity: 0; transform: translate(-4px, -50%); pointer-events: none; transition: opacity .35s var(--ease), transform .45s var(--ease-out);
+    opacity: 0; transform: translateX(4px); pointer-events: none; transition: opacity .35s var(--ease), transform .45s var(--ease-out);
   }
-  .jr-tip.is-on { opacity: 1; transform: translate(0, -50%); }
+  .jr-tip.is-on { opacity: 1; transform: none; }
   .jr-tip b { margin-right: .7em; font-family: var(--display); font-weight: 400; font-style: normal; letter-spacing: .08em; color: var(--chandan-ink); }
 
   @media (prefers-reduced-motion: reduce) {
@@ -1153,13 +1179,19 @@
       <p class="jr-caption__text"></p>
     </div>
     <div class="jr-notes"></div>
-    <p class="jr-guide" aria-hidden="true"><svg viewBox="0 0 18 42" focusable="false"></svg><span>scroll or tap</span></p>
+    <div class="jr-lotus" aria-hidden="true"><svg viewBox="-40 -34 80 48" focusable="false"></svg></div>
+    <p class="jr-guide" aria-hidden="true">scroll or tap</p>
     <button class="jr-close" type="button" aria-label="Leave the journey" title="Leave">
       <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1 1 11"/></svg>
     </button>
-    <div class="jr-lotus">
-      <svg class="jr-lotus__art" viewBox="-40 -40 80 80" aria-hidden="true" focusable="false"></svg>
-      <ol class="jr-lotus__list" aria-label="Chapters"></ol>
+    <div class="jr-mala">
+      <div class="jr-mala__hang">
+        <svg class="jr-mala__tassel" aria-hidden="true" focusable="false"></svg>
+        <div class="jr-mala__loop">
+          <svg class="jr-mala__cord" aria-hidden="true" focusable="false"></svg>
+          <ol class="jr-mala__list" aria-label="Chapters"></ol>
+        </div>
+      </div>
       <p class="jr-tip" aria-hidden="true"></p>
     </div>
     <p class="sr-only jr-live" aria-live="polite"></p>
@@ -2648,9 +2680,10 @@
   const jCap = journeyEl.querySelector(".jr-caption");
   const jCapTitle = jCap.querySelector(".jr-caption__title"), jCapText = jCap.querySelector(".jr-caption__text");
   const jNotes = journeyEl.querySelector(".jr-notes");
-  const jGuide = journeyEl.querySelector(".jr-guide"), jClose = journeyEl.querySelector(".jr-close");
-  const jLotus = journeyEl.querySelector(".jr-lotus"), jLotusArt = jLotus.querySelector(".jr-lotus__art"), jLotusList = jLotus.querySelector(".jr-lotus__list");
-  const jTip = jLotus.querySelector(".jr-tip"), jLive = journeyEl.querySelector(".jr-live"), jSafe = journeyEl.querySelector(".jr-safe");
+  const jGuide = journeyEl.querySelector(".jr-guide"), jClose = journeyEl.querySelector(".jr-close"), jLotus = journeyEl.querySelector(".jr-lotus");
+  const jMala = journeyEl.querySelector(".jr-mala"), jMalaList = jMala.querySelector(".jr-mala__list"), jMalaSvg = jMala.querySelector(".jr-mala__cord");
+  const jHang = jMala.querySelector(".jr-mala__hang");
+  const jTip = jMala.querySelector(".jr-tip"), jLive = journeyEl.querySelector(".jr-live"), jSafe = journeyEl.querySelector(".jr-safe");
   const journeyArea = document.getElementById("sub-journey").closest(".area");
   const stageEl = document.querySelector(".stage"), socialsEl = document.querySelector(".socials");
   const closingEl = document.querySelector(".closing");
@@ -2683,7 +2716,7 @@
     me: { free: true, x: 0, y: 0, r: JR[0], a: TOP, k: 1, o: 1 },
     bindu: { x: 0, y: 0, k: 1, o: 1 },
     paintK: 0, pf: null, paintO: 1, skip: null, wind: true, windTimer: 0, guideTimer: 0, taught: false,
-    want: 0, showing: false, heard: 0, // a petal touched while a step was under way; a chapter coming in; its verse shown
+    want: 0, showing: false, heard: 0, // a seed touched while a step was under way; a chapter coming in; its verse shown
   };
   // The frame ring shrinks from 47% of the square at chapter I to 25% at IX (phones zoom a fifth
   // less by then); the bindu's lotus takes 26%, room for the tilak inside it.
@@ -2728,7 +2761,7 @@
         const [x, y] = spec.flame.map(f2);
         g.append(svgEl("circle", { class: "jr-flame-glow", cx: x, cy: y, r: 7.5 }), svgEl("circle", { class: "jr-flame", cx: x, cy: y, r: 2.1 }));
       }
-      // The opening traces each ring from its top both ways, like a thread laid round; the three
+      // The opening traces each ring from its top both ways, like the mala's thread; the three
       // arcs of the mask, each a little longer and fainter, soften the tracing edge.
       const rm = (spec.rIn + spec.rOut) / 2;
       const mask = svgEl("mask", { id: "jr-draw-" + (i + 1), maskUnits: "userSpaceOnUse", x: -340, y: -340, width: 680, height: 680 });
@@ -2815,18 +2848,32 @@
     }
     return Math.ceil(h);
   }
-  // The foot of the page, centred, from the bottom up: the guide, the lotus just above its words,
-  // and the notes above the lotus, small. Returns how far up the notes sit and what the tallest
-  // ones need.
+  // The foot of the page. The lotus stands centred with the guide's words just below it: at the
+  // very foot, or on a phone held upright level with the mala in its corner. The notes sit above
+  // them, small and centred, clear of the mala. Returns how far up the notes sit and what the
+  // tallest ones need.
   let jNotesMeasure = null;
   function placeNotes(W, H, sab) {
     const sp = getComputedStyle(jSafe), sal = parseFloat(sp.paddingLeft) || 0, sar = parseFloat(sp.paddingRight) || 0;
-    LT.size = J.phone ? 62 : 58;
-    const gh = jGuide.offsetHeight || 42, gb = sab + (J.phone ? Math.max(12, H * .018) : Math.max(8, H * .012));
-    const lb = gb + gh - 4; // the flower's foot: its lowest petals clear the guide's words
-    const foot = lb + LT.size + (J.phone ? 8 : 10), width = Math.min(W - 32 - sal - sar, 600);
+    const malaW = jMala.offsetWidth || 86, malaH = jMala.offsetHeight || 86, edge = Math.max(16, W * .02);
+    const malaB = sab + Math.max(36, H * .05), gh = jGuide.offsetHeight || 14;
+    // The lotus's box, in px a unit of its art: the flower stands 14 units above the box's foot and
+    // its lowest petals, fully open, reach 10 units below that, clear of the words.
+    const u = J.phone ? 1.1 : 1.05, lw = 80 * u, lh = 48 * u;
+    let width, foot, lb, gb; // lb, gb: how far up the lotus's box and the words sit
+    if (J.phone) {
+      width = W - 32 - sal - sar;
+      lb = malaB + malaH / 2 - lh / 2;
+      gb = Math.max(sab + 8, lb + 4 * u - 3 - gh);
+      foot = Math.max(malaB + malaH, lb + lh) + 8;
+    } else {
+      width = Math.min(W - 2 * (edge + Math.max(sal, sar) + malaW + 24), 600);
+      gb = sab + Math.max(10, H * .016);
+      lb = gb + gh + 3 - 4 * u;
+      foot = lb + lh + 6;
+    }
     Object.assign(jGuide.style, { left: f2(W / 2) + "px", bottom: f2(gb) + "px" });
-    Object.assign(jLotus.style, { left: f2(W / 2 - LT.size / 2 - LT.pad) + "px", bottom: f2(lb - LT.pad) + "px" });
+    Object.assign(jLotus.style, { left: f2(W / 2 - lw / 2) + "px", bottom: f2(lb) + "px", width: f2(lw) + "px", height: f2(lh) + "px" });
     Object.assign(jNotes.style, { left: f2((W - width) / 2) + "px", width: f2(width) + "px", bottom: f2(foot) + "px" });
     if (!jNotesMeasure) {
       jNotesMeasure = jNotes.cloneNode(false);
@@ -2850,7 +2897,7 @@
     J.phone = W < 700 && H > W;
     const capH = captionRoom(), nt = placeNotes(W, H, sab);
     const top = sat + (J.phone ? 52 : Math.max(18, H * .03));
-    // The bottom keeps the room of the notes and, below them, the lotus's and the guide's.
+    // The bottom keeps the room of the notes and, below them, the lotus's and the words' (on a phone, the mala's).
     const bot = J.phone ? Math.max(sab + 130, nt.foot + nt.h + 12) : nt.foot + (nt.h ? nt.h + 14 : 8);
     const cap = Math.max(J.phone ? 150 : 134, capH + 4), gap = J.phone ? 8 : 12, room = H - top - bot;
     J.S = Math.max(150, Math.min(J.phone ? W : W - 96, room - cap - gap));
@@ -2858,7 +2905,7 @@
     J.cx = W / 2; J.cy = y0 + J.S / 2; J.capTop = y0 + J.S + gap;
     jSvg.setAttribute("viewBox", `0 0 ${W} ${H}`);
     jCap.style.top = J.capTop.toFixed(1) + "px";
-    placeLotus();
+    placeJapa();
   }
 
   /* ---------- The paintings: watercolour that spreads from the bindu like wet paint ---------- */
@@ -3171,7 +3218,6 @@
   // Wherever the walk waits on the visitor, the guide says how to go on, in its one place and
   // however often they have come this way: at the start, at every chapter once it has settled,
   // and on every verse once it has had its moment. Moving on puts it away.
-  let guideAt = 0; // when it was last put away (its thread is drawn until it has faded)
   function showGuide(delay) {
     clearTimeout(J.guideTimer);
     const my = J.tok;
@@ -3179,7 +3225,6 @@
   }
   function hideGuide() {
     clearTimeout(J.guideTimer);
-    if (jGuide.classList.contains("is-on")) guideAt = performance.now();
     jGuide.classList.remove("is-on");
   }
 
@@ -3224,9 +3269,9 @@
     return clear;
   }
   // A verse stays until the visitor moves on: any tap, scroll, swipe or key, once it has had a
-  // moment to appear. Resolves to the way they moved (1 in, -1 back), 2 if a petal has asked for
+  // moment to appear. Resolves to the way they moved (1 in, -1 back), 2 if a seed has asked for
   // another chapter, or 0 if the walk ended meanwhile. The guide says how, on every verse; sooner
-  // once they know. A petal touched on the way passes the verse by (1 if it asked for this chapter).
+  // once they know. A seed touched on the way passes the verse by (1 if it asked for this chapter).
   async function playVerse(v, my, delay, final, k) {
     if (delay) { await sleep(delay); if (my !== J.tok) return 0; }
     if (!final && J.want) return J.want === k ? 1 : 2;
@@ -3241,7 +3286,7 @@
     if (!clear) anim(600, E_EASE, (e) => { J.me.o = 1 - e; });
     await sleep(final ? JT.endLock : JT.verseLock);
     if (my !== J.tok) return 0;
-    showGuide(final ? 1500 : J.taught ? 2200 : 3200);
+    showGuide(final ? 600 : J.taught ? 250 : 500);
     const dir = !final && J.want ? (J.want === k ? 1 : 2) : await new Promise((r) => { J.skip = r; });
     J.skip = null;
     J.taught = true;
@@ -3254,288 +3299,424 @@
     return my === J.tok ? dir : 0;
   }
 
-  /* ---------- The lotus: the walk, flowering ----------
-     Nine petals round the kumkum bindu, one for each chapter, set out as I walk the mandala:
-     chapter I at the top, then a ninth of a turn on, clockwise, for each, so the petal I am on
-     points the way my dot rests on its ring. At the start the lotus is a bud. Each chapter reached
-     opens its petal as the dot comes to it, a wash of chandan warming to a kumkum blush at the
-     tip; walking back folds it again as the dot leaves. The chandan dot rests on the tip of the
-     petal I am on, and at the centre comes to rest on the bindu, where the lotus is whole and
-     glows. It floats in the same breeze as the boughs, and each petal that opens sends a ripple
-     out across the paper. One touch on a petal opens its chapter; on the heart, the centre.
-     Units are the art's 80-unit square, centred on the bindu. */
-  const LT = {
-    size: 60, pad: 10, k: 0, hov: -1, raf: 0, last: 0,
-    petals: [], stops: [], float: null, me: null, glow: null, ripples: [], rip: [0, 0, 0], ripN: 0,
-    dot: { a: TOP, r: 24, a0: TOP, r0: 24, a1: TOP, r1: 24, t0: 0, dur: 1 },
-    glowO: 0, glowV: 0, glowAt: 0,
-  };
-  const pt = (p) => f2(p[0]) + " " + f2(p[1]);
-  // A petal pointing at angle c, o of the way from folded (0) to open (1), lifted l by a hover.
-  // It lengthens and widens as it opens; its outline swells in the middle, as the mandala's lotus
-  // petals do (see petalsD), and a faint rib runs up its middle.
-  const petalTip = (o, l) => 17 + 18.5 * o + 2.4 * l;
-  function petalD(c, o, l) {
-    const rb = 6.6, rt = petalTip(o, l), h = (.56 + .3 * o) * Math.PI / 9, bulge = 1.3 - .02 * o;
-    const m = rb + (rt - rb) * .48, k = rt - (rt - rb) * .2;
-    return `M${pt(at(rb, c - h))}C${pt(at(m, c - h * bulge))} ${pt(at(k, c - h * .34))} ${pt(at(rt, c))}`
-      + `C${pt(at(k, c + h * .34))} ${pt(at(m, c + h * bulge))} ${pt(at(rb, c + h))}Z`;
-  }
-  const ribD = (c, o, l) => `M${pt(at(9, c))}L${pt(at(6.6 + (petalTip(o, l) - 6.6) * .68, c))}`;
-  // Where the dot rests at stop k: above the bud at the start, on the tip of the petal I am on,
-  // and on the bindu at the centre, a whole turn on.
-  const dotAt = (k) => [meAngle(k), k <= 0 ? 22.5 : k <= 9 ? 32 : 0];
-
-  function buildLotus() {
-    const defs = svgEl("defs");
-    const radial = (id, stops, attrs) => {
-      const g = svgEl("radialGradient", Object.assign({ id }, attrs));
-      stops.forEach(([o, c, a = 1]) => g.append(svgEl("stop", { offset: o, "stop-color": c, "stop-opacity": a })));
-      return g;
+  /* ---------- The japa mala: the walk, counted on rudraksha ----------
+     A loop of nine rudraksha seeds, a chandan spacer and the sumeru with its silk tassel, in the
+     corner. Each seed is painted once, a little different from the next: a ball of warm brown
+     with five deep furrows running from hole to hole, its skin knotted with tubercles, lit from
+     the upper left as the tilak's dots are. The count starts at the sumeru, held at the bottom as
+     fingers would hold it; each step in pulls the loop round by one seed, and the tassel swings
+     on its thread with the pull. At the bindu the sumeru comes round to the fingers again: one
+     whole round, as the dot makes one whole turn. Seeds not yet counted are pale, as if new;
+     counted, they take the oiled brown of a mala in use. */
+  function paintSeed(Dcss, dpr, seed, mukhi) {
+    const R = mulberry32(seed), nz = noise2(R);
+    const px = Math.max(10, Math.round(Dcss * dpr)), S = px + 2, c = S / 2, rad = px / 2;
+    // Turned so that two furrows face the eye, give or take.
+    const flat = .9 + R() * .06, ph = Math.PI / 2 - Math.PI / mukhi + (R() - .5) * .5, ox = R() * 40, oy = R() * 40, tone = 1 + (R() - .5) * .16;
+    const deep = [36, 17, 10], body = [88, 44, 25], warm = [128, 70, 39], ridge = [176, 119, 77];
+    const L = [-.45, -.58, .68], Hv = [-.26, -.34, .9]; // the light, and halfway between it and the eye
+    // Tubercles: a rounded dome on each knot of a jittered lattice, creased where two meet.
+    const cellH = (i, j, s) => {
+      let h = Math.imul(i, 374761393) ^ Math.imul(j, 668265263) ^ Math.imul(s, 1442695041);
+      h = Math.imul(h ^ (h >>> 13), 1274126177);
+      return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
     };
-    defs.append(
-      radial("jr-lotus-wash", [["0", "#F3E0B0"], [".42", "#F0D8B0"], [".78", "#E8C3B0"], ["1", "#DEA697"]], { gradientUnits: "userSpaceOnUse", cx: 0, cy: 0, r: 37 }),
-      radial("jr-lotus-kumkum", [["0", "#C43A2F"], [".52", "#B32620"], ["1", "#981C17"]], { cx: ".38", cy: ".34", r: ".9" }),
-      radial("jr-lotus-chandan", [["0", "#E9C77F"], [".5", "#DDAF55"], ["1", "#CC9C45"]], { cx: ".38", cy: ".34", r: ".9" }),
-      radial("jr-lotus-glow", [["0", "#DDAF55", .55], [".45", "#DDAF55", .2], ["1", "#DDAF55", 0]]),
-    );
-    LT.ripples = [0, 1, 2].map(() => svgEl("circle", { class: "jr-lotus__ripple", r: 30, opacity: 0 }));
-    LT.float = svgEl("g");
-    LT.glow = svgEl("circle", { r: 18, fill: "url(#jr-lotus-glow)", opacity: 0 });
-    LT.petals = JOURNEY.map((ch, i) => ({
-      c: meAngle(i + 1), path: svgEl("path", { class: "jr-petal", fill: "url(#jr-lotus-wash)" }), rib: svgEl("path", { class: "jr-petal__rib" }),
-      o: 0, v: 0, t: 0, at: 0, cur: 0, cv: 0, ct: 0, l: 0, lv: 0, lt: 0, drawn: "",
-    }));
-    // Ringed in paper, as the mandala's dot is, so it stands clear on a petal's wash.
-    LT.me = svgEl("circle", { r: 2.8, fill: "url(#jr-lotus-chandan)", stroke: "#F7F2E8", "stroke-width": 1.1, "stroke-opacity": .9 });
-    LT.float.append(LT.glow, ...LT.petals.flatMap((p) => [p.path, p.rib]),
-      svgEl("circle", { class: "jr-lotus__pod", r: 5.8 }), svgEl("circle", { r: 4.1, fill: "url(#jr-lotus-kumkum)" }), LT.me);
-    jLotusArt.append(defs, ...LT.ripples, LT.float);
+    const knobs = (u, v, s) => {
+      const iu = Math.floor(u), iv = Math.floor(v);
+      let best = 9, next = 9, tall = 1;
+      for (let a = -1; a <= 1; a++) {
+        for (let b = -1; b <= 1; b++) {
+          const d = Math.hypot(u - (iu + a + .15 + .7 * cellH(iu + a, iv + b, s)), v - (iv + b + .15 + .7 * cellH(iu + a, iv + b, s + 7)));
+          if (d < best) { next = best; best = d; tall = .6 + .4 * cellH(iu + a, iv + b, s + 13); } else if (d < next) next = d;
+        }
+      }
+      return tall * Math.sqrt(Math.max(0, 1 - Math.pow(best / .66, 2))) * smooth(0, .16, next - best);
+    };
+    // The skin at a point of the face (x runs along the hole, the cord's way): its height, how
+    // deep in a furrow, and how high on a knot. Each furrow has a raised lip either side.
+    const skin = (x, y) => {
+      const z = Math.sqrt(Math.max(0, 1 - x * x - y * y)), around = Math.atan2(z, y), fromAxis = Math.hypot(y, z);
+      let dm = 9;
+      for (let j = 0; j < mukhi; j++) dm = Math.min(dm, Math.abs((((around - ph - (j * TAU) / mukhi) % TAU) + TAU * 1.5) % TAU - Math.PI));
+      const f = (dm * fromAxis) / .1, furrow = Math.exp(-f * f), lip = Math.exp(-Math.pow((dm * fromAxis - .17) / .06, 2));
+      const knot = .75 * knobs(around * 2.9 + ox, x * 3 + oy, seed) + .25 * knobs(around * 6.4 + oy, x * 6.6 + ox, seed + 3);
+      const grit = nz(around * 14 + ox, x * 15 + oy, 1) - .5;
+      return [.6 * knot + .05 * grit - 1.2 * furrow + .14 * lip, furrow, knot, z];
+    };
+    const cv = document.createElement("canvas");
+    cv.width = cv.height = S;
+    cv.style.width = cv.style.height = (S / dpr).toFixed(2) + "px";
+    const ctx = cv.getContext("2d"), img = ctx.createImageData(S, S), o = img.data, e = .025;
+    for (let py = 0; py < S; py++) {
+      for (let pxl = 0; pxl < S; pxl++) {
+        let r = 0, g = 0, b = 0, n = 0;
+        for (let sy = 0; sy < 3; sy++) {
+          for (let sx = 0; sx < 3; sx++) {
+            const x = (pxl + (sx + .5) / 3 - c) / (rad * flat), y = (py + (sy + .5) / 3 - c) / rad;
+            // A seed is never quite round.
+            const edge = 1 + .05 * (nz(Math.atan2(y, x) * 1.6 + ox, 7.7, 2) - .5);
+            if (x * x + y * y >= .992 * edge * edge) continue;
+            const xs = x / edge, ys = y / edge;
+            const [h, furrow, knot, z] = skin(xs, ys);
+            const hx = (skin(Math.min(xs + e, .995), ys)[0] - h) / e, hy = (skin(xs, Math.min(ys + e, .995))[0] - h) / e;
+            let nx = xs - .11 * hx, ny = ys - .11 * hy, nzz = z;
+            const nl = Math.hypot(nx, ny, nzz) || 1;
+            nx /= nl; ny /= nl; nzz /= nl;
+            const diff = Math.max(0, nx * L[0] + ny * L[1] + nzz * L[2]);
+            const spec = Math.pow(Math.max(0, nx * Hv[0] + ny * Hv[1] + nzz * Hv[2]), 30) * (1 - furrow);
+            const lum = (.18 + .82 * diff) * (.5 + .5 * smooth(-.5, .45, h)); // the creases hold shadow
+            let col = mixc(deep, body, smooth(.08, .5, lum));
+            col = mixc(col, warm, smooth(.45, .9, lum));
+            col = mixc(col, ridge, .45 * knot * smooth(.5, 1, diff) * (1 - furrow));
+            const k = (1 - .55 * furrow) * (.6 + .4 * z) * tone * (Math.abs(ys) < .14 && Math.abs(xs) > .86 ? .45 : 1);
+            r += col[0] * k + 255 * .2 * spec; g += col[1] * k + 230 * .2 * spec; b += col[2] * k + 196 * .2 * spec;
+            n++;
+          }
+        }
+        if (!n) continue;
+        const i = (py * S + pxl) * 4;
+        o[i] = r / n; o[i + 1] = g / n; o[i + 2] = b / n; o[i + 3] = 255 * n / 9;
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+    return cv;
+  }
+
+  const JM = { R: 0, C: 0, c: 0, D: 0, run: [], th: 0 };
+  let jSeeds = [], jLoop = null, jCord = null, jTassel = null, jSway = null, jSpacer = null;
+  function buildJapa() {
+    jLoop = jMala.querySelector(".jr-mala__loop");
+    jCord = svgEl("circle", { class: "jr-cord" });
+    jMalaSvg.append(jCord);
+    jTassel = svgEl("g", { class: "jr-tassel" });
+    jSway = svgEl("g", { class: "jr-tassel__sway" });
+    let strands = "";
+    for (let i = 0; i < 11; i++) {
+      const x0 = (i - 5) * .42, x1 = (i - 5) * 1.25, len = 25 + ((i * 7) % 5);
+      strands += `M${f2(x0)} 8C${f2(x0)} 14 ${f2(x1 * .5)} ${f2(len * .6)} ${f2(x1)} ${f2(len)}`;
+    }
+    jSway.append(svgEl("path", { d: "M0 0V5" }), svgEl("rect", { x: -2.4, y: 4.2, width: 4.8, height: 3.6, rx: 1.3 }), svgEl("path", { d: strands }));
+    jTassel.append(jSway);
+    jMala.querySelector(".jr-mala__tassel").append(jTassel);
+    jSpacer = document.createElement("i");
+    jSpacer.className = "jr-spacer";
+    jSpacer.setAttribute("aria-hidden", "true");
+    jLoop.append(jSpacer);
     const stops = [...JOURNEY.map((ch, i) => `Chapter ${i + 1}, ${ch.title}`), `The centre, ${BINDU.title}`];
-    LT.stops = stops.map((label, i) => {
+    jSeeds = stops.map((label, i) => {
       const li = document.createElement("li"), b = document.createElement("button");
       b.type = "button";
-      b.className = "jr-stop";
+      b.className = "jr-seed" + (i === 9 ? " jr-seed--sumeru" : "");
       b.setAttribute("aria-label", label);
-      b.addEventListener("click", () => stopTap(i + 1));
-      b.addEventListener("focus", () => { if (b.matches(":focus-visible")) hoverLotus(i); });
-      b.addEventListener("blur", () => hoverLotus(-1));
+      b.addEventListener("click", () => seedTap(i + 1));
+      b.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") tip(i); });
+      b.addEventListener("pointerleave", () => tip(-1));
+      b.addEventListener("focus", () => tip(i));
+      b.addEventListener("blur", () => tip(-1));
       li.append(b);
-      jLotusList.append(li);
+      jMalaList.append(li);
       return b;
     });
-    // A touch anywhere on the flower, or within a finger's reach of it, is for the petal that way
-    // (the heart at its middle), never a step on through the walk. A mouse over a petal lifts it
-    // and names its chapter.
-    jLotus.addEventListener("click", (e) => {
-      if (e.target.closest(".jr-stop")) return;
-      const k = lotusAt(e.clientX, e.clientY);
-      if (k) stopTap(k);
+    // The seeds are painted one a frame, while the opening plays.
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let i = 0;
+    const next = () => {
+      if (i >= jSeeds.length) return;
+      jSeeds[i].prepend(paintSeed(J.phone ? 13 : 15, dpr, 5101 + 37 * i, 5));
+      i++;
+      requestAnimationFrame(next);
+    };
+    requestAnimationFrame(next);
+    // A touch that lands near a seed but not on it (they are small, and the mala sways) is for
+    // the nearest seed, never a step on through the walk.
+    jMala.addEventListener("click", (e) => {
+      if (e.target.closest(".jr-seed")) return;
+      let best = 0, bd = JM.D * .5 + 9; // within a finger's width of a seed; the middle of the loop is no seed's
+      jSeeds.forEach((b, j) => {
+        const r = b.getBoundingClientRect(), d = Math.hypot(e.clientX - r.left - r.width / 2, e.clientY - r.top - r.height / 2);
+        if (d < bd) { bd = d; best = j + 1; }
+      });
+      if (best) seedTap(best);
     });
-    jLotus.addEventListener("pointermove", (e) => { if (e.pointerType === "mouse") hoverLotus(lotusAt(e.clientX, e.clientY) - 1); });
-    jLotus.addEventListener("pointerleave", () => hoverLotus(-1));
-    buildGuide();
   }
-  // The flower and its touch targets at this size (placeNotes sets the size and where it stands).
-  function placeLotus() {
-    const box = LT.size + 2 * LT.pad, c = box / 2, u = LT.size / 80;
-    jLotus.style.width = jLotus.style.height = box + "px";
-    Object.assign(jLotusArt.style, { left: LT.pad + "px", top: LT.pad + "px", width: LT.size + "px", height: LT.size + "px" });
-    LT.stops.forEach((b, i) => {
-      const [x, y] = i < 9 ? at(23 * u, meAngle(i + 1)) : [0, 0];
-      b.style.left = f2(c + x) + "px";
-      b.style.top = f2(c + y) + "px";
-    });
+  // Nine seeds, the spacer and the sumeru, all one size, round a loop: each placed by its
+  // distance along the cord, the loop turning about its centre.
+  function placeJapa() {
+    if (!jSeeds.length) return;
+    const D = J.phone ? 13 : 15, g = 2.6, sizes = [...Array(9).fill(D), 6, D], run = [0];
+    for (let i = 1; i < 11; i++) run.push(run[i - 1] + (sizes[i - 1] + sizes[i]) / 2 + g);
+    const C = run[10] + (sizes[10] + sizes[0]) / 2 + g, R = C / TAU, box = Math.ceil(2 * R + D + 12), c = box / 2;
+    Object.assign(JM, { run, C, R, c, D });
+    jMala.style.width = jMala.style.height = box + "px";
+    jHang.style.transformOrigin = `${f2(c)}px ${f2(c - R)}px`; // its peg, at the top of the loop
+    jCord.setAttribute("cx", f2(c));
+    jCord.setAttribute("cy", f2(c));
+    jCord.setAttribute("r", f2(R));
+    const put = (el, i, d) => {
+      const a = -run[i] / R;
+      el.style.left = f2(c + R * Math.cos(a)) + "px";
+      el.style.top = f2(c + R * Math.sin(a)) + "px";
+      if (d) { el.style.width = el.style.height = d + 6 + "px"; el.style.setProperty("--rot", (a / DEG + 90).toFixed(1) + "deg"); }
+    };
+    jSeeds.forEach((b, i) => put(b, i < 9 ? i : 10, D));
+    put(jSpacer, 9);
+    turnJapa(J.state, true);
   }
-  // Which stop a point on the screen is for: the heart at the middle, else the petal in that
-  // direction; none beyond a finger's reach of the flower.
-  function lotusAt(x, y) {
-    const r = jLotusArt.getBoundingClientRect(), u = r.width / 80;
-    if (!u) return 0;
-    const dx = (x - r.left) / u - 40, dy = (y - r.top) / u - 40, d = Math.hypot(dx, dy);
-    if (d > 52) return 0;
-    if (d < 9) return 10;
-    return 1 + Math.floor((((Math.atan2(dy, dx) - TOP + NINTH / 2) % TAU) + TAU) % TAU / NINTH) % 9;
+  // Where the count stands at stop k, along the cord: the sumeru, just before seed I, at the
+  // start, and the same sumeru a whole round on at the bindu. The counted seed is held at the
+  // bottom of the loop.
+  const japaAt = (k) => (k <= 0 ? JM.run[10] - JM.C : k <= 9 ? JM.run[k - 1] : JM.run[10]);
+  const E_BEAD = bezier(.5, 0, .22, 1.12); // pulled, and settling into the fingers
+  function turnJapa(k, now) {
+    if (!jLoop) return;
+    const to = Math.PI / 2 + japaAt(Math.min(k, 10)) / JM.R;
+    if (now || reduced) { JM.th = to; spinJapa(); return; }
+    const from = JM.th, n = Math.max(1, Math.round(Math.abs(to - from) / (TAU / 10.5)));
+    anim(950 + 240 * (n - 1), E_BEAD, (e) => { JM.th = from + (to - from) * e; spinJapa(); });
   }
-  function hoverLotus(i) {
-    if (i === LT.hov) return;
-    LT.hov = i;
-    LT.petals.forEach((p, j) => { p.lt = j === i ? 1 : 0; });
-    tip(i);
-    if (!LT.raf) { LT.petals.forEach((p) => { p.l = p.lt; p.lv = 0; }); drawLotus(performance.now()); }
+  function spinJapa() {
+    jLoop.style.transform = `rotate(${(JM.th / DEG).toFixed(2)}deg)`;
+    hangTassel();
   }
-  function tip(i) {
-    if (i < 0) { jTip.classList.remove("is-on"); return; }
-    const ch = i < 9 ? JOURNEY[i] : BINDU;
-    jTip.textContent = "";
-    if (ch.num) { const b = document.createElement("b"); b.textContent = ch.num; jTip.append(b); }
-    jTip.append(ch.title);
-    jTip.classList.add("is-on");
+  // The tassel hangs from the sumeru wherever the count has carried it, and hangs true however
+  // the loop leans: it is drawn at its own angle less the loop's.
+  function hangTassel() {
+    if (!jTassel || !JM.R) return;
+    const a = JM.th - JM.run[10] / JM.R;
+    jTassel.setAttribute("transform", `translate(${f2(JM.c + JM.R * Math.cos(a))} ${f2(JM.c + JM.R * Math.sin(a) + JM.D / 2 - 1)})`);
+    jSway.style.transform = `rotate(${((MP.ta + MP.ps) / DEG).toFixed(2)}deg)`;
   }
+
+  /* The mala hangs by the top of its loop from a peg, as a ring hangs from a nail; a ring swinging
+     about a point on its rim keeps the time of a plain pendulum as long as the ring is wide. It is
+     carried in from beyond the right edge, braking as it nears the peg, and let go there: it swings
+     on, forward and back, and settles into the breeze that moves the boughs. Each count, the thumb
+     drawing a seed down, pulls the loop a little the way the seed goes. The tassel hangs from the
+     sumeru on its own short thread and answers every move a beat behind. */
+  const GRAV = 680; // px/s²: gravity at this scene's unhurried pace (the tassel's 20 px thread swings once a second)
+  const MP = { raf: 0, last: 0, t: 9, T: 1.8, dx: 0, dy: 0, ox: 0, oy: 0, ps: 0, pv: 0, ta: 0, tv: 0, w: null, v: [0, 0], th: 0 };
+  // The peg's way in, t s after it sets out: how far it has still to come, how fast, and how its
+  // pace is changing. It crosses the edge at full pace and brakes ever harder (a quarter sine) until still.
+  function pegAt(t) {
+    const u = clamp(t / MP.T, 0, 1), q = u * Math.PI / 2, go = u < 1 ? 1 : 0;
+    const r = 1 - Math.sin(q), v = -go * Math.PI / 2 * Math.cos(q) / MP.T, a = go * Math.PI * Math.PI / 4 * Math.sin(q) / (MP.T * MP.T);
+    return [MP.dx * r, MP.dy * r, MP.dx * v, MP.dy * v, MP.dx * a, MP.dy * a];
+  }
+  // Where the tassel's thread is tied, from the peg's resting place: at the sumeru, carried by the
+  // peg, the loop's lean and the count.
+  function tasselRoot() {
+    const a = JM.th - JM.run[10] / JM.R, qx = JM.R * Math.cos(a), qy = JM.R * (1 + Math.sin(a)) + JM.D / 2 - 1;
+    const c = Math.cos(MP.ps), s = Math.sin(MP.ps); // the loop is turned by -ps about the peg
+    return [MP.ox + qx * c + qy * s, MP.oy - qx * s + qy * c];
+  }
+  function hangMala() {
+    jHang.style.transform = `translate(${f2(MP.ox)}px, ${f2(MP.oy)}px) rotate(${(-MP.ps / DEG).toFixed(3)}deg)`;
+    hangTassel();
+  }
+  function enterMala() {
+    if (reduced || !JM.R) return;
+    const m = jMala.getBoundingClientRect();
+    MP.dx = innerWidth - m.left + 14; // it sets out wholly beyond the right edge,
+    MP.dy = -.3 * MP.dx;              // and a little above its peg
+    const p = pegAt(0);
+    Object.assign(MP, { t: 0, ox: p[0], oy: p[1], ps: 0, pv: 0, ta: 0, tv: 0, w: null, v: [p[2], p[3]], th: JM.th });
+    hangMala();
+    if (!MP.raf) { MP.last = 0; MP.raf = requestAnimationFrame(malaTick); }
+  }
+  // ps: the loop's swing about its peg (its bottom to the right, +); ta: the tassel's, the way CSS
+  // turns (its end to the left, +). Both are driven pendulums, stepped a few ms at a time.
+  function malaTick(now) {
+    MP.raf = 0;
+    if (!J.open) return;
+    const dt = clamp((now - (MP.last || now - 16)) / 1000, .004, .05), n = Math.ceil(dt / .004 - 1e-9), h = dt / n;
+    MP.last = now;
+    // The breeze pushes both downwind, to the right, gusting and fluttering as it does the boughs.
+    const tw = windT(now), w = breeze(tw), fl = Math.sin(tw * 1.25 + .8);
+    const pushLoop = GRAV * DEG * (.9 * w + (.3 + .95 * w) * fl), pushTassel = GRAV * DEG * (3.5 * w + (1.2 + 3.8 * w) * fl);
+    // The thumb draws the seed at the bottom the way the loop turns (a jump of the count is no pull).
+    const dth = JM.th - MP.th, pull = Math.abs(dth) > .25 ? 0 : clamp(-11 * dth / dt, -40, 40);
+    MP.th = JM.th;
+    const L = 2 * JM.R;
+    for (let i = 0; i < n; i++) {
+      MP.t += h;
+      const p = pegAt(MP.t);
+      MP.pv += (-((GRAV - p[5]) * Math.sin(MP.ps) + (p[4] - pushLoop - pull) * Math.cos(MP.ps)) / L - 1.35 * MP.pv) * h;
+      MP.ps = clamp(MP.ps + MP.pv * h, -.6, .6);
+    }
+    const p = pegAt(MP.t);
+    MP.ox = p[0]; MP.oy = p[1];
+    // The tassel feels how its knot is carried: its acceleration, read off the last two frames.
+    const W = tasselRoot();
+    let ax = 0, ay = 0;
+    if (MP.w && Math.hypot(W[0] - MP.w[0], W[1] - MP.w[1]) < 30) {
+      const vx = (W[0] - MP.w[0]) / dt, vy = (W[1] - MP.w[1]) / dt;
+      ax = clamp((vx - MP.v[0]) / dt, -2500, 2500);
+      ay = clamp((vy - MP.v[1]) / dt, -2500, 2500);
+      MP.v = [vx, vy];
+    } else if (MP.w) MP.v = [p[2], p[3]]; // it was moved outright (a new size): start afresh
+    MP.w = W;
+    for (let i = 0; i < n; i++) {
+      MP.tv += ((-(GRAV - ay) * Math.sin(MP.ta) + (ax - pushTassel) * Math.cos(MP.ta)) / 20 - 2.2 * MP.tv) * h;
+      MP.ta = clamp(MP.ta + MP.tv * h, -.9, .9);
+    }
+    hangMala();
+    MP.raf = requestAnimationFrame(malaTick);
+  }
+
+  /* ---------- The lotus: the walk, blooming ----------
+     A white lotus on still water, just above the guide's words, seen from a little above. Its
+     seventeen petals stand in three whorls round a sage seed pod, each a cupped, pointed blade that
+     curls in at the tip, set in three dimensions and drawn from the back forward. At the start it
+     is a closed bud; as the walk goes in it opens slowly, a tenth of the way at each stop, the
+     outer whorl first and the inner last, every petal a little ahead of or behind its neighbours,
+     until at the centre it is in full bloom, its pod open to the sky and a soft light about it.
+     It leans in the boughs' breeze, and each step in sends a ripple across the water. White and
+     sage only: chandan and kumkum belong to the tilak. Units are the art's, the flower's foot at 0, 0. */
+  const LOTUS_UP = 26 * DEG; // how far above it we look
+  const WHORLS = [
+    // n petals, turned by t0°, set at radius r0 and height y0 on the receptacle; length and width;
+    // tilt from upright when closed and when open (°); how far the tip curls in, closed (it relaxes
+    // to .2 open); and the stretch of the bloom (0 to 1) it opens over.
+    { n: 6, t0: 30, r0: 3.4, y0: 0, L: 25, W: 11.5, a0: 20, a1: 72, c0: .34, b0: 0, b1: .5 },
+    { n: 6, t0: 0, r0: 2.5, y0: .9, L: 23, W: 9.5, a0: 10, a1: 58, c0: .3, b0: .15, b1: .75 },
+    { n: 5, t0: 12, r0: 1.5, y0: 1.8, L: 19, W: 7.5, a0: 4, a1: 42, c0: .22, b0: .35, b1: 1 },
+  ];
+  // Base, middle and tip of a petal: its inside is whiter than its back (and shaded on the far
+  // side of the flower), all greening at the foot.
+  const FACE = {
+    in: ["#DCE3CE", "#F7F6EF", "#FFFEFA"], back: ["#D2DAC4", "#EEECE3", "#F8F6EF"], out: ["#C5CEB2", "#E4E0D3", "#F4F1E8"],
+  };
+  const LT = { raf: 0, last: 0, k: 0, b: 0, bv: 0, bt: 0, drawn: -1, petals: [], parts: [], float: null, glow: null, ripples: [], rip: [0, 0, 0], ripN: 0 };
+  const lotusPt = (x, y, z) => [x, -(y * Math.cos(LOTUS_UP) - z * Math.sin(LOTUS_UP))];
+  const ptD = (p) => f2(p[0]) + " " + f2(p[1]);
   const ripple = (t) => { LT.rip[LT.ripN++ % 3] = t; };
 
-  // Brings the lotus to stop k (0 the bud, 1 to 9 the chapters, 10 the centre): over dur ms as the
-  // mandala steps, or at once without one. The dot glides round the rim (and in to the heart at the
-  // centre); each petal opens as the dot reaches it going in, and folds as the dot leaves it going out.
-  function setLotus(k, dur) {
-    const now = performance.now(), go = !!dur && !reduced && !!LT.raf, d = LT.dot;
-    const [a1, r1] = dotAt(k), span = Math.abs(a1 - d.a) || 1;
-    LT.k = k;
-    if (!LT.petals.length) return;
-    Object.assign(d, { a0: d.a, r0: d.r, a1, r1, t0: now, dur: go ? dur : 1 });
-    LT.petals.forEach((p, i) => {
-      const t = i < Math.min(k, 9) ? 1 : 0, f = clamp(Math.abs(p.c - d.a0) / span, 0, 1);
-      if (t !== p.t) {
-        p.t = t;
-        p.at = go ? now + dur * (t ? .2 + .6 * f : .05 + .6 * f) : 0;
-        if (go && t && i === k - 1) ripple(p.at + 120);
+  function buildLotus() {
+    const svg = jLotus.querySelector("svg"), defs = svgEl("defs"), R = mulberry32(21);
+    const glow = svgEl("radialGradient", { id: "jr-lotus-glow" });
+    [["0", .8], [".55", .32], ["1", 0]].forEach(([o, a]) => glow.append(svgEl("stop", { offset: o, "stop-color": "#FFFDF7", "stop-opacity": a })));
+    defs.append(glow);
+    LT.ripples = [0, 1, 2].map(() => svgEl("ellipse", { class: "jr-lotus__ripple", rx: 14, ry: 5, opacity: 0 }));
+    LT.float = svgEl("g");
+    LT.glow = svgEl("ellipse", { cx: 0, cy: -9, rx: 36, ry: 26, fill: "url(#jr-lotus-glow)", opacity: 0 });
+    LT.float.append(LT.glow);
+    WHORLS.forEach((w, wi) => {
+      for (let j = 0; j < w.n; j++) {
+        const id = `jr-lotus-${wi}-${j}`, grad = svgEl("linearGradient", { id, gradientUnits: "userSpaceOnUse" });
+        const stops = [0, .45, 1].map((o) => svgEl("stop", { offset: o }));
+        grad.append(...stops);
+        defs.append(grad);
+        const g = svgEl("g"), path = svgEl("path", { class: "jr-petal", fill: `url(#${id})` }), vein = svgEl("path", { class: "jr-petal__vein" });
+        g.append(path, vein);
+        LT.petals.push({ w, th: (w.t0 + j * 360 / w.n + (R() - .5) * 9) * DEG, jit: (R() - .5) * 7 * DEG, lag: R() * .06, grad, stops, face: "", path, vein, g, depth: 0 });
       }
-      p.ct = i === k - 1 ? 1 : 0;
     });
-    LT.glowAt = go && k >= 10 ? now + dur * .75 : 0;
-    LT.stops.forEach((b, i) => { if (i + 1 === k) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
-    if (go) { if (k >= 10) ripple(LT.glowAt); return; }
-    d.a = a1; d.r = r1;
-    LT.petals.forEach((p) => { p.o = p.t; p.v = 0; p.cur = p.ct; p.cv = 0; });
-    LT.glowO = k >= 10 ? 1 : 0;
-    LT.glowV = 0;
-    drawLotus(now);
+    // The seed pod: a low drum of sage, its flat top pitted with seeds, hidden in the bud till the end.
+    const pod = svgEl("g"), py = lotusPt(0, 3.4, 0)[1], ry = 3.1 * Math.sin(LOTUS_UP);
+    pod.append(
+      svgEl("path", { class: "jr-lotus__pod", fill: "#BCC5A8", d: `M-3.1 ${f2(py)}L-2.4 ${f2(py + 2.6)}A2.4 ${f2(ry * .8)} 0 0 0 2.4 ${f2(py + 2.6)}L3.1 ${f2(py)}Z` }),
+      svgEl("ellipse", { class: "jr-lotus__pod", fill: "#CCD3BA", cx: 0, cy: f2(py), rx: 3.1, ry: f2(ry) }),
+      ...[[0, 0], [-1.5, -.2], [1.5, -.2], [-.8, .5], [.8, .5]].map(([x, y]) => svgEl("circle", { cx: x, cy: f2(py + y), r: .38, fill: "#8C957A" })),
+    );
+    LT.parts = [...LT.petals, { g: pod, depth: .5 }];
+    svg.append(defs, ...LT.ripples, LT.float);
+    drawLotus(performance.now());
+  }
+  // One petal at tilt a (radians from upright): its outline and vein on the page, the shade along
+  // it (on whichever face we see), and how near it is, for the order of drawing.
+  function shapePetal(p, a) {
+    const w = p.w, ca = Math.cos(a), sa = Math.sin(a), sn = Math.sin(p.th), cs = Math.cos(p.th);
+    const ex = sa * sn, ey = ca, ez = sa * cs, nx = -ca * sn, ny = sa, nz = -ca * cs; // along it; its inner face
+    const bx = w.r0 * sn, bz = w.r0 * cs, open = clamp((a / DEG - w.a0) / (w.a1 - w.a0), 0, 1);
+    // Closed, the tips curl in to meet over the heart, as a bud's do; open, they still lift a little.
+    const curl = w.c0 - (w.c0 - .2) * open, cup = .42 - .14 * open, left = [], right = [], vein = [];
+    for (let s = 0; s <= 12; s++) {
+      // Narrow at its foot, broadest a little past the middle, then drawn to a sharp point.
+      const u = s / 12, half = w.W * .5 * Math.pow(Math.sin(Math.PI * Math.pow(u, 1.25)), .85), bend = curl * u * u, lift = cup * half;
+      const cx = bx + w.L * (u * ex + bend * nx), cy = w.y0 + w.L * (u * ey + bend * ny), cz = bz + w.L * (u * ez + bend * nz);
+      left.push(lotusPt(cx - half * cs + lift * nx, cy + lift * ny, cz + half * sn + lift * nz));
+      right.push(lotusPt(cx + half * cs + lift * nx, cy + lift * ny, cz - half * sn + lift * nz));
+      if (s >= 2 && s <= 10 && s % 2 === 0) vein.push(lotusPt(cx, cy, cz));
+      if (s === 6) p.depth = cy * Math.sin(LOTUS_UP) + cz * Math.cos(LOTUS_UP);
+    }
+    let d = "M" + ptD(left[0]);
+    for (let s = 1; s <= 12; s++) d += "L" + ptD(left[s]);
+    for (let s = 11; s >= 1; s--) d += "L" + ptD(right[s]);
+    p.path.setAttribute("d", d + "Z");
+    p.vein.setAttribute("d", "M" + vein.map(ptD).join("L"));
+    const face = ny * Math.sin(LOTUS_UP) + nz * Math.cos(LOTUS_UP) <= 0 ? "out" : p.depth < -1 ? "back" : "in";
+    if (face !== p.face) { p.face = face; p.stops.forEach((st, i) => st.setAttribute("stop-color", FACE[face][i])); }
+    const foot = lotusPt(bx, w.y0, bz), tip = left[12];
+    p.grad.setAttribute("x1", f2(foot[0]));
+    p.grad.setAttribute("y1", f2(foot[1]));
+    p.grad.setAttribute("x2", f2(tip[0]));
+    p.grad.setAttribute("y2", f2(tip[1]));
   }
   function drawLotus(now, w = 0, fl = 0) {
-    const d = LT.dot, e = E_EASE(clamp((now - d.t0) / d.dur, 0, 1));
-    d.a = d.a0 + (d.a1 - d.a0) * e;
-    d.r = d.r0 + (d.r1 - d.r0) * e;
-    for (const p of LT.petals) {
-      const o = p.o + .24 * p.l * (1 - clamp(p.o, 0, 1)), oc = clamp(o, 0, 1); // a folded petal peeks open under the mouse
-      const key = `${o.toFixed(3)}|${p.l.toFixed(3)}|${p.cur.toFixed(3)}`;
-      if (key === p.drawn) continue;
-      p.drawn = key;
-      p.path.setAttribute("d", petalD(p.c, o, p.l));
-      p.path.setAttribute("fill-opacity", (.2 + (.54 + .3 * p.cur) * oc).toFixed(3));
-      p.path.setAttribute("stroke-opacity", (.5 + .33 * oc + .15 * p.cur).toFixed(3));
-      p.rib.setAttribute("d", ribD(p.c, o, p.l));
-      p.rib.setAttribute("stroke-opacity", (.32 * oc).toFixed(3));
+    if (Math.abs(LT.b - LT.drawn) > 2e-4) {
+      LT.drawn = LT.b;
+      for (const p of LT.petals) shapePetal(p, p.w.a0 * DEG + ((p.w.a1 - p.w.a0) * DEG + p.jit) * smooth(p.w.b0, p.w.b1, LT.b - p.lag));
+      LT.parts.slice().sort((x, y) => x.depth - y.depth).forEach((q) => LT.float.append(q.g));
+      LT.glow.setAttribute("opacity", (.9 * smooth(.8, 1, LT.b)).toFixed(3));
     }
-    const [mx, my] = at(d.r, d.a);
-    LT.me.setAttribute("cx", f2(mx));
-    LT.me.setAttribute("cy", f2(my));
-    LT.glow.setAttribute("opacity", clamp(LT.glowO, 0, 1).toFixed(3));
-    // Ripples run out across the paper, fading as they widen.
+    // Ripples run out across the water, flattened as the eye sees them, fading as they widen.
     LT.ripples.forEach((c, i) => {
-      const q = (now - LT.rip[i]) / 1700;
+      const q = (now - LT.rip[i]) / 2200;
       if (q < 0 || q > 1) { if (c.on) { c.on = false; c.setAttribute("opacity", 0); } return; }
       c.on = true;
-      c.setAttribute("r", f2(27 + 22 * (1 - Math.pow(1 - q, 2.2))));
-      c.setAttribute("opacity", (.38 * Math.pow(1 - q, 1.6)).toFixed(3));
+      const rx = 14 + 24 * (1 - Math.pow(1 - q, 2));
+      c.setAttribute("rx", f2(rx));
+      c.setAttribute("ry", f2(rx * Math.sin(LOTUS_UP)));
+      c.setAttribute("opacity", (.34 * Math.pow(1 - q, 1.5)).toFixed(3));
     });
-    // It floats: leaning a little downwind in the gusts, rising and falling on a slow swell.
     if (reduced) return;
-    const lean = 1.3 * w + .5 * fl * (.35 + w) - .55, bob = .7 * Math.sin(now / 1000 * .85);
-    LT.float.setAttribute("transform", `translate(0 ${bob.toFixed(2)}) rotate(${lean.toFixed(2)})`);
+    // It leans a little downwind in the gusts, from its foot.
+    LT.float.setAttribute("transform", `rotate(${(1.5 * w + .55 * fl * (.35 + w) - .6).toFixed(2)})`);
   }
-  // The lotus rises into view as the mandala finishes drawing (see .jr-lotus), a ripple going out.
+  // Stop k: a closed bud at the start, a tenth more open at each stop in, in full bloom at the
+  // centre. It opens (or closes) slowly, over two seconds and more; at once without motion.
+  function setLotus(k) {
+    const inward = k > LT.k;
+    LT.k = k;
+    LT.bt = clamp(k, 0, 10) / 10;
+    if (!LT.petals.length) return;
+    if (reduced || !LT.raf) { LT.b = LT.bt; LT.bv = 0; drawLotus(performance.now()); return; }
+    if (inward) ripple(performance.now() + 500);
+  }
+  // It rises into view as the mandala finishes drawing (see .jr-lotus), a ripple going out.
   function enterLotus() {
-    if (reduced) return;
-    ripple(performance.now() + 300);
+    if (reduced || !LT.petals.length) return;
+    ripple(performance.now() + 400);
     if (!LT.raf) { LT.last = 0; LT.raf = requestAnimationFrame(lotusTick); }
   }
-  // One frame of the lotus, and of the guide's thread, which hangs in the same breeze. The petals
-  // open and fold on soft springs (a little past open, then settling), stepped a few ms at a time.
-  const GRAV = 680; // px/s²: gravity at this scene's unhurried pace (the guide's thread swings about once a second)
   function lotusTick(now) {
     LT.raf = 0;
     if (!J.open) return;
-    const dt = clamp((now - (LT.last || now - 16)) / 1000, .004, .05), n = Math.ceil(dt / .004 - 1e-9), h = dt / n;
+    const dt = clamp((now - (LT.last || now - 16)) / 1000, .004, .05), n = Math.ceil(dt / .004 - 1e-9), h = dt / n, om = 1.4; // about 3 s to open
     LT.last = now;
-    const gt = LT.k >= 10 && now >= LT.glowAt ? 1 : LT.hov === 9 ? .4 : 0;
-    for (let s = 0; s < n; s++) {
-      for (const p of LT.petals) {
-        if (now >= p.at) { p.v += (44 * (p.t - p.o) - 9 * p.v) * h; p.o += p.v * h; }
-        p.cv += (64 * (p.ct - p.cur) - 16 * p.cv) * h;
-        p.cur += p.cv * h;
-        p.lv += (170 * (p.lt - p.l) - 21 * p.lv) * h;
-        p.l += p.lv * h;
-      }
-      LT.glowV += (36 * (gt - LT.glowO) - 11 * LT.glowV) * h;
-      LT.glowO += LT.glowV * h;
-    }
-    const tw = windT(now), w = breeze(tw), fl = Math.sin(tw * 1.25 + .8);
-    drawLotus(now, w, fl);
-    if (jGuide.classList.contains("is-on") || now - guideAt < 900) drawGuide(dt, n, GRAV * DEG * (3.5 * w + (1.2 + 3.8 * w) * fl));
+    for (let s = 0; s < n; s++) { LT.bv += (om * om * (LT.bt - LT.b) - 2 * om * LT.bv) * h; LT.b += LT.bv * h; }
+    const tw = windT(now);
+    drawLotus(now, breeze(tw), Math.sin(tw * 1.25 + .8));
     LT.raf = requestAnimationFrame(lotusTick);
   }
 
-  /* The guide's golden thread: two strands of gold twisted about each other, tied in a small knot
-     where it hangs and frayed at its end. It hangs in the same breeze the lotus floats in, its
-     twist slowly turning; a bead runs down it, gathering pace, lands on the last twist with a
-     little bounce that sets the thread swinging, and slips off the end. */
-  const GT = { L: 28, x: 9, y: 5, a: 0, v: 0, ph: 0, t: 0, s: null, fray: null, bead: null, sway: null };
-  function buildGuide() {
-    const svg = jGuide.querySelector("svg"), defs = svgEl("defs");
-    const grad = (id, stops) => {
-      const g = svgEl("linearGradient", { id, gradientUnits: "userSpaceOnUse", x1: 0, y1: 0, x2: 0, y2: 40 });
-      stops.forEach(([o, c]) => g.append(svgEl("stop", { offset: o, "stop-color": c })));
-      return g;
-    };
-    const bead = svgEl("radialGradient", { id: "jr-guide-bead", cx: ".36", cy: ".32", r: ".78" });
-    [["0", "#FCEFC8"], [".4", "#E5BD6C"], ["1", "#A5763A"]].forEach(([o, c]) => bead.append(svgEl("stop", { offset: o, "stop-color": c })));
-    defs.append(grad("jr-guide-gold", [["0", "#F0D48E"], [".5", "#D8AB5A"], ["1", "#BE8E47"]]), grad("jr-guide-deep", [["0", "#C99A4E"], ["1", "#8F6331"]]), bead);
-    GT.sway = svgEl("g");
-    GT.s = [svgEl("path", { class: "jr-guide__strand", stroke: "url(#jr-guide-deep)", "stroke-width": 1 }), svgEl("path", { class: "jr-guide__strand", stroke: "url(#jr-guide-gold)", "stroke-width": 1.05 })];
-    GT.fray = svgEl("path", { class: "jr-guide__fray" });
-    GT.bead = svgEl("circle", { r: 2.5, fill: "url(#jr-guide-bead)", opacity: 0 });
-    GT.sway.append(GT.s[0], GT.s[1], GT.fray, svgEl("ellipse", { cx: GT.x, cy: GT.y, rx: 1.7, ry: 1.3, fill: "#B98A45" }), GT.bead);
-    // Above the knot the thread runs up into the page, fading, as if it hung from the words.
-    svg.append(defs, svgEl("path", { d: `M${GT.x} 0V${GT.y}`, class: "jr-guide__strand", stroke: "url(#jr-guide-gold)", "stroke-width": .9, opacity: .55 }), GT.sway);
-    if (reduced) GT.t = 1.1; // held still, the bead part-way down
-    drawGuide(0, 0, 0);
+  // Seeds counted so far are oiled brown; the rest wait, pale.
+  function updateJapa(k) {
+    jSeeds.forEach((b, i) => {
+      b.classList.toggle("is-counted", i < k);
+      if (i + 1 === k) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current");
+    });
+    if (jSpacer) jSpacer.classList.toggle("is-counted", k >= 10);
   }
-  // One frame: dt s in n steps; push is the breeze's pull to the right (px/s², as on the tassel).
-  function drawGuide(dt, n, push) {
-    const L = GT.L, x0 = GT.x, y0 = GT.y, P = 3.2;
-    const u0 = (GT.t % P) / P;
-    for (let i = 0; i < n; i++) {
-      const h = dt / n;
-      GT.v += ((-GRAV * Math.sin(GT.a) - push * Math.cos(GT.a)) / 15 - 2.6 * GT.v) * h; // a short pendulum from the knot
-      GT.a = clamp(GT.a + GT.v * h, -.5, .5);
-    }
-    GT.t += dt;
-    GT.ph += dt * 1.25;
-    const u = (GT.t % P) / P;
-    if (u0 < .58 && u >= .58) GT.v += .55; // the bead lands: the thread swings from it
-    if (u0 < .72 && u >= .72) GT.v -= .35; // and springs back as it slips off
-    // It is soft, not a rod: as it swings, its lower part trails and bends, and a slow ripple runs
-    // down it. Two strands wind round that line, a twist every 4.5 px, snug at the knot and
-    // loosening towards the end.
-    const mid = (s) => { const q = s / L; return x0 - GT.v * 2.2 * q * q + .35 * Math.sin(GT.t * 1.6 - q * 3.2) * q; };
-    let a = "", b = "";
-    for (let i = 0; i <= 28; i++) {
-      const s = i / 28 * L, r = .35 + .3 * Math.min(1, s / 6) + .35 * smooth(.7 * L, L, s), w = r * Math.sin(s * TAU / 4.5 + GT.ph), c = mid(s);
-      a += `${i ? "L" : "M"}${f2(c + w)} ${f2(y0 + s)}`;
-      b += `${i ? "L" : "M"}${f2(c - w)} ${f2(y0 + s)}`;
-    }
-    GT.s[0].setAttribute("d", b);
-    GT.s[1].setAttribute("d", a);
-    // The end opens into a few fibres that lift a little in the breeze.
-    let f = "";
-    const ey = y0 + L, ex = mid(L);
-    for (let j = 0; j < 5; j++) {
-      const sp = (j - 2) * 1.05 - GT.v * .8 + .6 * Math.sin(GT.t * 2.2 + j * 1.9) * (.3 + Math.min(1, Math.abs(push) / 40)), len = 4.2 + (j % 2) * 1.5 + (j === 2 ? .9 : 0);
-      f += `M${f2(ex)} ${f2(ey - .5)}Q${f2(ex + sp * .35)} ${f2(ey + len * .55)} ${f2(ex + sp)} ${f2(ey + len)}`;
-    }
-    GT.fray.setAttribute("d", f);
-    // The bead: comes out under the knot, runs down gathering pace, lands, slips off, and is gone a while.
-    let s, o = 1, rr = 2.6;
-    if (u < .1) { const v = u / .1; s = 2.4; o = v; rr = 1.4 + 1.2 * v; }
-    else if (u < .58) s = 2.4 + (L - 4.6) * Math.pow((u - .1) / .48, 1.8);
-    else if (u < .72) { const v = (u - .58) / .14; s = L - 2.2 - 1.2 * Math.sin(v * Math.PI) * (1 - v); }
-    else if (u < .88) { const v = (u - .72) / .16; s = L - 2.2 + 10 * v * v; o = 1 - v; }
-    else { s = L + 8; o = 0; }
-    GT.bead.setAttribute("cx", f2(mid(Math.min(s, L))));
-    GT.bead.setAttribute("cy", f2(y0 + s));
-    GT.bead.setAttribute("r", rr.toFixed(2));
-    GT.bead.setAttribute("opacity", o.toFixed(2));
-    GT.sway.setAttribute("transform", `rotate(${(GT.a / DEG).toFixed(2)} ${x0} ${y0})`);
+  function tip(i) {
+    if (i < 0 || !jSeeds[i]) { jTip.classList.remove("is-on"); return; }
+    const r = jSeeds[i].getBoundingClientRect(), m = jMala.getBoundingClientRect(), ch = i < 9 ? JOURNEY[i] : BINDU;
+    jTip.textContent = "";
+    if (ch.num) { const b = document.createElement("b"); b.textContent = ch.num; jTip.append(b); }
+    jTip.append(ch.title);
+    jTip.style.right = f2(m.right - r.left + 8) + "px";
+    jTip.style.top = f2(r.top + r.height / 2 - m.top - 8) + "px";
+    jTip.classList.add("is-on");
   }
 
   /* ---------- The walk ---------- */
@@ -3573,8 +3754,8 @@
     }).then(() => J.ring.forEach((st) => { if (st.o < .003) st.x = 1; }));
   }
 
-  // One step in or out (or a jump by petal): leave the stop, zoom and glide, the verse (going
-  // in, one step, unless a petal asked for the chapter itself: direct), the painting and the
+  // One step in or out (or a jump by seed): leave the stop, zoom and glide, the verse (going
+  // in, one step, unless a seed asked for the chapter itself: direct), the painting and the
   // caption; at the centre, the tilak and its words.
   async function goTo(b, direct) {
     const a = J.state;
@@ -3596,7 +3777,9 @@
     if (a) hideCaption();
     J.focusRing = b;
     MD.flame.classList.remove("is-lit");
-    setLotus(b, reduced ? 0 : single ? JT.zoom : JT.zoom * 1.35); // the dot glides to its petal, which opens (or folds behind it)
+    turnJapa(b); // one seed on (or back) through the fingers
+    updateJapa(b);
+    setLotus(b); // and the lotus a tenth more open (or less)
     if (reduced) {
       paintAway(300);
       await anim(300, E_EASE, (e) => { J.all = 1 - e; });
@@ -3626,7 +3809,7 @@
       }
     }
     if (my !== J.tok) return;
-    // A petal touched on the way: its chapter at once, this one passed by.
+    // A seed touched on the way: its chapter at once, this one passed by.
     const want = J.want;
     J.want = 0;
     if (want && want !== b) { J.busy = false; goTo(want, true); return; }
@@ -3655,13 +3838,13 @@
     J.busy = false;
     J.showing = false;
     armWind();
-    showGuide(b ? 900 : 400);
+    showGuide(0);
   }
 
-  // One touch on a petal opens its chapter, its verse passed by (on the heart, the centre). At
-  // rest the walk goes at once; while a chapter is still coming in, it turns from there; on the
-  // way somewhere, it goes on to the petal as soon as the step lands, putting away any verse it meets.
-  function stopTap(k) {
+  // One touch on a seed opens its chapter, its verse passed by. At rest the walk goes at once;
+  // while a chapter is still coming in, it turns from there; on the way somewhere, it goes on to
+  // the seed as soon as the step lands, putting away any verse it meets.
+  function seedTap(k) {
     if (!J.open || J.leaving || J.state > 10) return;
     still();
     if (!J.busy) { if (k !== J.state) goTo(k, true); return; }
@@ -3783,12 +3966,14 @@
 
     journeyEl.classList.add("is-open"); // laid out (all still unseen) before anything is measured
     layoutJ();
-    if (!MD) { MD = buildMandala(); buildLotus(); layoutJ(); } // again, now the lotus has its touch targets
+    if (!MD) { MD = buildMandala(); buildJapa(); buildLotus(); layoutJ(); } // again, now the mala has its size
     Object.assign(J, { state: 0, s: scaleOf(0), rot: 0, dim: 0, all: 1, focusRing: 0, rip: 0, ripO: 0, paintK: 0, pf: null, skip: null, want: 0, showing: false, heard: 0 });
     J.ring.forEach((st) => { st.o = 0; st.x = 1; st.r = 0; });
     jPaintCv.style.opacity = "0";
     jImg.hidden = true;
     jHalo.style.opacity = "0";
+    updateJapa(0);
+    turnJapa(0, true);
     setLotus(0);
     journeyEl.setAttribute("aria-hidden", "false");
     stageEl.inert = true;
@@ -3826,7 +4011,7 @@
       // The mandala draws itself out from the bindu: its lotus first, ring I last.
       bloom(jBindu, 3.6, 1800);
       MD.rings.forEach((ring, i) => { ring.g.setAttribute("mask", `url(#jr-draw-${i + 1})`); traceRing(ring, 0); J.ring[i].o = .85; });
-      setTimeout(() => { if (my === J.tok) { journeyEl.classList.add("is-ui"); enterLotus(); } }, 1500);
+      setTimeout(() => { if (my === J.tok) { journeyEl.classList.add("is-ui"); enterMala(); enterLotus(); } }, 1500);
       await Promise.all(MD.rings.map((ring, i) => anim(900 + 500 * JR[i] / JR[0], E_SWIFT, (e) => traceRing(ring, e), (9 - i) * 200)
         .then(() => ring.g.removeAttribute("mask"))));
       if (my !== J.tok) return;
@@ -3837,7 +4022,7 @@
     J.flying = false;
     journeyEl.classList.add("is-ui");
     J.busy = false;
-    if (J.want) { const w = J.want; J.want = 0; goTo(w, true); } // a petal touched as the mandala drew
+    if (J.want) { const w = J.want; J.want = 0; goTo(w, true); } // a seed touched as the mandala drew
     else { armWind(); showGuide(0); }
     // The painter's context and shader are made now, while the visitor reads the mandala.
     if (!painter) painter = startPaint(jPaintCv);
@@ -3852,7 +4037,7 @@
     J.skip = null;
     clearTimeout(J.windTimer);
     jTweens.clear();
-    hoverLotus(-1);
+    tip(-1);
     journeyEl.classList.remove("is-ui");
     hideGuide();
     J.want = 0;
@@ -3916,7 +4101,7 @@
   }, { passive: false });
   let jp = null;
   journeyEl.addEventListener("pointerdown", (e) => {
-    if (!J.open || (e.pointerType === "mouse" && e.button !== 0) || e.target.closest("button, a, .jr-lotus")) return;
+    if (!J.open || (e.pointerType === "mouse" && e.button !== 0) || e.target.closest("button, a, .jr-mala")) return;
     jp = { x: e.clientX, y: e.clientY, id: e.pointerId };
   });
   journeyEl.addEventListener("pointerup", (e) => {
@@ -4033,7 +4218,7 @@
       const w = breeze(t);
       tasselArt.style.transform = `rotate(${(-(1.2 + 4 * w) * Math.sin(t * 1.3) - 3 * w).toFixed(2)}deg)`;
     }
-    // (The Journey’s lotus floats in the same breeze, in lotusTick.)
+    // (The Journey’s mala and lotus feel the same breeze, in malaTick and lotusTick.)
   }
 
   /* ---------- Leaves and blossoms on the wind ---------- */
