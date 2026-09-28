@@ -2848,29 +2848,32 @@
     }
     return Math.ceil(h);
   }
-  // The foot of the page. The lotus stands centred with the guide's words just below it: at the
-  // very foot, or on a phone held upright level with the mala in its corner. The notes sit above
-  // them, small and centred, clear of the mala. Returns how far up the notes sit and what the
-  // tallest ones need.
+  // The foot of the page. The lotus stands centred, in one place at every stop, with the notes
+  // above it and the guide's words below, as far from the one as from the other: on a phone held
+  // upright level with the mala in its corner, elsewhere just above the words at the very foot.
+  // The notes are small and centred, clear of the mala. Returns how far up the notes sit and what
+  // the tallest ones need.
   let jNotesMeasure = null;
   function placeNotes(W, H, sab) {
     const sp = getComputedStyle(jSafe), sal = parseFloat(sp.paddingLeft) || 0, sar = parseFloat(sp.paddingRight) || 0;
     const malaW = jMala.offsetWidth || 86, malaH = jMala.offsetHeight || 86, edge = Math.max(16, W * .02);
     const malaB = sab + Math.max(36, H * .05), gh = jGuide.offsetHeight || 14;
-    // The lotus's box, in px a unit of its art: the flower stands 14 units above the box's foot and
-    // its lowest petals, fully open, reach 10 units below that, clear of the words.
+    // The lotus's box, in px a unit of its art: the flower's foot stands 14 units above the box's,
+    // its open petals reach 10 units below that and its bud 25 above.
     const u = J.phone ? 1.1 : 1.05, lw = 80 * u, lh = 48 * u;
     let width, foot, lb, gb; // lb, gb: how far up the lotus's box and the words sit
     if (J.phone) {
+      // The lotus keeps its place, level with the mala; the words go as far below the flower as
+      // the notes are above it.
       width = W - 32 - sal - sar;
       lb = malaB + malaH / 2 - lh / 2;
-      gb = Math.max(sab + 8, lb + 4 * u - 3 - gh);
-      foot = Math.max(malaB + malaH, lb + lh) + 8;
+      foot = Math.max(malaB + malaH, lb + 39 * u) + 8;
+      gb = Math.max(sab + 8, lb + 4 * u - (foot - lb - 39 * u) - gh);
     } else {
       width = Math.min(W - 2 * (edge + Math.max(sal, sar) + malaW + 24), 600);
       gb = sab + Math.max(10, H * .016);
-      lb = gb + gh + 3 - 4 * u;
-      foot = lb + lh + 6;
+      lb = gb + gh + 12 - 4 * u;
+      foot = lb + 39 * u + 12;
     }
     Object.assign(jGuide.style, { left: f2(W / 2) + "px", bottom: f2(gb) + "px" });
     Object.assign(jLotus.style, { left: f2(W / 2 - lw / 2) + "px", bottom: f2(lb) + "px", width: f2(lw) + "px", height: f2(lh) + "px" });
