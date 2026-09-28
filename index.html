@@ -799,10 +799,10 @@
   @media (hover: hover) and (pointer: fine) {
     .jr-link:hover { color: var(--ink); text-decoration-color: var(--chandan-ink); }
   }
-  /* The way on, always in one place: centred at the very foot (see placeFoot). The left pad
-     balances the trailing tracking, so the words sit truly centred. */
+  /* The way on, always in one place: centred just beneath the lotus (see layoutJ). The left pad
+     balances the trailing tracking, so the words sit truly centred under the flower. */
   .jr-guide {
-    position: absolute; left: 50%; bottom: 0; margin: 0; padding-left: .28em; transform: translateX(-50%);
+    position: absolute; left: 50%; top: 0; margin: 0; padding-left: .28em; transform: translateX(-50%);
     font-family: var(--sans); font-size: 9.5px; line-height: 14px; letter-spacing: .28em; text-transform: uppercase;
     color: var(--ink-3); white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .5s var(--ease);
   }
@@ -2849,18 +2849,15 @@
     }
     return Math.ceil(h);
   }
-  // The foot of the page: the guide's words centred at the very bottom, and the notes' width (the
-  // page's less its margins on a phone, clear of the mala's corner elsewhere). Returns how much of
-  // the bottom stays clear of the notes (on a phone, the mala's corner too) and what the tallest
-  // notes need at that width.
+  // The notes' width: the page's less its margins on a phone, clear of the mala's corner elsewhere.
+  // Returns how much of the bottom stays clear of them (on a phone, the mala's corner) and what the
+  // tallest notes need at that width.
   let jNotesMeasure = null;
-  function placeFoot(W, H, sab) {
+  function notesRoom(W, H, sab) {
     const sp = getComputedStyle(jSafe), sal = parseFloat(sp.paddingLeft) || 0, sar = parseFloat(sp.paddingRight) || 0;
     const malaW = jMala.offsetWidth || 86, malaH = jMala.offsetHeight || 86, edge = Math.max(16, W * .02);
-    const malaB = sab + Math.max(36, H * .05), gh = jGuide.offsetHeight || 14;
-    const gb = sab + (J.phone ? Math.max(12, H * .018) : Math.max(10, H * .016));
+    const malaB = sab + Math.max(36, H * .05);
     const width = J.phone ? W - 32 - sal - sar : Math.min(W - 2 * (edge + Math.max(sal, sar) + malaW + 24), 600);
-    Object.assign(jGuide.style, { left: f2(W / 2) + "px", bottom: f2(gb) + "px" });
     Object.assign(jNotes.style, { left: f2((W - width) / 2) + "px", width: f2(width) + "px", bottom: "auto" });
     if (!jNotesMeasure) {
       jNotesMeasure = jNotes.cloneNode(false);
@@ -2874,30 +2871,32 @@
       h = Math.max(h, jNotesMeasure.offsetHeight);
     }
     jNotesMeasure.textContent = "";
-    return { keep: J.phone ? Math.max(malaB + malaH, gb + gh) + 10 : gb + gh + 12, h: Math.ceil(h) };
+    return { keep: J.phone ? malaB + malaH + 10 : sab + Math.max(12, H * .02), h: Math.ceil(h) };
   }
   // One column, top to bottom: the mandala and its paintings in a square (the full width on a
-  // phone held upright, the short side elsewhere), the caption, the lotus in a room of its own, and
-  // the notes, above the foot. The caption and the notes each keep the room their tallest needs,
-  // so the lotus stands in the same place at every stop, between the chapter's words and its notes.
+  // phone held upright, the short side elsewhere), the caption, the lotus with the guide's words
+  // just beneath it, and the notes. The caption and the notes each keep the room their tallest
+  // needs, so the lotus and its words stand in the same place at every stop.
   function layoutJ() {
     const W = innerWidth, H = innerHeight, sp = getComputedStyle(jSafe);
     const sat = parseFloat(sp.paddingTop) || 0, sab = parseFloat(sp.paddingBottom) || 0;
     J.phone = W < 700 && H > W;
-    const capH = captionRoom(), ft = placeFoot(W, H, sab);
+    const capH = captionRoom(), nr = notesRoom(W, H, sab);
     const top = sat + (J.phone ? 52 : Math.max(18, H * .03));
-    // The lotus's room: the flower (its bud reaching 25 units above its foot, its open petals 10
-    // below) with a margin over and under it. Its box is the art's 80 x 48 units, the foot 14 up.
-    const u = J.phone ? 1.1 : 1.05, lm = J.phone ? 10 : 12, lz = 35 * u + 2 * lm;
-    const cap = Math.max(90, capH + 6), gap = J.phone ? 8 : 12, room = H - top - ft.keep;
-    J.S = Math.max(150, Math.min(J.phone ? W : W - 96, room - gap - cap - lz - ft.h));
-    const y0 = top + Math.max(0, (room - (J.S + gap + cap + lz + ft.h)) / 2);
+    // The lotus (its bud reaching 25 units above its foot, its open petals 10 below; its box is the
+    // art's 80 x 48 units, the foot 14 up), the words just under its lowest petals, then the notes.
+    const u = J.phone ? 1.1 : 1.05, lm = J.phone ? 10 : 12, gh = jGuide.offsetHeight || 14, under = J.phone ? 12 : 14;
+    const lz = lm + 35 * u + 6 + gh + under; // from the caption's room to the notes'
+    const cap = Math.max(90, capH + 6), gap = J.phone ? 8 : 12, room = H - top - nr.keep;
+    J.S = Math.max(150, Math.min(J.phone ? W : W - 96, room - gap - cap - lz - nr.h));
+    const y0 = top + Math.max(0, (room - (J.S + gap + cap + lz + nr.h)) / 2);
     J.cx = W / 2; J.cy = y0 + J.S / 2; J.capTop = y0 + J.S + gap;
     jSvg.setAttribute("viewBox", `0 0 ${W} ${H}`);
     jCap.style.top = J.capTop.toFixed(1) + "px";
-    const lzTop = J.capTop + cap;
-    Object.assign(jLotus.style, { left: f2(W / 2 - 40 * u) + "px", top: f2(lzTop + lm - 9 * u) + "px", width: f2(80 * u) + "px", height: f2(48 * u) + "px" });
-    jNotes.style.top = f2(lzTop + lz) + "px";
+    const bud = J.capTop + cap + lm; // the highest the flower reaches
+    Object.assign(jLotus.style, { left: f2(W / 2 - 40 * u) + "px", top: f2(bud - 9 * u) + "px", width: f2(80 * u) + "px", height: f2(48 * u) + "px" });
+    Object.assign(jGuide.style, { left: f2(W / 2) + "px", top: f2(bud + 35 * u + 6) + "px", bottom: "auto" });
+    jNotes.style.top = f2(J.capTop + cap + lz) + "px";
     placeJapa();
   }
 
@@ -3663,8 +3662,14 @@
       c.setAttribute("opacity", (.34 * Math.pow(1 - q, 1.5)).toFixed(3));
     });
     if (reduced) return;
-    // It leans a little downwind in the gusts, from its foot.
-    LT.float.setAttribute("transform", `rotate(${(1.5 * w + .55 * fl * (.35 + w) - .6).toFixed(2)})`);
+    // It is alive on the water: it rises and settles on a slow swell, sways from its foot on its
+    // own unhurried rhythm and leans further downwind in the gusts, and breathes, a little fuller
+    // and back, as it rises. The ripples stay on the water.
+    const t = now / 1000;
+    const lean = 1.5 * w + .55 * fl * (.35 + w) - .6 + 1.7 * Math.sin(t * .7) + .5 * Math.sin(t * 1.9 + 1.3);
+    const rise = 2 * Math.sin(t * 1.2) + .5 * Math.sin(t * .53 + 2), drift = .7 * Math.sin(t * .7 + .8);
+    const breath = 1 + .02 * Math.sin(t * 1.2 + .4);
+    LT.float.setAttribute("transform", `translate(${drift.toFixed(2)} ${(-rise).toFixed(2)}) rotate(${lean.toFixed(2)}) scale(${breath.toFixed(4)})`);
   }
   // Stop k: a closed bud at the start, a tenth more open at each stop in, in full bloom at the
   // centre. It opens (or closes) slowly, over two seconds and more; at once without motion.
