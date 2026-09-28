@@ -755,14 +755,6 @@
   }
   .jr-verse__lines span + span { margin-top: .3em; }
   .jr-verse__ref { margin: 1.1em 0 0; font-family: var(--sans); font-size: 11px; letter-spacing: .14em; color: var(--muted); opacity: 0; }
-  /* Until the visitor has sent one verse on, this says how, as the gate says it. */
-  .jr-cue {
-    margin: 1.6em 0 0; font-family: var(--serif); font-style: italic; font-size: var(--desc); color: var(--ink-3);
-    opacity: 0; transition: opacity 1.8s var(--ease);
-  }
-  .jr-cue.is-on { opacity: .62; }
-  .jr-cue span { display: inline-block; }
-  .jr-cue.is-on span { animation: jr-breathe 5.2s ease-in-out 2s infinite; }
   .jr-verse.is-final { --gap-up: 30px; --gap-down: 30px; }
   .jr-verse.is-final .jr-verse__sa { font-size: clamp(20px, min(2.75vw, 4.5vh), 38px); }
   .jr-verse.is-final .jr-verse__lines { max-width: min(90vw, 27em); font-size: clamp(18px, min(1.9vw, 3.3vh), 27px); }
@@ -799,15 +791,21 @@
   @media (hover: hover) and (pointer: fine) {
     .jr-link:hover { color: var(--ink); text-decoration-color: var(--chandan-ink); }
   }
-  .jr-hint {
-    position: absolute; left: 0; right: 0; top: 0; margin: 0; padding-top: .9em; text-align: center;
-    font-family: var(--serif); font-style: italic; font-size: var(--desc); color: var(--ink-3);
-    opacity: 0; pointer-events: none; transition: opacity 1.4s var(--ease);
+  /* The way on, always in one place: centred at the foot, below everything the stop shows (level
+     with the mala on a phone). A golden thread hangs there, two strands twisted, from a small knot
+     to a frayed end; it turns and sways in the breeze, and a bead runs down it (drawGuide). */
+  .jr-guide {
+    position: absolute; left: 50%; bottom: 0; margin: 0; height: 42px; display: flex; align-items: center; gap: 8px;
+    transform: translateX(-50%); opacity: 0; pointer-events: none; transition: opacity .6s var(--ease);
   }
-  .jr-hint.is-on { opacity: .75; transition-delay: .2s; }
-  .jr-hint span { display: inline-block; }
-  .jr-hint.is-on span { animation: jr-breathe 5.2s ease-in-out 1.6s infinite; }
-  @keyframes jr-breathe { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+  .jr-guide.is-on { opacity: 1; transition: opacity 1.4s var(--ease) .1s; }
+  .jr-guide svg { width: 18px; height: 42px; overflow: visible; }
+  .jr-guide__strand { fill: none; stroke-linecap: round; }
+  .jr-guide__fray { fill: none; stroke: #C99A4E; stroke-width: .55; stroke-linecap: round; opacity: .85; }
+  .jr-guide span {
+    font-family: var(--sans); font-size: 9.5px; letter-spacing: .28em; text-transform: uppercase;
+    color: var(--ink-3); white-space: nowrap;
+  }
 
   /* Leave by the mark in the corner, set as the music is in the other. */
   .jr-close {
@@ -831,6 +829,8 @@
     width: 80px; height: 80px; opacity: 0; visibility: hidden; transition: opacity .9s var(--ease), visibility 0s linear .9s;
   }
   .journey.is-ui .jr-close, .journey.is-ui .jr-mala { opacity: 1; visibility: visible; transition-delay: 0s; }
+  .journey.is-ui .jr-mala { transition-duration: .5s; } /* it is carried in from beyond the edge (enterMala) */
+  .jr-mala__hang { position: absolute; inset: 0; }
   .jr-mala__loop { position: absolute; inset: 0; transform-origin: 50% 50%; }
   .jr-mala__cord, .jr-mala__tassel { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
   .jr-cord { fill: none; stroke: #9C6A3C; stroke-width: 1; opacity: .6; }
@@ -867,7 +867,7 @@
   .jr-tip b { margin-right: .7em; font-family: var(--display); font-weight: 400; font-style: normal; letter-spacing: .08em; color: var(--chandan-ink); }
 
   @media (prefers-reduced-motion: reduce) {
-    .jr-hint.is-on span, .jr-cue.is-on span, .jr-ring--4.is-lit .jr-flame-glow { animation: none !important; }
+    .jr-ring--4.is-lit .jr-flame-glow { animation: none !important; }
     .leave .leave__card, .leave::backdrop { animation: none !important; }
     /* The name's letters cannot fade here (see below), so the Journey hides them outright. */
     .journey-open .id__slot { visibility: hidden; }
@@ -1161,15 +1161,17 @@
       <p class="jr-caption__text"></p>
     </div>
     <div class="jr-notes"></div>
-    <p class="jr-hint" aria-hidden="true"><span>scroll or tap to go inward</span></p>
+    <p class="jr-guide" aria-hidden="true"><svg viewBox="0 0 18 42" focusable="false"></svg><span>scroll or tap</span></p>
     <button class="jr-close" type="button" aria-label="Leave the journey" title="Leave">
       <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1 1 11"/></svg>
     </button>
     <div class="jr-mala">
-      <svg class="jr-mala__tassel" aria-hidden="true" focusable="false"></svg>
-      <div class="jr-mala__loop">
-        <svg class="jr-mala__cord" aria-hidden="true" focusable="false"></svg>
-        <ol class="jr-mala__list" aria-label="Chapters"></ol>
+      <div class="jr-mala__hang">
+        <svg class="jr-mala__tassel" aria-hidden="true" focusable="false"></svg>
+        <div class="jr-mala__loop">
+          <svg class="jr-mala__cord" aria-hidden="true" focusable="false"></svg>
+          <ol class="jr-mala__list" aria-label="Chapters"></ol>
+        </div>
       </div>
       <p class="jr-tip" aria-hidden="true"></p>
     </div>
@@ -2659,8 +2661,9 @@
   const jCap = journeyEl.querySelector(".jr-caption");
   const jCapTitle = jCap.querySelector(".jr-caption__title"), jCapText = jCap.querySelector(".jr-caption__text");
   const jNotes = journeyEl.querySelector(".jr-notes");
-  const jHint = journeyEl.querySelector(".jr-hint"), jClose = journeyEl.querySelector(".jr-close");
+  const jGuide = journeyEl.querySelector(".jr-guide"), jClose = journeyEl.querySelector(".jr-close");
   const jMala = journeyEl.querySelector(".jr-mala"), jMalaList = jMala.querySelector(".jr-mala__list"), jMalaSvg = jMala.querySelector(".jr-mala__cord");
+  const jHang = jMala.querySelector(".jr-mala__hang");
   const jTip = jMala.querySelector(".jr-tip"), jLive = journeyEl.querySelector(".jr-live"), jSafe = journeyEl.querySelector(".jr-safe");
   const journeyArea = document.getElementById("sub-journey").closest(".area");
   const stageEl = document.querySelector(".stage"), socialsEl = document.querySelector(".socials");
@@ -2693,7 +2696,8 @@
     ring: JR.map(() => ({ o: 0, x: 1, r: 0 })),
     me: { free: true, x: 0, y: 0, r: JR[0], a: TOP, k: 1, o: 1 },
     bindu: { x: 0, y: 0, k: 1, o: 1 },
-    paintK: 0, pf: null, paintO: 1, skip: null, wind: true, windTimer: 0, hintDone: false, taught: false,
+    paintK: 0, pf: null, paintO: 1, skip: null, wind: true, windTimer: 0, guideTimer: 0, taught: false,
+    want: 0, showing: false, heard: 0, // a seed touched while a step was under way; a chapter coming in; its verse shown
   };
   // The frame ring shrinks from 47% of the square at chapter I to 25% at IX (phones zoom a fifth
   // less by then); the bindu's lotus takes 26%, room for the tilak inside it.
@@ -2826,20 +2830,26 @@
     return Math.ceil(h);
   }
   // The notes sit at the foot of the page, small and centred: under the caption and clear of the
-  // mala, or on a phone held upright (where the mala has the bottom corner) just above it. Returns
-  // how far up they sit and what the tallest ones need.
+  // mala, or on a phone held upright (where the mala has the bottom corner) just above it. The
+  // guide goes below them, centred: at the very foot, or on a phone level with the mala and clear
+  // of it. Returns how far up the notes sit and what the tallest ones need.
   let jNotesMeasure = null;
   function placeNotes(W, H, sab) {
     const sp = getComputedStyle(jSafe), sal = parseFloat(sp.paddingLeft) || 0, sar = parseFloat(sp.paddingRight) || 0;
     const malaW = jMala.offsetWidth || 86, malaH = jMala.offsetHeight || 86, edge = Math.max(16, W * .02);
-    let width, foot;
+    const gw = jGuide.offsetWidth || 150, gh = jGuide.offsetHeight || 36, malaB = sab + Math.max(36, H * .05);
+    let width, foot, gx = W / 2, gb; // gx: the guide's centre
     if (J.phone) {
       width = W - 32 - sal - sar;
-      foot = sab + Math.max(36, H * .05) + malaH + 8;
+      foot = malaB + malaH + 8;
+      gb = malaB + (malaH - gh) / 2;
+      gx = Math.max(16 + sal + gw / 2, Math.min(gx, W - sar - edge - malaW - 12 - gw / 2));
     } else {
       width = Math.min(W - 2 * (edge + Math.max(sal, sar) + malaW + 24), 600);
-      foot = sab + Math.max(12, H * .02);
+      gb = sab + Math.max(10, H * .016);
+      foot = gb + gh + 7;
     }
+    Object.assign(jGuide.style, { left: f2(gx) + "px", bottom: f2(gb) + "px" });
     Object.assign(jNotes.style, { left: f2((W - width) / 2) + "px", width: f2(width) + "px", bottom: f2(foot) + "px" });
     if (!jNotesMeasure) {
       jNotesMeasure = jNotes.cloneNode(false);
@@ -2863,16 +2873,14 @@
     J.phone = W < 700 && H > W;
     const capH = captionRoom(), nt = placeNotes(W, H, sab);
     const top = sat + (J.phone ? 52 : Math.max(18, H * .03));
-    // The bottom keeps the room of the notes, and on a phone the mala's below them.
-    const bot = J.phone ? Math.max(sab + 130, nt.foot + nt.h + 12)
-      : nt.h ? nt.foot + nt.h + 14 : sab + Math.max(18, H * .03);
+    // The bottom keeps the room of the notes and, below them, the guide's (on a phone, the mala's).
+    const bot = J.phone ? Math.max(sab + 130, nt.foot + nt.h + 12) : nt.foot + (nt.h ? nt.h + 14 : 8);
     const cap = Math.max(J.phone ? 150 : 134, capH + 4), gap = J.phone ? 8 : 12, room = H - top - bot;
     J.S = Math.max(150, Math.min(J.phone ? W : W - 96, room - cap - gap));
     const y0 = top + Math.max(0, (room - (J.S + gap + cap)) / 2);
     J.cx = W / 2; J.cy = y0 + J.S / 2; J.capTop = y0 + J.S + gap;
     jSvg.setAttribute("viewBox", `0 0 ${W} ${H}`);
     jCap.style.top = J.capTop.toFixed(1) + "px";
-    jHint.style.top = J.capTop.toFixed(1) + "px";
     placeJapa();
   }
 
@@ -3183,27 +3191,32 @@
       el.append(p);
     });
   }
-  function showHint() {
-    if (!J.hintDone) jHint.classList.add("is-on");
+  // Wherever the walk waits on the visitor, the guide says how to go on, in its one place and
+  // however often they have come this way: at the start, at every chapter once it has settled,
+  // and on every verse once it has had its moment. Moving on puts it away.
+  let guideAt = 0; // when it was last put away (its thread is drawn until it has faded)
+  function showGuide(delay) {
+    clearTimeout(J.guideTimer);
+    const my = J.tok;
+    J.guideTimer = setTimeout(() => { if (J.open && !J.leaving && my === J.tok) jGuide.classList.add("is-on"); }, delay);
   }
-  function hideHint() {
-    J.hintDone = true;
-    jHint.classList.remove("is-on");
+  function hideGuide() {
+    clearTimeout(J.guideTimer);
+    if (jGuide.classList.contains("is-on")) guideAt = performance.now();
+    jGuide.classList.remove("is-on");
   }
 
   function fillVerse(v, final) {
     jVerse.classList.toggle("is-final", !!final);
     jSa.textContent = "";
     v.sa.forEach((line) => { const s = document.createElement("span"); s.textContent = line; jSa.append(s); });
-    const lines = document.createElement("p"), ref = document.createElement("p"), cue = document.createElement("p");
+    const lines = document.createElement("p"), ref = document.createElement("p");
     lines.className = "jr-verse__lines";
     v.en.forEach((line) => { const s = document.createElement("span"); s.textContent = line; lines.append(s); });
     ref.className = "jr-verse__ref";
     ref.textContent = "Bhagavad Gita " + v.ref;
-    cue.className = "jr-cue";
-    cue.innerHTML = "<span>tap to continue</span>";
     jEn.textContent = "";
-    jEn.append(lines, ref, cue);
+    jEn.append(lines, ref);
   }
   // Hangs a verse on the bindu. In chapter k its lines keep inside my ring where they can (the
   // deep rings are too small to hold them), and narrow to pass by the place I rest; returns false if they still cannot, and I step back
@@ -3218,7 +3231,7 @@
       const wide = innerWidth * .9, cap = Math.round(Math.max(Math.min(280, wide), Math.min(wide, 2 * JR[k - 1] * scaleOf(k) * .9)));
       jVerse.style.setProperty("--fit", cap + "px");
       const [dx, dy] = restAt(k), mx = bx + dx, mz = by + dy, R = 4.5 + 12;
-      const hits = () => [...jVerse.querySelectorAll(".jr-verse__sa span, .jr-verse__lines span, .jr-verse__ref, .jr-cue span")].some((el) => {
+      const hits = () => [...jVerse.querySelectorAll(".jr-verse__sa span, .jr-verse__lines span, .jr-verse__ref")].some((el) => {
         const rg = document.createRange();
         rg.selectNodeContents(el);
         return [...rg.getClientRects()].some((r) => mx + R > r.left && mx - R < r.right && mz + R > r.top && mz - R < r.bottom);
@@ -3234,13 +3247,16 @@
     return clear;
   }
   // A verse stays until the visitor moves on: any tap, scroll, swipe or key, once it has had a
-  // moment to appear. Resolves to the way they moved (1 in, -1 back), or 0 if the walk ended
-  // meanwhile. Until they have sent one verse on, a quiet cue says how.
+  // moment to appear. Resolves to the way they moved (1 in, -1 back), 2 if a seed has asked for
+  // another chapter, or 0 if the walk ended meanwhile. The guide says how, on every verse; sooner
+  // once they know. A seed touched on the way passes the verse by (1 if it asked for this chapter).
   async function playVerse(v, my, delay, final, k) {
     if (delay) { await sleep(delay); if (my !== J.tok) return 0; }
+    if (!final && J.want) return J.want === k ? 1 : 2;
     fillVerse(v, final);
+    J.heard = k;
     const clear = placeVerse(k, final);
-    const [lines, ref, cue] = jEn.children;
+    const [lines, ref] = jEn.children;
     appear(jSa, 0, 1300);
     appear(lines, 420, 1300);
     appear(ref, 900, 1000);
@@ -3248,13 +3264,12 @@
     if (!clear) anim(600, E_EASE, (e) => { J.me.o = 1 - e; });
     await sleep(final ? JT.endLock : JT.verseLock);
     if (my !== J.tok) return 0;
-    const cueAt = setTimeout(() => { if (my === J.tok && !J.taught) cue.classList.add("is-on"); }, final ? 1500 : 3200);
-    const dir = await new Promise((r) => { J.skip = r; });
-    clearTimeout(cueAt);
+    showGuide(final ? 1500 : J.taught ? 2200 : 3200);
+    const dir = !final && J.want ? (J.want === k ? 1 : 2) : await new Promise((r) => { J.skip = r; });
     J.skip = null;
     J.taught = true;
     if (my !== J.tok) return 0;
-    cue.classList.remove("is-on");
+    hideGuide();
     [jSa, lines, ref].forEach((el, i) => vanish(el, i * 80, 700));
     anim(800, E_EASE, (e) => { J.dim = 1 - e; jHalo.style.opacity = (final ? 0 : 1 - e).toFixed(3); });
     if (!clear) anim(700, E_EASE, (e) => { J.me.o = e; }, 350);
@@ -3345,7 +3360,7 @@
     return cv;
   }
 
-  const JM = { R: 0, C: 0, c: 0, D: 0, run: [], th: 0, turning: false, wind: 0 };
+  const JM = { R: 0, C: 0, c: 0, D: 0, run: [], th: 0 };
   let jSeeds = [], jLoop = null, jCord = null, jTassel = null, jSway = null, jSpacer = null;
   function buildJapa() {
     jLoop = jMala.querySelector(".jr-mala__loop");
@@ -3371,10 +3386,7 @@
       b.type = "button";
       b.className = "jr-seed" + (i === 9 ? " jr-seed--sumeru" : "");
       b.setAttribute("aria-label", label);
-      b.addEventListener("click", () => {
-        still();
-        if (!J.busy && J.state <= 10 && J.state !== i + 1) goTo(i + 1);
-      });
+      b.addEventListener("click", () => seedTap(i + 1));
       b.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") tip(i); });
       b.addEventListener("pointerleave", () => tip(-1));
       b.addEventListener("focus", () => tip(i));
@@ -3393,6 +3405,18 @@
       requestAnimationFrame(next);
     };
     requestAnimationFrame(next);
+    // A touch that lands near a seed but not on it (they are small, and the mala sways) is for
+    // the nearest seed, never a step on through the walk.
+    jMala.addEventListener("click", (e) => {
+      if (e.target.closest(".jr-seed")) return;
+      let best = 0, bd = JM.D * .5 + 9; // within a finger's width of a seed; the middle of the loop is no seed's
+      jSeeds.forEach((b, j) => {
+        const r = b.getBoundingClientRect(), d = Math.hypot(e.clientX - r.left - r.width / 2, e.clientY - r.top - r.height / 2);
+        if (d < bd) { bd = d; best = j + 1; }
+      });
+      if (best) seedTap(best);
+    });
+    buildGuide();
   }
   // Nine seeds, the spacer and the sumeru, all one size, round a loop: each placed by its
   // distance along the cord, the loop turning about its centre.
@@ -3403,6 +3427,7 @@
     const C = run[10] + (sizes[10] + sizes[0]) / 2 + g, R = C / TAU, box = Math.ceil(2 * R + D + 12), c = box / 2;
     Object.assign(JM, { run, C, R, c, D });
     jMala.style.width = jMala.style.height = box + "px";
+    jHang.style.transformOrigin = `${f2(c)}px ${f2(c - R)}px`; // its peg, at the top of the loop
     jCord.setAttribute("cx", f2(c));
     jCord.setAttribute("cy", f2(c));
     jCord.setAttribute("r", f2(R));
@@ -3426,37 +3451,170 @@
     const to = Math.PI / 2 + japaAt(Math.min(k, 10)) / JM.R;
     if (now || reduced) { JM.th = to; spinJapa(); return; }
     const from = JM.th, n = Math.max(1, Math.round(Math.abs(to - from) / (TAU / 10.5)));
-    JM.turning = true;
-    kickSwing();
-    anim(950 + 240 * (n - 1), E_BEAD, (e) => { JM.th = from + (to - from) * e; spinJapa(); }).then(() => { JM.turning = false; });
+    anim(950 + 240 * (n - 1), E_BEAD, (e) => { JM.th = from + (to - from) * e; spinJapa(); });
   }
   function spinJapa() {
     jLoop.style.transform = `rotate(${(JM.th / DEG).toFixed(2)}deg)`;
     hangTassel();
   }
-  // The tassel hangs from the sumeru wherever the count has carried it, swinging on its thread.
+  // The tassel hangs from the sumeru wherever the count has carried it, and hangs true however
+  // the loop leans: it is drawn at its own angle less the loop's.
   function hangTassel() {
     if (!jTassel || !JM.R) return;
     const a = JM.th - JM.run[10] / JM.R;
     jTassel.setAttribute("transform", `translate(${f2(JM.c + JM.R * Math.cos(a))} ${f2(JM.c + JM.R * Math.sin(a) + JM.D / 2 - 1)})`);
-    jSway.style.transform = `rotate(${(swing.a / DEG + JM.wind).toFixed(2)}deg)`;
+    jSway.style.transform = `rotate(${((MP.ta + MP.ps) / DEG).toFixed(2)}deg)`;
   }
-  // A pendulum hung from the moving sumeru: it lags as the loop is pulled round, then settles.
-  const swing = { a: 0, v: 0, x: null, vx: 0, last: 0, raf: 0 };
-  const swingTick = (now) => {
-    const dt = clamp((now - (swing.last || now - 16)) / 1000, .005, .05);
-    swing.last = now;
-    const x = JM.R * Math.cos(JM.th - JM.run[10] / JM.R);
-    const vx = swing.x === null ? 0 : (x - swing.x) / dt, ax = swing.x === null ? 0 : (vx - swing.vx) / dt;
-    swing.x = x;
-    swing.vx = vx;
-    swing.v += (-34 * Math.sin(swing.a) - 2.2 * swing.v + .05 * ax * Math.cos(swing.a)) * dt;
-    swing.a = clamp(swing.a + swing.v * dt, -.9, .9);
+
+  /* The mala hangs by the top of its loop from a peg, as a ring hangs from a nail; a ring swinging
+     about a point on its rim keeps the time of a plain pendulum as long as the ring is wide. It is
+     carried in from beyond the right edge, braking as it nears the peg, and let go there: it swings
+     on, forward and back, and settles into the breeze that moves the boughs. Each count, the thumb
+     drawing a seed down, pulls the loop a little the way the seed goes. The tassel hangs from the
+     sumeru on its own short thread and answers every move a beat behind. */
+  const GRAV = 680; // px/s²: gravity at this scene's unhurried pace (the tassel's 20 px thread swings once a second)
+  const MP = { raf: 0, last: 0, t: 9, T: 1.8, dx: 0, dy: 0, ox: 0, oy: 0, ps: 0, pv: 0, ta: 0, tv: 0, w: null, v: [0, 0], th: 0 };
+  // The peg's way in, t s after it sets out: how far it has still to come, how fast, and how its
+  // pace is changing. It crosses the edge at full pace and brakes ever harder (a quarter sine) until still.
+  function pegAt(t) {
+    const u = clamp(t / MP.T, 0, 1), q = u * Math.PI / 2, go = u < 1 ? 1 : 0;
+    const r = 1 - Math.sin(q), v = -go * Math.PI / 2 * Math.cos(q) / MP.T, a = go * Math.PI * Math.PI / 4 * Math.sin(q) / (MP.T * MP.T);
+    return [MP.dx * r, MP.dy * r, MP.dx * v, MP.dy * v, MP.dx * a, MP.dy * a];
+  }
+  // Where the tassel's thread is tied, from the peg's resting place: at the sumeru, carried by the
+  // peg, the loop's lean and the count.
+  function tasselRoot() {
+    const a = JM.th - JM.run[10] / JM.R, qx = JM.R * Math.cos(a), qy = JM.R * (1 + Math.sin(a)) + JM.D / 2 - 1;
+    const c = Math.cos(MP.ps), s = Math.sin(MP.ps); // the loop is turned by -ps about the peg
+    return [MP.ox + qx * c + qy * s, MP.oy - qx * s + qy * c];
+  }
+  function hangMala() {
+    jHang.style.transform = `translate(${f2(MP.ox)}px, ${f2(MP.oy)}px) rotate(${(-MP.ps / DEG).toFixed(3)}deg)`;
     hangTassel();
-    if (JM.turning || Math.abs(swing.a) > .003 || Math.abs(swing.v) > .02) swing.raf = requestAnimationFrame(swingTick);
-    else { swing.raf = 0; swing.x = null; swing.vx = 0; swing.last = 0; }
-  };
-  const kickSwing = () => { if (!swing.raf && !reduced) swing.raf = requestAnimationFrame(swingTick); };
+  }
+  function enterMala() {
+    if (reduced || !JM.R) return;
+    const m = jMala.getBoundingClientRect();
+    MP.dx = innerWidth - m.left + 14; // it sets out wholly beyond the right edge,
+    MP.dy = -.3 * MP.dx;              // and a little above its peg
+    const p = pegAt(0);
+    Object.assign(MP, { t: 0, ox: p[0], oy: p[1], ps: 0, pv: 0, ta: 0, tv: 0, w: null, v: [p[2], p[3]], th: JM.th });
+    hangMala();
+    if (!MP.raf) { MP.last = 0; MP.raf = requestAnimationFrame(malaTick); }
+  }
+  // ps: the loop's swing about its peg (its bottom to the right, +); ta: the tassel's, the way CSS
+  // turns (its end to the left, +). Both are driven pendulums, stepped a few ms at a time.
+  function malaTick(now) {
+    MP.raf = 0;
+    if (!J.open) return;
+    const dt = clamp((now - (MP.last || now - 16)) / 1000, .004, .05), n = Math.ceil(dt / .004 - 1e-9), h = dt / n;
+    MP.last = now;
+    // The breeze pushes both downwind, to the right, gusting and fluttering as it does the boughs.
+    const tw = windT(now), w = breeze(tw), fl = Math.sin(tw * 1.25 + .8);
+    const pushLoop = GRAV * DEG * (.9 * w + (.3 + .95 * w) * fl), pushTassel = GRAV * DEG * (3.5 * w + (1.2 + 3.8 * w) * fl);
+    // The thumb draws the seed at the bottom the way the loop turns (a jump of the count is no pull).
+    const dth = JM.th - MP.th, pull = Math.abs(dth) > .25 ? 0 : clamp(-11 * dth / dt, -40, 40);
+    MP.th = JM.th;
+    const L = 2 * JM.R;
+    for (let i = 0; i < n; i++) {
+      MP.t += h;
+      const p = pegAt(MP.t);
+      MP.pv += (-((GRAV - p[5]) * Math.sin(MP.ps) + (p[4] - pushLoop - pull) * Math.cos(MP.ps)) / L - 1.35 * MP.pv) * h;
+      MP.ps = clamp(MP.ps + MP.pv * h, -.6, .6);
+    }
+    const p = pegAt(MP.t);
+    MP.ox = p[0]; MP.oy = p[1];
+    // The tassel feels how its knot is carried: its acceleration, read off the last two frames.
+    const W = tasselRoot();
+    let ax = 0, ay = 0;
+    if (MP.w && Math.hypot(W[0] - MP.w[0], W[1] - MP.w[1]) < 30) {
+      const vx = (W[0] - MP.w[0]) / dt, vy = (W[1] - MP.w[1]) / dt;
+      ax = clamp((vx - MP.v[0]) / dt, -2500, 2500);
+      ay = clamp((vy - MP.v[1]) / dt, -2500, 2500);
+      MP.v = [vx, vy];
+    } else if (MP.w) MP.v = [p[2], p[3]]; // it was moved outright (a new size): start afresh
+    MP.w = W;
+    for (let i = 0; i < n; i++) {
+      MP.tv += ((-(GRAV - ay) * Math.sin(MP.ta) + (ax - pushTassel) * Math.cos(MP.ta)) / 20 - 2.2 * MP.tv) * h;
+      MP.ta = clamp(MP.ta + MP.tv * h, -.9, .9);
+    }
+    hangMala();
+    if (jGuide.classList.contains("is-on") || now - guideAt < 900) drawGuide(dt, n, pushTassel);
+    MP.raf = requestAnimationFrame(malaTick);
+  }
+
+  /* The guide's golden thread: two strands of gold twisted about each other, tied in a small knot
+     where it hangs and frayed at its end, like a thread of the tassel. It hangs in the same breeze
+     as the mala, its twist slowly turning; a bead runs down it, gathering pace, lands on the last
+     twist with a little bounce that sets the thread swinging, and slips off the end. */
+  const GT = { L: 28, x: 9, y: 5, a: 0, v: 0, ph: 0, t: 0, s: null, fray: null, bead: null, sway: null };
+  function buildGuide() {
+    const svg = jGuide.querySelector("svg"), defs = svgEl("defs");
+    const grad = (id, stops) => {
+      const g = svgEl("linearGradient", { id, gradientUnits: "userSpaceOnUse", x1: 0, y1: 0, x2: 0, y2: 40 });
+      stops.forEach(([o, c]) => g.append(svgEl("stop", { offset: o, "stop-color": c })));
+      return g;
+    };
+    const bead = svgEl("radialGradient", { id: "jr-guide-bead", cx: ".36", cy: ".32", r: ".78" });
+    [["0", "#FCEFC8"], [".4", "#E5BD6C"], ["1", "#A5763A"]].forEach(([o, c]) => bead.append(svgEl("stop", { offset: o, "stop-color": c })));
+    defs.append(grad("jr-guide-gold", [["0", "#F0D48E"], [".5", "#D8AB5A"], ["1", "#BE8E47"]]), grad("jr-guide-deep", [["0", "#C99A4E"], ["1", "#8F6331"]]), bead);
+    GT.sway = svgEl("g");
+    GT.s = [svgEl("path", { class: "jr-guide__strand", stroke: "url(#jr-guide-deep)", "stroke-width": 1 }), svgEl("path", { class: "jr-guide__strand", stroke: "url(#jr-guide-gold)", "stroke-width": 1.05 })];
+    GT.fray = svgEl("path", { class: "jr-guide__fray" });
+    GT.bead = svgEl("circle", { r: 2.5, fill: "url(#jr-guide-bead)", opacity: 0 });
+    GT.sway.append(GT.s[0], GT.s[1], GT.fray, svgEl("ellipse", { cx: GT.x, cy: GT.y, rx: 1.7, ry: 1.3, fill: "#B98A45" }), GT.bead);
+    // Above the knot the thread runs up into the page, fading, as if it hung from the words.
+    svg.append(defs, svgEl("path", { d: `M${GT.x} 0V${GT.y}`, class: "jr-guide__strand", stroke: "url(#jr-guide-gold)", "stroke-width": .9, opacity: .55 }), GT.sway);
+    if (reduced) GT.t = 1.1; // held still, the bead part-way down
+    drawGuide(0, 0, 0);
+  }
+  // One frame: dt s in n steps; push is the breeze's pull to the right (px/s², as on the tassel).
+  function drawGuide(dt, n, push) {
+    const L = GT.L, x0 = GT.x, y0 = GT.y, P = 3.2;
+    const u0 = (GT.t % P) / P;
+    for (let i = 0; i < n; i++) {
+      const h = dt / n;
+      GT.v += ((-GRAV * Math.sin(GT.a) - push * Math.cos(GT.a)) / 15 - 2.6 * GT.v) * h; // a short pendulum from the knot
+      GT.a = clamp(GT.a + GT.v * h, -.5, .5);
+    }
+    GT.t += dt;
+    GT.ph += dt * 1.25;
+    const u = (GT.t % P) / P;
+    if (u0 < .58 && u >= .58) GT.v += .55; // the bead lands: the thread swings from it
+    if (u0 < .72 && u >= .72) GT.v -= .35; // and springs back as it slips off
+    // It is soft, not a rod: as it swings, its lower part trails and bends, and a slow ripple runs
+    // down it. Two strands wind round that line, a twist every 4.5 px, snug at the knot and
+    // loosening towards the end.
+    const mid = (s) => { const q = s / L; return x0 - GT.v * 2.2 * q * q + .35 * Math.sin(GT.t * 1.6 - q * 3.2) * q; };
+    let a = "", b = "";
+    for (let i = 0; i <= 28; i++) {
+      const s = i / 28 * L, r = .35 + .3 * Math.min(1, s / 6) + .35 * smooth(.7 * L, L, s), w = r * Math.sin(s * TAU / 4.5 + GT.ph), c = mid(s);
+      a += `${i ? "L" : "M"}${f2(c + w)} ${f2(y0 + s)}`;
+      b += `${i ? "L" : "M"}${f2(c - w)} ${f2(y0 + s)}`;
+    }
+    GT.s[0].setAttribute("d", b);
+    GT.s[1].setAttribute("d", a);
+    // The end opens into a few fibres that lift a little in the breeze.
+    let f = "";
+    const ey = y0 + L, ex = mid(L);
+    for (let j = 0; j < 5; j++) {
+      const sp = (j - 2) * 1.05 - GT.v * .8 + .6 * Math.sin(GT.t * 2.2 + j * 1.9) * (.3 + Math.min(1, Math.abs(push) / 40)), len = 4.2 + (j % 2) * 1.5 + (j === 2 ? .9 : 0);
+      f += `M${f2(ex)} ${f2(ey - .5)}Q${f2(ex + sp * .35)} ${f2(ey + len * .55)} ${f2(ex + sp)} ${f2(ey + len)}`;
+    }
+    GT.fray.setAttribute("d", f);
+    // The bead: comes out under the knot, runs down gathering pace, lands, slips off, and is gone a while.
+    let s, o = 1, rr = 2.6;
+    if (u < .1) { const v = u / .1; s = 2.4; o = v; rr = 1.4 + 1.2 * v; }
+    else if (u < .58) s = 2.4 + (L - 4.6) * Math.pow((u - .1) / .48, 1.8);
+    else if (u < .72) { const v = (u - .58) / .14; s = L - 2.2 - 1.2 * Math.sin(v * Math.PI) * (1 - v); }
+    else if (u < .88) { const v = (u - .72) / .16; s = L - 2.2 + 10 * v * v; o = 1 - v; }
+    else { s = L + 8; o = 0; }
+    GT.bead.setAttribute("cx", f2(mid(Math.min(s, L))));
+    GT.bead.setAttribute("cy", f2(y0 + s));
+    GT.bead.setAttribute("r", rr.toFixed(2));
+    GT.bead.setAttribute("opacity", o.toFixed(2));
+    GT.sway.setAttribute("transform", `rotate(${(GT.a / DEG).toFixed(2)} ${x0} ${y0})`);
+  }
   // Seeds counted so far are oiled brown; the rest wait, pale.
   function updateJapa(k) {
     jSeeds.forEach((b, i) => {
@@ -3512,19 +3670,23 @@
   }
 
   // One step in or out (or a jump by seed): leave the stop, zoom and glide, the verse (going
-  // in), the painting and the caption; at the centre, the tilak and its words.
-  async function goTo(b) {
+  // in, one step, unless a seed asked for the chapter itself: direct), the painting and the
+  // caption; at the centre, the tilak and its words.
+  async function goTo(b, direct) {
     const a = J.state;
     if (!J.open || J.leaving || J.busy || b === a || b < 0 || b > 10) return;
     const my = ++J.tok;
     J.busy = true;
+    J.want = 0;
+    J.showing = false;
+    J.heard = 0;
     clearTimeout(J.windTimer);
-    hideHint();
+    hideGuide();
     tip(-1);
     jBindu.classList.remove("is-whole");
     const inward = b > a, single = Math.abs(b - a) === 1;
     const ch = b >= 1 && b <= 9 ? JOURNEY[b - 1] : null;
-    const verse = inward && single && ch && ch.verse ? ch.verse : null;
+    const verse = !direct && inward && single && ch && ch.verse ? ch.verse : null;
     loadPainting(b);
     loadPainting(b + 1);
     if (a) hideCaption();
@@ -3561,12 +3723,17 @@
       }
     }
     if (my !== J.tok) return;
+    // A seed touched on the way: its chapter at once, this one passed by.
+    const want = J.want;
+    J.want = 0;
+    if (want && want !== b) { J.busy = false; goTo(want, true); return; }
+    J.showing = true;
     if (ch) {
       const spread = spreadPainting(b, my);
       await sleep(reduced ? 0 : JT.paint * .5);
       if (my !== J.tok) return;
       showCaption(ch);
-      announce(b, !!verse);
+      announce(b, J.heard === b);
       await spread;
       if (my !== J.tok) return;
       MD.flame.classList.toggle("is-lit", b === 4 && !reduced);
@@ -3583,7 +3750,21 @@
       if (my !== J.tok) return;
     } else live("The whole mandala, from the outer ring to the bindu.");
     J.busy = false;
+    J.showing = false;
     armWind();
+    showGuide(b ? 900 : 400);
+  }
+
+  // One touch on a seed opens its chapter, its verse passed by. At rest the walk goes at once;
+  // while a chapter is still coming in, it turns from there; on the way somewhere, it goes on to
+  // the seed as soon as the step lands, putting away any verse it meets.
+  function seedTap(k) {
+    if (!J.open || J.leaving || J.state > 10) return;
+    still();
+    if (!J.busy) { if (k !== J.state) goTo(k, true); return; }
+    if (J.showing) { if (k !== J.state) { J.busy = false; goTo(k, true); } return; }
+    J.want = k;
+    if (J.skip) { const go = J.skip; J.skip = null; go(k === J.state ? 1 : 2); }
   }
 
   // From the centre: a ring runs out from the bindu through what is left of the mandala, the
@@ -3595,7 +3776,7 @@
     J.busy = true;
     J.flying = true;
     clearTimeout(J.windTimer);
-    hideHint();
+    hideGuide();
     tip(-1);
     J.state = 11;
     hideCaption();
@@ -3697,16 +3878,16 @@
     if (smoke && !gone) smoke.puff(slot.left + slot.width / 2, slot.top + slot.height / 2, Math.max(slot.width, 220) * .55);
     boughLayer.classList.add("is-hushed");
 
+    journeyEl.classList.add("is-open"); // laid out (all still unseen) before anything is measured
     layoutJ();
-    if (!MD) { MD = buildMandala(); buildJapa(); placeJapa(); }
-    Object.assign(J, { state: 0, s: scaleOf(0), rot: 0, dim: 0, all: 1, focusRing: 0, rip: 0, ripO: 0, paintK: 0, pf: null, skip: null });
+    if (!MD) { MD = buildMandala(); buildJapa(); layoutJ(); } // again, now the mala has its size
+    Object.assign(J, { state: 0, s: scaleOf(0), rot: 0, dim: 0, all: 1, focusRing: 0, rip: 0, ripO: 0, paintK: 0, pf: null, skip: null, want: 0, showing: false, heard: 0 });
     J.ring.forEach((st) => { st.o = 0; st.x = 1; st.r = 0; });
     jPaintCv.style.opacity = "0";
     jImg.hidden = true;
     jHalo.style.opacity = "0";
     updateJapa(0);
     turnJapa(0, true);
-    journeyEl.classList.add("is-open");
     journeyEl.setAttribute("aria-hidden", "false");
     stageEl.inert = true;
     socialsEl.inert = true;
@@ -3743,7 +3924,7 @@
       // The mandala draws itself out from the bindu: its lotus first, ring I last.
       bloom(jBindu, 3.6, 1800);
       MD.rings.forEach((ring, i) => { ring.g.setAttribute("mask", `url(#jr-draw-${i + 1})`); traceRing(ring, 0); J.ring[i].o = .85; });
-      setTimeout(() => { if (my === J.tok) journeyEl.classList.add("is-ui"); }, 1500);
+      setTimeout(() => { if (my === J.tok) { journeyEl.classList.add("is-ui"); enterMala(); } }, 1500);
       await Promise.all(MD.rings.map((ring, i) => anim(900 + 500 * JR[i] / JR[0], E_SWIFT, (e) => traceRing(ring, e), (9 - i) * 200)
         .then(() => ring.g.removeAttribute("mask"))));
       if (my !== J.tok) return;
@@ -3753,9 +3934,9 @@
     J.me.a = TOP;
     J.flying = false;
     journeyEl.classList.add("is-ui");
-    showHint();
     J.busy = false;
-    armWind();
+    if (J.want) { const w = J.want; J.want = 0; goTo(w, true); } // a seed touched as the mandala drew
+    else { armWind(); showGuide(0); }
     // The painter's context and shader are made now, while the visitor reads the mandala.
     if (!painter) painter = startPaint(jPaintCv);
     if (painter) painter.ready().then((can) => { if (can) painter.warm(); else painter = null; });
@@ -3771,10 +3952,10 @@
     jTweens.clear();
     tip(-1);
     journeyEl.classList.remove("is-ui");
-    jHint.classList.remove("is-on");
+    hideGuide();
+    J.want = 0;
     hideCaption();
     [jSa, jEn.children[0], jEn.children[1]].forEach((el) => el && vanish(el, 0, 400));
-    if (jEn.children[2]) jEn.children[2].classList.remove("is-on");
     // The rings and the painting fold back into the bindu.
     const pe = paintEl(), p0 = J.pf ? J.paintO : parseFloat(pe.style.opacity) || 0, h0 = parseFloat(jHalo.style.opacity) || 0;
     const o0 = J.ring.map((r) => r.o), x0 = J.ring.map((r) => r.x), d0 = J.dim;
@@ -3806,7 +3987,6 @@
   }
   const still = () => {
     if (J.wind) { J.wind = false; clearTimeout(J.windTimer); }
-    hideHint();
   };
   // dir: 1 in, -1 out. A verse waiting on the visitor takes the input instead, either way.
   function jInput(dir) {
@@ -3834,7 +4014,7 @@
   }, { passive: false });
   let jp = null;
   journeyEl.addEventListener("pointerdown", (e) => {
-    if (!J.open || (e.pointerType === "mouse" && e.button !== 0) || e.target.closest("button, a")) return;
+    if (!J.open || (e.pointerType === "mouse" && e.button !== 0) || e.target.closest("button, a, .jr-mala")) return;
     jp = { x: e.clientX, y: e.clientY, id: e.pointerId };
   });
   journeyEl.addEventListener("pointerup", (e) => {
@@ -3951,12 +4131,7 @@
       const w = breeze(t);
       tasselArt.style.transform = `rotate(${(-(1.2 + 4 * w) * Math.sin(t * 1.3) - 3 * w).toFixed(2)}deg)`;
     }
-    // So does the tassel of the Journey’s mala.
-    if (J.open && jSway) {
-      const w = breeze(t);
-      JM.wind = -(1.2 + 3.8 * w) * Math.sin(t * 1.25 + .8) - 3.5 * w;
-      hangTassel();
-    }
+    // (The Journey’s mala feels the same breeze in malaTick.)
   }
 
   /* ---------- Leaves and blossoms on the wind ---------- */
