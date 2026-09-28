@@ -778,9 +778,9 @@
     margin: .6em auto 0; max-width: 22.5em; font-family: var(--serif); font-style: italic; font-size: var(--desc);
     line-height: 1.5; color: var(--ink-2); text-wrap: balance; opacity: 0;
   }
-  /* At the foot of the page, small and centred: who is in the photo, where to read on, whom to thank.
-     A small title, then soft italic. On a phone they rest just above the mala (placeNotes). */
-  .jr-notes { position: absolute; left: 0; bottom: 0; margin: 0; text-align: center; opacity: 0; pointer-events: none; }
+  /* Under the lotus, small and centred: who is in the photo, where to read on, whom to thank.
+     A small title, then soft italic (placed by layoutJ). */
+  .jr-notes { position: absolute; left: 0; top: 0; margin: 0; text-align: center; opacity: 0; pointer-events: none; }
   .jr-note {
     margin: 0; font-family: var(--serif); font-style: italic; font-size: max(11px, calc(var(--desc) * .72));
     line-height: 1.4; color: var(--ink-3); text-wrap: balance;
@@ -799,8 +799,8 @@
   @media (hover: hover) and (pointer: fine) {
     .jr-link:hover { color: var(--ink); text-decoration-color: var(--chandan-ink); }
   }
-  /* The way on, always in one place: centred at the foot, just below the lotus (see placeNotes).
-     The left pad balances the trailing tracking, so the words sit true under the flower. */
+  /* The way on, always in one place: centred at the very foot (see placeFoot). The left pad
+     balances the trailing tracking, so the words sit truly centred. */
   .jr-guide {
     position: absolute; left: 50%; bottom: 0; margin: 0; padding-left: .28em; transform: translateX(-50%);
     font-family: var(--sans); font-size: 9.5px; line-height: 14px; letter-spacing: .28em; text-transform: uppercase;
@@ -808,10 +808,11 @@
   }
   .jr-guide.is-on { opacity: 1; transition: opacity .6s var(--ease); }
 
-  /* The lotus (see buildLotus): a white lotus on still water, centred just above the guide's
-     words, blooming as the walk goes in. It rises into view as the mandala finishes drawing. */
+  /* The lotus (see buildLotus): a white lotus on still water, centred between the chapter's words
+     and its notes (layoutJ), blooming as the walk goes in. It rises into view as the mandala
+     finishes drawing. */
   .jr-lotus {
-    position: absolute; left: 0; bottom: 0; width: 72px; height: 43px; pointer-events: none;
+    position: absolute; left: 0; top: 0; width: 72px; height: 43px; pointer-events: none;
     opacity: 0; visibility: hidden; transform: translateY(8px);
     transition: opacity .9s var(--ease), transform .9s var(--ease), visibility 0s linear .9s;
   }
@@ -2848,36 +2849,19 @@
     }
     return Math.ceil(h);
   }
-  // The foot of the page. The lotus stands centred, in one place at every stop, with the notes
-  // above it and the guide's words below, as far from the one as from the other: on a phone held
-  // upright level with the mala in its corner, elsewhere just above the words at the very foot.
-  // The notes are small and centred, clear of the mala. Returns how far up the notes sit and what
-  // the tallest ones need.
+  // The foot of the page: the guide's words centred at the very bottom, and the notes' width (the
+  // page's less its margins on a phone, clear of the mala's corner elsewhere). Returns how much of
+  // the bottom stays clear of the notes (on a phone, the mala's corner too) and what the tallest
+  // notes need at that width.
   let jNotesMeasure = null;
-  function placeNotes(W, H, sab) {
+  function placeFoot(W, H, sab) {
     const sp = getComputedStyle(jSafe), sal = parseFloat(sp.paddingLeft) || 0, sar = parseFloat(sp.paddingRight) || 0;
     const malaW = jMala.offsetWidth || 86, malaH = jMala.offsetHeight || 86, edge = Math.max(16, W * .02);
     const malaB = sab + Math.max(36, H * .05), gh = jGuide.offsetHeight || 14;
-    // The lotus's box, in px a unit of its art: the flower's foot stands 14 units above the box's,
-    // its open petals reach 10 units below that and its bud 25 above.
-    const u = J.phone ? 1.1 : 1.05, lw = 80 * u, lh = 48 * u;
-    let width, foot, lb, gb; // lb, gb: how far up the lotus's box and the words sit
-    if (J.phone) {
-      // The lotus keeps its place, level with the mala; the words go as far below the flower as
-      // the notes are above it.
-      width = W - 32 - sal - sar;
-      lb = malaB + malaH / 2 - lh / 2;
-      foot = Math.max(malaB + malaH, lb + 39 * u) + 8;
-      gb = Math.max(sab + 8, lb + 4 * u - (foot - lb - 39 * u) - gh);
-    } else {
-      width = Math.min(W - 2 * (edge + Math.max(sal, sar) + malaW + 24), 600);
-      gb = sab + Math.max(10, H * .016);
-      lb = gb + gh + 12 - 4 * u;
-      foot = lb + 39 * u + 12;
-    }
+    const gb = sab + (J.phone ? Math.max(12, H * .018) : Math.max(10, H * .016));
+    const width = J.phone ? W - 32 - sal - sar : Math.min(W - 2 * (edge + Math.max(sal, sar) + malaW + 24), 600);
     Object.assign(jGuide.style, { left: f2(W / 2) + "px", bottom: f2(gb) + "px" });
-    Object.assign(jLotus.style, { left: f2(W / 2 - lw / 2) + "px", bottom: f2(lb) + "px", width: f2(lw) + "px", height: f2(lh) + "px" });
-    Object.assign(jNotes.style, { left: f2((W - width) / 2) + "px", width: f2(width) + "px", bottom: f2(foot) + "px" });
+    Object.assign(jNotes.style, { left: f2((W - width) / 2) + "px", width: f2(width) + "px", bottom: "auto" });
     if (!jNotesMeasure) {
       jNotesMeasure = jNotes.cloneNode(false);
       Object.assign(jNotesMeasure.style, { position: "fixed", top: "0px", bottom: "auto", visibility: "hidden" });
@@ -2890,24 +2874,30 @@
       h = Math.max(h, jNotesMeasure.offsetHeight);
     }
     jNotesMeasure.textContent = "";
-    return { foot, h: Math.ceil(h) };
+    return { keep: J.phone ? Math.max(malaB + malaH, gb + gh) + 10 : gb + gh + 12, h: Math.ceil(h) };
   }
-  // The mandala and its paintings take a square centred above the caption: the full width on a
-  // phone held upright, and the short side (less the caption) everywhere else.
+  // One column, top to bottom: the mandala and its paintings in a square (the full width on a
+  // phone held upright, the short side elsewhere), the caption, the lotus in a room of its own, and
+  // the notes, above the foot. The caption and the notes each keep the room their tallest needs,
+  // so the lotus stands in the same place at every stop, between the chapter's words and its notes.
   function layoutJ() {
     const W = innerWidth, H = innerHeight, sp = getComputedStyle(jSafe);
     const sat = parseFloat(sp.paddingTop) || 0, sab = parseFloat(sp.paddingBottom) || 0;
     J.phone = W < 700 && H > W;
-    const capH = captionRoom(), nt = placeNotes(W, H, sab);
+    const capH = captionRoom(), ft = placeFoot(W, H, sab);
     const top = sat + (J.phone ? 52 : Math.max(18, H * .03));
-    // The bottom keeps the room of the notes and, below them, the lotus's and the words' (on a phone, the mala's).
-    const bot = J.phone ? Math.max(sab + 130, nt.foot + nt.h + 12) : nt.foot + (nt.h ? nt.h + 14 : 8);
-    const cap = Math.max(J.phone ? 150 : 134, capH + 4), gap = J.phone ? 8 : 12, room = H - top - bot;
-    J.S = Math.max(150, Math.min(J.phone ? W : W - 96, room - cap - gap));
-    const y0 = top + Math.max(0, (room - (J.S + gap + cap)) / 2);
+    // The lotus's room: the flower (its bud reaching 25 units above its foot, its open petals 10
+    // below) with a margin over and under it. Its box is the art's 80 x 48 units, the foot 14 up.
+    const u = J.phone ? 1.1 : 1.05, lm = J.phone ? 10 : 12, lz = 35 * u + 2 * lm;
+    const cap = Math.max(90, capH + 6), gap = J.phone ? 8 : 12, room = H - top - ft.keep;
+    J.S = Math.max(150, Math.min(J.phone ? W : W - 96, room - gap - cap - lz - ft.h));
+    const y0 = top + Math.max(0, (room - (J.S + gap + cap + lz + ft.h)) / 2);
     J.cx = W / 2; J.cy = y0 + J.S / 2; J.capTop = y0 + J.S + gap;
     jSvg.setAttribute("viewBox", `0 0 ${W} ${H}`);
     jCap.style.top = J.capTop.toFixed(1) + "px";
+    const lzTop = J.capTop + cap;
+    Object.assign(jLotus.style, { left: f2(W / 2 - 40 * u) + "px", top: f2(lzTop + lm - 9 * u) + "px", width: f2(80 * u) + "px", height: f2(48 * u) + "px" });
+    jNotes.style.top = f2(lzTop + lz) + "px";
     placeJapa();
   }
 
