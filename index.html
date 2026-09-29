@@ -427,7 +427,8 @@
   .cred.is-left { left: 0; text-align: right; }
   .cred.is-right { left: calc(var(--col) + var(--gap)); text-align: left; }
 
-  /* Beads: chandan where it began, rudraksha for the road, gold for the medal, kumkum for now. */
+  /* Newest first. Beads: chandan at the head for now, rudraksha for the road, gold for the
+     medal, kumkum at the foot where it began. The newest bead breathes out a soft ring. */
   .bead {
     position: absolute; top: 4px; width: var(--b); height: var(--b); border-radius: 50%;
     background: radial-gradient(circle at 38% 34%, #8E6448 0%, #5E3F2C 58%, #45301F 100%);
@@ -437,7 +438,7 @@
   .bead--chandan, .bead--kumkum { --b: var(--dot); top: calc(8px - var(--dot) / 2); }
   .bead--chandan { background: radial-gradient(circle at 38% 34%, #E9C77F 0%, #DDAF55 50%, #CC9C45 100%); }
   .bead--kumkum { background: radial-gradient(circle at 38% 34%, #C43A2F 0%, #B32620 52%, #981C17 100%); }
-  .bead--kumkum::after {
+  .creds__list > .cred:first-child > .bead::after {
     content: ""; position: absolute; inset: 0; border-radius: 50%; background: inherit; opacity: 0;
     animation: bead-now 3.4s ease-out 2s infinite;
   }
@@ -568,6 +569,7 @@
     font-family: var(--display); font-weight: 400; font-size: clamp(27px, 2.3vw, 34px); line-height: 1;
     letter-spacing: .02em; color: var(--ink); font-variant-numeric: lining-nums;
   }
+  .wk-fig b i { font-family: var(--sans); font-style: normal; font-weight: 300; font-size: .66em; margin-left: .06em; vertical-align: .22em; }
   .wk-fig span { font-family: var(--sans); font-size: 9px; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-3); }
   .wk-go {
     display: inline-block; margin-top: 7px; padding: 5px 0 5px .24em;
@@ -1127,60 +1129,69 @@
         <li class="cred">
           <span class="bead bead--chandan" aria-hidden="true"></span>
           <button class="cred__head" type="button">
-            <span class="cred__when">2019 · Where it began</span>
-            <span class="cred__title">B.Sc. Zoology (Hons.)</span>
-            <span class="cred__place">A.N. College, Magadh University</span>
+            <span class="cred__when">Since 2026</span>
+            <span class="cred__title">M.Tech, AI and Data Science</span>
+            <span class="cred__place">IIT Patna, July 2026 to July 2028</span>
           </button>
           <div class="cred__more"><div>
-            <p>The living body, cell to system. Graduated with 72%.</p>
-            <p>Second place, National Science Week Quiz, RMRIMS-ICMR.</p>
+            <p>Learning the mathematics beneath the models, to build better care with them.</p>
+          </div></div>
+        </li>
+        <li class="cred">
+          <span class="bead" aria-hidden="true"></span>
+          <div class="cred__head">
+            <span class="cred__when">On camera</span>
+            <a class="pub" href="https://www.youtube.com/watch?v=aM7hpccDjz8&amp;list=PL1ATlZrFBRFJZKKNC5ww8qoXrgCrkhqm0" target="_blank" rel="noopener">
+              <svg class="ico" viewBox="0 0 12 12" role="img" aria-label="Video course"><rect x="1.2" y="2.4" width="9.6" height="7.2" rx="1.8" fill="none" stroke="currentColor" stroke-width=".9"/><path d="M5 4.6v2.8L7.4 6z" fill="currentColor"/></svg><span class="pub__src">Diabetes education course</span>
+              <span class="pub__what">A video course for patients, written and presented</span>
+            </a>
+          </div>
+        </li>
+        <li class="cred">
+          <span class="bead" aria-hidden="true"></span>
+          <button class="cred__head" type="button">
+            <span class="cred__when">The evidence</span>
+            <span class="cred__title">Diabetes remission cohort<svg class="ico" viewBox="0 0 12 12" role="img" aria-label="Manuscript in preparation"><path d="M3 1.2h4l2.2 2.2v7.4H3z" fill="none" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.3 1.1"/><path d="M4.4 6h3.4" fill="none" stroke="currentColor" stroke-width=".9"/></svg></span>
+            <span class="cred__place">37 patients, followed over time</span>
+          </button>
+          <div class="cred__more"><div>
+            <p>Mean HbA1c down 2.9 points (Wilcoxon, p &lt; 0.001). Manuscript in preparation.</p>
+            <p>Also completed: a study of type 2 diabetes nutrition patterns in Bihar.</p>
           </div></div>
         </li>
         <li class="cred">
           <span class="bead" aria-hidden="true"></span>
           <button class="cred__head" type="button">
-            <span class="cred__when">2017–19 · Learning in the open</span>
-            <span class="cred__title">NPTEL certifications<svg class="medal" viewBox="0 0 10 14" role="img" aria-label="Silver medal"><path d="M2.6 .8 5 5.4 7.4 .8" fill="none" stroke="#6E675F" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="5" cy="9.2" r="3.7" fill="url(#g-silver)"/></svg></span>
-            <span class="cred__place">IIT Kanpur, IIT Kharagpur, IIT Roorkee</span>
+            <span class="cred__when">Since 2023 · Building AnubhutiHealth</span>
+            <span class="cred__title">Head of Projects</span>
+            <span class="cred__place">Nutrition and clinical operations</span>
           </button>
           <div class="cred__more"><div>
-            <p>Animal Physiology, 2019, with a silver medal.</p>
-            <p>Functional Genomics, Biomedical Nanotechnology, Biochemistry and Emotional Intelligence, 2018. Human Molecular Genetics, 2017.</p>
+            <p>Built the nutrition line from nothing, and leads its six-person team of dietitians, coaches and engineers. In its first small pilot, patients lost more than 600 kg together, diabetes went into remission, and many got their lives back.</p>
+            <p>Wrote the 12-module dietitian certification, the care SOPs and the escalation rules, and led the app end to end.</p>
           </div></div>
         </li>
         <li class="cred">
           <span class="bead" aria-hidden="true"></span>
           <button class="cred__head" type="button">
-            <span class="cred__when">2019–21 · First students</span>
-            <span class="cred__title">Biology faculty</span>
-            <span class="cred__place">Limitless Coaching, Patna</span>
+            <span class="cred__when">Certified</span>
+            <span class="cred__title">Certified Diabetes Educator</span>
+            <span class="cred__place">NDEP, Dr. Mohan's Diabetes Education Academy</span>
           </button>
           <div class="cred__more"><div>
-            <p>Two years teaching human physiology and biology to competitive-exam batches. The one-to-one coaching now used with the nutrition team began here.</p>
-          </div></div>
-        </li>
-        <li class="cred">
-          <svg class="bead bead--gold" viewBox="0 0 14 19" aria-hidden="true"><path d="M3.6 1 7 7.4 10.4 1" fill="none" stroke="#B32620" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="12" r="5.6" fill="url(#g-gold)"/><circle cx="7" cy="12" r="3.7" fill="none" stroke="rgba(122,84,28,.35)" stroke-width=".6"/></svg>
-          <button class="cred__head" type="button">
-            <span class="cred__when">2022 · The gold year</span>
-            <span class="cred__title">M.Sc. Biotechnology<svg class="medal" viewBox="0 0 10 14" role="img" aria-label="Gold medal"><path d="M2.6 .8 5 5.4 7.4 .8" fill="none" stroke="#B32620" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="5" cy="9.2" r="3.7" fill="url(#g-gold)"/></svg></span>
-            <span class="cred__place">Patna University</span>
-          </button>
-          <div class="cred__more"><div>
-            <p>Gold medallist, with 82%.</p>
-            <p>Also certified in Food Microbiology and Food Safety, Central University of Haryana.</p>
+            <p>Also trained in Good Clinical Practice, Good Laboratory Practice and ethics in human health research.</p>
           </div></div>
         </li>
         <li class="cred">
           <span class="bead" aria-hidden="true"></span>
           <button class="cred__head" type="button">
-            <span class="cred__when">2022–23 · Into the lab</span>
-            <span class="cred__title">Dissertation research</span>
-            <span class="cred__place">CSIR-CCMB, Hyderabad</span>
+            <span class="cred__when">Since 2023 · Into the clinic</span>
+            <span class="cred__title">Clinical nutrition counsellor</span>
+            <span class="cred__place">Under Dr. Kumar Anuj, DM (Endocrinology)</span>
           </button>
           <div class="cred__more"><div>
-            <p>How repeated social stress shapes behaviour and the epigenome, in a mouse model of depression.</p>
-            <p>Behavioural assays, brain dissection, DNA and RNA work, PCR and Western blots. Trained in zebrafish handling and breeding.</p>
+            <p>More than 500 patients counselled across type 2, type 1 and gestational diabetes, obesity, PCOS and metabolic syndrome.</p>
+            <p>Every diet decision carries the endocrinologist's sign-off.</p>
           </div></div>
         </li>
         <li class="cred">
@@ -1200,69 +1211,60 @@
         <li class="cred">
           <span class="bead" aria-hidden="true"></span>
           <button class="cred__head" type="button">
-            <span class="cred__when">Since 2023 · Into the clinic</span>
-            <span class="cred__title">Clinical nutrition counsellor</span>
-            <span class="cred__place">Under Dr. Kumar Anuj, DM (Endocrinology)</span>
+            <span class="cred__when">2022–23 · Into the lab</span>
+            <span class="cred__title">Dissertation research</span>
+            <span class="cred__place">CSIR-CCMB, Hyderabad</span>
           </button>
           <div class="cred__more"><div>
-            <p>More than 500 patients counselled across type 2, type 1 and gestational diabetes, obesity, PCOS and metabolic syndrome.</p>
-            <p>Every diet decision carries the endocrinologist's sign-off.</p>
+            <p>How repeated social stress shapes behaviour and the epigenome, in a mouse model of depression.</p>
+            <p>Behavioural assays, brain dissection, DNA and RNA work, PCR and Western blots. Trained in zebrafish handling and breeding.</p>
+          </div></div>
+        </li>
+        <li class="cred">
+          <svg class="bead bead--gold" viewBox="0 0 14 19" aria-hidden="true"><path d="M3.6 1 7 7.4 10.4 1" fill="none" stroke="#B32620" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="12" r="5.6" fill="url(#g-gold)"/><circle cx="7" cy="12" r="3.7" fill="none" stroke="rgba(122,84,28,.35)" stroke-width=".6"/></svg>
+          <button class="cred__head" type="button">
+            <span class="cred__when">2022 · The gold year</span>
+            <span class="cred__title">M.Sc. Biotechnology<svg class="medal" viewBox="0 0 10 14" role="img" aria-label="Gold medal"><path d="M2.6 .8 5 5.4 7.4 .8" fill="none" stroke="#B32620" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="5" cy="9.2" r="3.7" fill="url(#g-gold)"/></svg></span>
+            <span class="cred__place">Patna University</span>
+          </button>
+          <div class="cred__more"><div>
+            <p>Gold medallist, with 82%.</p>
+            <p>Also certified in Food Microbiology and Food Safety, Central University of Haryana.</p>
           </div></div>
         </li>
         <li class="cred">
           <span class="bead" aria-hidden="true"></span>
           <button class="cred__head" type="button">
-            <span class="cred__when">Certified</span>
-            <span class="cred__title">Certified Diabetes Educator</span>
-            <span class="cred__place">NDEP, Dr. Mohan's Diabetes Education Academy</span>
+            <span class="cred__when">2019–21 · First students</span>
+            <span class="cred__title">Biology faculty</span>
+            <span class="cred__place">Limitless Coaching, Patna</span>
           </button>
           <div class="cred__more"><div>
-            <p>Also trained in Good Clinical Practice, Good Laboratory Practice and ethics in human health research.</p>
+            <p>Two years teaching human physiology and biology to competitive-exam batches. The one-to-one coaching now used with the nutrition team began here.</p>
           </div></div>
         </li>
         <li class="cred">
           <span class="bead" aria-hidden="true"></span>
           <button class="cred__head" type="button">
-            <span class="cred__when">Since 2023 · Building AnubhutiHealth</span>
-            <span class="cred__title">Head of Projects</span>
-            <span class="cred__place">Nutrition and clinical operations</span>
+            <span class="cred__when">2017–19 · Learning in the open</span>
+            <span class="cred__title">NPTEL certifications<svg class="medal" viewBox="0 0 10 14" role="img" aria-label="Silver medal"><path d="M2.6 .8 5 5.4 7.4 .8" fill="none" stroke="#6E675F" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="5" cy="9.2" r="3.7" fill="url(#g-silver)"/></svg></span>
+            <span class="cred__place">IIT Kanpur, IIT Kharagpur, IIT Roorkee</span>
           </button>
           <div class="cred__more"><div>
-            <p>Grew the nutrition line from zero to ₹3 lakh a month in 18 months. Leads a six-person team of dietitians, coaches and engineers.</p>
-            <p>Wrote the 12-module dietitian certification, the care SOPs and the escalation rules, and led the app end to end.</p>
+            <p>Animal Physiology, 2019, with a silver medal.</p>
+            <p>Functional Genomics, Biomedical Nanotechnology, Biochemistry and Emotional Intelligence, 2018. Human Molecular Genetics, 2017.</p>
           </div></div>
-        </li>
-        <li class="cred">
-          <span class="bead" aria-hidden="true"></span>
-          <button class="cred__head" type="button">
-            <span class="cred__when">The evidence</span>
-            <span class="cred__title">Diabetes remission cohort<svg class="ico" viewBox="0 0 12 12" role="img" aria-label="Manuscript in preparation"><path d="M3 1.2h4l2.2 2.2v7.4H3z" fill="none" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.3 1.1"/><path d="M4.4 6h3.4" fill="none" stroke="currentColor" stroke-width=".9"/></svg></span>
-            <span class="cred__place">37 patients, followed over time</span>
-          </button>
-          <div class="cred__more"><div>
-            <p>Mean HbA1c down about 2 points (Wilcoxon, p &lt; 0.001). Manuscript in preparation.</p>
-            <p>Also completed: a study of type 2 diabetes nutrition patterns in Bihar.</p>
-          </div></div>
-        </li>
-        <li class="cred">
-          <span class="bead" aria-hidden="true"></span>
-          <div class="cred__head">
-            <span class="cred__when">On camera</span>
-            <a class="pub" href="https://www.youtube.com/watch?v=aM7hpccDjz8&amp;list=PL1ATlZrFBRFJZKKNC5ww8qoXrgCrkhqm0" target="_blank" rel="noopener">
-              <svg class="ico" viewBox="0 0 12 12" role="img" aria-label="Video course"><rect x="1.2" y="2.4" width="9.6" height="7.2" rx="1.8" fill="none" stroke="currentColor" stroke-width=".9"/><path d="M5 4.6v2.8L7.4 6z" fill="currentColor"/></svg><span class="pub__src">Diabetes education course</span>
-              <span class="pub__what">A video course for patients, written and presented</span>
-            </a>
-          </div>
         </li>
         <li class="cred">
           <span class="bead bead--kumkum" aria-hidden="true"></span>
           <button class="cred__head" type="button">
-            <span class="cred__when">Now</span>
-            <span class="cred__title">M.Tech, AI and Data Science</span>
-            <span class="cred__place">IIT Patna, July 2026 to July 2028</span>
+            <span class="cred__when">2019 · Where it began</span>
+            <span class="cred__title">B.Sc. Zoology (Hons.)</span>
+            <span class="cred__place">A.N. College, Magadh University</span>
           </button>
           <div class="cred__more"><div>
-            <p>Learning the mathematics beneath the models, to build better care with them.</p>
+            <p>The living body, cell to system. Graduated with 72%.</p>
+            <p>Second place, National Science Week Quiz, RMRIMS-ICMR.</p>
           </div></div>
         </li>
         <li class="cred cred--tassel">
@@ -2399,8 +2401,8 @@
   /* ---------- Credentials: the tilak unfurls into a japa mala ----------
      Nothing navigates and the music plays on. The name goes up in smoke, the chandan dot
      flies to the head of a thread and the kumkum dot to its foot, the thread draws out from
-     where the tilak stood, and a bead blooms for each chapter: chandan where it began,
-     rudraksha for the road, a gold medallion for the gold year, kumkum for now. Hover a
+     where the tilak stood, and a bead blooms for each chapter, newest first: chandan for now,
+     rudraksha for the road, a gold medallion for the gold year, kumkum where it began. Hover a
      chapter (tap on a phone) for the rest of it. The tassel at the foot is the full CV. */
   const creds = document.getElementById("creds");
   const credsFit = creds.querySelector(".creds__fit");
@@ -4337,7 +4339,7 @@
   // what it counts. go: where to read on (a page on another site asks first). open: still being tied.
   const WORK = [
     {
-      when: "Now", tag: "IIT Patna", strand: "code", open: true,
+      when: "Since 2026", tag: "IIT Patna", strand: "code", open: true,
       title: "M.Tech, AI and Data Science",
       line: "The next knot, still being tied: learning to build tools that let care reach people I’ll never meet.",
     },
@@ -4349,14 +4351,14 @@
     {
       tag: "The evidence", strand: "both",
       title: "The remission study",
-      line: "Thirty-seven people with type 2 diabetes, followed over time. Their HbA1c fell by about two points on average (Wilcoxon, p < 0.001).",
-      fig: ["−2", "points of HbA1c"],
+      line: "Thirty-seven people with type 2 diabetes, followed over time. On average their HbA1c came down by 2.9 points (Wilcoxon, p < 0.001).",
+      fig: ["2.9", "points lower HbA1c"],
     },
     {
       when: "Since 2023", tag: "AnubhutiHealth", strand: "both",
       title: "A nutrition service, from nothing",
-      line: "Built the nutrition line and the six-person team behind it: dietitians, coaches and engineers.",
-      fig: ["₹3 lakh", "a month, in 18 months"],
+      line: "Built the nutrition line and the six-person team behind it: dietitians, coaches and engineers. In its first small pilot, diabetes went into remission, and many got their lives back.",
+      fig: ["600+", "kg lost together, in the pilot"],
     },
     {
       when: "Since 2023", tag: "AnubhutiHealth", strand: "code",
@@ -4468,7 +4470,11 @@
     if (w.fig) {
       const f = document.createElement("p"), b = document.createElement("b"), s = document.createElement("span");
       f.className = "wk-fig";
-      b.textContent = w.fig[0];
+      // The display face's + reads as a dagger, so the signs are set in the menu's letters.
+      w.fig[0].split(/([+])/).forEach((part, j) => {
+        if (!part) return;
+        if (j % 2) { const m = document.createElement("i"); m.textContent = part; b.append(m); } else b.append(part);
+      });
       s.textContent = w.fig[1];
       f.append(b, s);
       li.append(f);
