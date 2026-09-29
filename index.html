@@ -24,7 +24,7 @@
 <meta name="color-scheme" content="light">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ashutosh Om Kumar">
-<meta property="og:description" content="Blog, projects, journey, credentials and courses.">
+<meta property="og:description" content="Blog, work, journey, credentials and courses.">
 <meta property="og:url" content="https://sourcetosh.github.io/">
 <!-- The card is rendered from this page by share/make-card.mjs; run it again after changing the name or tagline. -->
 <meta property="og:image" content="https://sourcetosh.github.io/share/card.jpg">
@@ -516,6 +516,133 @@
     .cred__head { cursor: pointer; }
   }
 
+  /* ---------- Work: the tilak unwinds into a kalava ---------- */
+  /* The tilak's two dots rise to the head of the page and a kalava hangs from them: the sacred
+     thread of chandan and kumkum cotton, twisted, with a knot tied in it for every piece of work,
+     newest at the top (see WORK). Care hangs to the left of the thread and code to the right; on
+     a phone the thread runs down the left. The thread is drawn over the whole screen (drawWork). */
+  .work {
+    position: fixed; inset: 0; z-index: 11; visibility: hidden; pointer-events: none;
+    --gap: 88px; --col: min(330px, calc((100vw - 64px - var(--gap)) / 2));
+  }
+  .work.is-open { visibility: visible; }
+  .wk-cord, .wk-strands {
+    position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none;
+    -webkit-mask-image: linear-gradient(#000 calc(var(--wk-bot, 100vh) - 44px), transparent var(--wk-bot, 100vh));
+            mask-image: linear-gradient(#000 calc(var(--wk-bot, 100vh) - 44px), transparent var(--wk-bot, 100vh));
+  }
+  /* The strands themselves are painted on a narrow canvas down the thread's line (layoutWork). */
+  .wk-strands { inset: auto; left: 0; top: 0; }
+  .wk-cord path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  /* The pieces scroll in their own window, as the mala does; the page itself never scrolls. */
+  .wk-scroll {
+    position: absolute; left: 0; right: 0; top: 0; height: 0;
+    overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(transparent, #000 22px, #000 calc(100% - 44px), transparent);
+            mask-image: linear-gradient(transparent, #000 22px, #000 calc(100% - 44px), transparent);
+  }
+  .wk-scroll::-webkit-scrollbar { display: none; }
+  .work.is-open .wk-scroll, .work.is-open .wk-dot { pointer-events: auto; }
+  .wk-fit { position: relative; width: calc(var(--col) * 2 + var(--gap)); margin: 0 auto; padding: 20px 0 64px; }
+  .wk-list { list-style: none; margin: 0; padding: 0; position: relative; }
+  .wk-item { position: absolute; left: 0; top: 0; width: var(--col); opacity: 0; }
+  .wk-item.is-left { text-align: right; }
+  .wk-item.is-right { left: calc(var(--col) + var(--gap)); }
+  .wk-item[hidden] { display: none; }
+  .wk-when {
+    margin: 0; font-family: var(--sans); font-size: 9.5px; line-height: 16px; letter-spacing: .24em;
+    text-transform: uppercase; color: var(--ink-3);
+  }
+  .wk-title {
+    margin: 1px 0 0; font-family: var(--serif); font-style: italic; font-weight: 500;
+    font-size: clamp(18px, 1.5vw, 22px); line-height: 1.15; color: var(--ink);
+  }
+  .wk-line {
+    margin: 4px 0 0; font-family: var(--serif); font-style: italic; font-size: clamp(14.5px, 1.08vw, 16px);
+    line-height: 1.38; color: var(--ink-3); text-wrap: pretty;
+  }
+  /* A number worth showing, set as the name is, with what it counts in the menu's letters. */
+  .wk-fig { margin: 9px 0 0; display: flex; align-items: baseline; gap: .7em; }
+  .wk-item.is-left .wk-fig { justify-content: flex-end; }
+  .wk-fig b {
+    font-family: var(--display); font-weight: 400; font-size: clamp(27px, 2.3vw, 34px); line-height: 1;
+    letter-spacing: .02em; color: var(--ink); font-variant-numeric: lining-nums;
+  }
+  .wk-fig span { font-family: var(--sans); font-size: 9px; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-3); }
+  .wk-go {
+    display: inline-block; margin-top: 7px; padding: 5px 0 5px .24em;
+    font-family: var(--sans); font-size: 10px; line-height: 1; letter-spacing: .24em; text-transform: uppercase;
+    color: var(--ink-2); text-decoration: underline; text-decoration-color: rgba(176, 137, 79, .55);
+    text-decoration-thickness: 1px; text-underline-offset: 5px;
+    transition: color .35s var(--ease), text-decoration-color .35s var(--ease);
+  }
+  .wk-go svg { width: 8px; height: 8px; margin-left: .5em; vertical-align: .05em; overflow: visible; transition: transform .4s var(--ease-out); }
+  @media (hover: hover) and (pointer: fine) {
+    .wk-go:hover { color: var(--ink); text-decoration-color: var(--chandan-ink); }
+    .wk-go:hover svg { transform: translateX(2px); }
+  }
+
+  /* The tilak at the head of the thread: each dot is a strand, and touching it follows that
+     strand alone. Care's word sits to the left, over its column, and code's to the right. */
+  .wk-dot {
+    position: absolute; left: 0; top: 0; display: flex; align-items: center; gap: 13px; height: 34px;
+    margin: 0; padding: 0 10px; border: 0; background: none; cursor: pointer; font: inherit;
+    color: var(--ink-3); visibility: hidden; transition: opacity .6s var(--ease), color .35s var(--ease);
+  }
+  .work.is-open .wk-dot { visibility: visible; }
+  /* The bead only holds the word's place beside the tilak, which is drawn by .wk-tilak. */
+  .wk-dot__bead { display: block; flex: none; width: var(--dot); height: var(--dot); visibility: hidden; }
+  .wk-dot__label {
+    padding-left: .3em; font-family: var(--sans); font-size: 9.5px; line-height: 1; letter-spacing: .3em;
+    text-transform: uppercase; opacity: 0; transition: opacity .5s var(--ease);
+  }
+  .work.is-head .wk-dot__label { opacity: 1; transition: opacity 1.2s var(--ease) .5s; }
+  /* Following one strand: its word is inked, and the other word and its mark stand back. */
+  .work.is-care .wk-dot--care, .work.is-code .wk-dot--code { color: var(--ink); }
+  .work.is-care .wk-dot--code, .work.is-code .wk-dot--care { opacity: .4; }
+  @media (hover: hover) and (pointer: fine) {
+    .wk-dot:hover { color: var(--ink); opacity: 1; }
+    .work:has(.wk-dot--care:hover) .wk-tilak__c, .work:has(.wk-dot--code:hover) .wk-tilak__k { transform: scale(1.06); opacity: 1; }
+  }
+
+  /* The tilak at the head of the thread, the two dots of the lineage: a dot of chandan paste
+     pressed on with a fingertip, and below it the kumkum bindu, a little of its powder fallen
+     round it; and a warm light that gathers in them each time light runs down the thread. Its units are a
+     twentieth of the dot, with the bindu at 0, 0 (laid out by layoutWork, drawn in by tilakIn). */
+  /* Its own layer: the thread under it redraws every frame, the paste and powder only once. */
+  .wk-tilak { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; visibility: hidden; will-change: transform; }
+  .work.is-head .wk-tilak, .work.is-head .wk-halo { visibility: visible; }
+  /* The light that gathers in the tilak: its own layer, so its pulse never repaints the paste. */
+  .wk-halo {
+    position: absolute; left: 0; top: 0; pointer-events: none; visibility: hidden; opacity: 0; will-change: opacity;
+    background: radial-gradient(closest-side, rgba(239, 196, 104, .5), rgba(242, 207, 134, .2) 45%, rgba(241, 236, 227, 0));
+  }
+  .wk-tilak__c, .wk-tilak__k, .wk-tilak__chandan, .wk-tilak__kumkum, .wk-tilak__dust {
+    transform-box: fill-box; transform-origin: 50% 50%;
+  }
+  .wk-tilak__c, .wk-tilak__k { transition: opacity .6s var(--ease), transform .5s var(--ease-out); }
+  .work.is-care .wk-tilak__k, .work.is-code .wk-tilak__c { opacity: .35; }
+  .wk-cue { position: absolute; left: 0; top: 0; z-index: 2; height: 30px; width: 0; opacity: 0; transition: opacity .6s var(--ease); pointer-events: none; }
+  .work.has-more.is-head .wk-cue { opacity: 1; transition-delay: 2.4s; }
+  .wk-cue i {
+    position: absolute; left: -2.5px; top: 0; width: 5px; height: 5px; border-radius: 50%;
+    background: radial-gradient(circle at 38% 34%, #E9C77F, #CC9C45); animation: cue-drop 2.2s var(--ease) infinite;
+  }
+  .wk-cue span {
+    position: absolute; left: 14px; top: 8px; font-family: var(--sans); font-size: 9.5px; letter-spacing: .28em;
+    text-transform: uppercase; color: var(--ink-2); white-space: nowrap;
+  }
+  .work-open #sub-work { display: none !important; }
+
+  /* One column on phones and portrait screens: the thread runs down the left, every word to its right. */
+  @media (max-width: 699px), (max-aspect-ratio: 1/1) {
+    .work { --gap: 44px; --col: calc(min(440px, 92vw) - var(--gap)); }
+    .wk-fit { width: min(440px, 92vw); }
+    .wk-item, .wk-item.is-left, .wk-item.is-right { left: var(--gap); text-align: left; }
+    .wk-item.is-left .wk-fig { justify-content: flex-start; }
+    .wk-dot--care { flex-direction: row-reverse; }
+  }
+
   /* ---------- Portrait: the name stacks on two lines ---------- */
   @media (max-aspect-ratio: 1/1) {
     :root {
@@ -951,16 +1078,10 @@
           </div>
         </li>
         <li class="area">
-          <button class="area__label" type="button" aria-expanded="false" aria-controls="sub-projects">Projects</button>
-          <div class="sub" id="sub-projects">
+          <button class="area__label" type="button" aria-expanded="false" aria-controls="sub-work">Work</button>
+          <div class="sub" id="sub-work">
             <span class="sub__thread" aria-hidden="true"></span>
-            <div class="sub__item">
-              <a class="sub__link" href="https://anubhutihealth.in" target="_blank" rel="noopener" aria-describedby="d-anubhuti">AnubhutiHealth<svg class="sub__arrow" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.2 7.8 7.8 2.2M3.4 2.2h4.4v4.4"/></svg></a>
-              <p class="sub__desc" id="d-anubhuti">
-                <span>Where lab reports meet lived experience.</span>
-                <span>Integrative care for diabetes and metabolic health.</span>
-              </p>
-            </div>
+            <p class="sub__note">What I’ve made so far, in care and in code: a knot for each.</p>
           </div>
         </li>
         <li class="area">
@@ -1161,6 +1282,70 @@
       </ol>
     </div>
     </div>
+  </section>
+
+  <!-- Work: opened in place by the WORK label; the tilak unwinds into this kalava, a knot tied in
+       it for every piece of work. The pieces are filled from script (see WORK). -->
+  <section class="work" id="work" aria-label="Work" aria-hidden="true">
+    <canvas class="wk-strands" aria-hidden="true"></canvas>
+    <svg class="wk-cord" aria-hidden="true" focusable="false"></svg>
+    <i class="wk-halo" aria-hidden="true"></i>
+    <svg class="wk-tilak" viewBox="-30 -96 60 126" aria-hidden="true" focusable="false">
+      <defs>
+        <!-- Chandan paste pressed on with a fingertip: thinner where the finger pressed, pushed up
+             thicker toward the rim, drying a shade darker at its very edge. -->
+        <radialGradient id="wkt-paste" cx=".46" cy=".44" r=".56"><stop offset="0" stop-color="#F0D59C"/><stop offset=".5" stop-color="#E8C476"/><stop offset=".84" stop-color="#DBAA50"/><stop offset="1" stop-color="#C9943F"/></radialGradient>
+        <radialGradient id="wkt-bindu" cx=".45" cy=".42" r=".62"><stop offset="0" stop-color="#C73C2F"/><stop offset=".6" stop-color="#B62B22"/><stop offset="1" stop-color="#A2211A"/></radialGradient>
+        <radialGradient id="wkt-seed" cx=".38" cy=".34" r=".75"><stop offset="0" stop-color="#E9C77F"/><stop offset=".5" stop-color="#DDAF55"/><stop offset="1" stop-color="#CC9C45"/></radialGradient>
+        <!-- Paste laid on by hand: its edge not quite even, and a little grain of the sandalwood in it. -->
+        <filter id="wkt-rough" x="-25%" y="-25%" width="150%" height="150%">
+          <feTurbulence type="fractalNoise" baseFrequency=".16" numOctaves="2" seed="4" result="n"/>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="1.7" xChannelSelector="R" yChannelSelector="G" result="d"/>
+          <feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="1" seed="11" result="g"/>
+          <feColorMatrix in="g" type="matrix" values="0 0 0 0 .6  0 0 0 0 .42  0 0 0 0 .18  0 0 0 -3.4 1.5" result="speck"/>
+          <feComposite in="speck" in2="d" operator="in" result="s"/>
+          <feMerge><feMergeNode in="d"/><feMergeNode in="s"/></feMerge>
+        </filter>
+        <!-- Kumkum is a powder: a soft, uneven rim, and darker grains all through it. -->
+        <filter id="wkt-powder" x="-30%" y="-30%" width="160%" height="160%">
+          <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="9" result="n"/>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="1.8" xChannelSelector="R" yChannelSelector="G" result="d"/>
+          <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="1" seed="2" result="g"/>
+          <feColorMatrix in="g" type="matrix" values="0 0 0 0 .42  0 0 0 0 .06  0 0 0 0 .04  0 0 0 -2 1.02" result="speck"/>
+          <feComposite in="speck" in2="d" operator="in" result="s"/>
+          <feMerge><feMergeNode in="d"/><feMergeNode in="s"/></feMerge>
+        </filter>
+      </defs>
+      <g class="wk-tilak__c">
+        <g class="wk-tilak__chandan">
+          <g filter="url(#wkt-rough)">
+            <circle cx="0" cy="-55" r="12.3" fill="url(#wkt-paste)"/>
+            <!-- The whorl of the fingertip that pressed it, faint in the paste. -->
+            <path d="M2.11-54.41A2.1 1.85 0 1 1 1.22-57.34M-3.26-56.8A4 3.52 0 1 1-2.07-52.9M5.61-58.2A5.9 5.19 0 1 1 .5-60.79M-3.4-49.66A7.8 6.86 0 1 1 6.02-50.75M-1.17-63.92A9.6 8.45 0 1 1-7.81-51.38" fill="none" stroke="#FAEDCB" stroke-width=".95" stroke-linecap="round" stroke-opacity=".62"/>
+            <circle cx="0" cy="-55" r="11.7" fill="none" stroke="#B7833A" stroke-width="1" stroke-opacity=".4"/>
+          </g>
+        </g>
+        <circle class="wk-tilak__seed" cx="0" cy="-55" r="10" fill="url(#wkt-seed)" opacity="0"/>
+      </g>
+      <g class="wk-tilak__k">
+        <g class="wk-tilak__kumkum"><ellipse cx="0" cy=".6" rx="12.4" ry="12" fill="url(#wkt-bindu)" filter="url(#wkt-powder)"/></g>
+        <g class="wk-tilak__dust" fill="#B32620">
+          <circle cx="14.6" cy="-3.2" r=".9" opacity=".55"/><circle cx="-14" cy="5.2" r=".75" opacity=".5"/>
+          <circle cx="9.2" cy="12.6" r=".7" opacity=".45"/><circle cx="-6.4" cy="-13.6" r=".8" opacity=".5"/>
+          <circle cx="16.8" cy="6.8" r=".55" opacity=".4"/><circle cx="-16.2" cy="-4.4" r=".55" opacity=".35"/>
+          <circle cx="3.4" cy="15.2" r=".6" opacity=".4"/><circle cx="12.4" cy="-9.4" r=".45" opacity=".35"/>
+        </g>
+      </g>
+    </svg>
+    <button class="wk-dot wk-dot--care" type="button" data-strand="care" aria-pressed="false" aria-label="Care only" title="Follow the care strand"><span class="wk-dot__label" aria-hidden="true">Care</span><i class="wk-dot__bead" aria-hidden="true"></i></button>
+    <button class="wk-dot wk-dot--code" type="button" data-strand="code" aria-pressed="false" aria-label="Code only" title="Follow the code strand"><i class="wk-dot__bead" aria-hidden="true"></i><span class="wk-dot__label" aria-hidden="true">Code</span></button>
+    <div class="wk-cue" aria-hidden="true"><i></i><span>Scroll</span></div>
+    <div class="wk-scroll">
+      <div class="wk-fit">
+        <ol class="wk-list"></ol>
+      </div>
+    </div>
+    <p class="sr-only wk-live" aria-live="polite"></p>
   </section>
 
   <!-- Journey: opened in place by the JOURNEY label. Nine rings walked inward to the bindu; the
@@ -2109,6 +2294,7 @@
       html.classList.add("in"); clk0 = performance.now();
       plantBoughs();
       startWind();
+      if (location.hash === "#work") setTimeout(() => openWork(false), reduced ? 300 : 2600); // back from a case page
       // ?freeze=1200 holds every intro animation at 1.2 s, and the wind at the same moment, for checking frames.
       if (FREEZE !== null) requestAnimationFrame(() => {
         document.getAnimations().forEach((a) => { a.pause(); a.currentTime = FREEZE; });
@@ -2339,6 +2525,12 @@
     credsOpen = true;
     const my = ++credsTok;
     token++; // a touch stage() in flight stops here
+    let gone = false;
+    if (WK.open) {
+      gone = true;
+      await closeWork(false);
+      if (my !== credsTok) return;
+    }
     html.classList.add("creds-open");
     closeAll();
     areas.forEach((a) => {
@@ -2346,11 +2538,11 @@
       a.querySelector(".area__label").setAttribute("aria-expanded", String(a === credsArea));
     });
     // The name (or a section standing in for it) goes up in smoke.
-    const leaving = shown ? [...focus.querySelectorAll(".l, .focus__desc, .focus__arrow")] : nameLetters;
+    const leaving = shown ? [...focus.querySelectorAll(".l, .focus__desc, .focus__arrow")] : gone ? [] : nameLetters;
     leaving.forEach((el) => tween(el, OUT, { duration: ms(440), delay: ms(Math.random() * 160), easing: "cubic-bezier(.5,0,.75,.25)" }));
     if (shown) { shown = null; focus.classList.remove("is-live"); setTimeout(() => { if (!shown) focus.textContent = ""; }, 700); }
     const slot = document.querySelector(".id__slot").getBoundingClientRect();
-    if (smoke) smoke.puff(slot.left + slot.width / 2, slot.top + slot.height / 2, Math.max(slot.width, 220) * .55);
+    if (smoke && !gone) smoke.puff(slot.left + slot.width / 2, slot.top + slot.height / 2, Math.max(slot.width, 220) * .55);
     if (innerHeight > innerWidth) boughLayer.classList.add("is-hushed");
 
     credItems.forEach((c) => c.classList.remove("is-more"));
@@ -2895,7 +3087,8 @@
     jCap.style.top = J.capTop.toFixed(1) + "px";
     const bud = J.capTop + cap + lm; // the highest the flower reaches
     Object.assign(jLotus.style, { left: f2(W / 2 - 40 * u) + "px", top: f2(bud - 9 * u) + "px", width: f2(80 * u) + "px", height: f2(48 * u) + "px" });
-    Object.assign(jGuide.style, { left: f2(W / 2) + "px", top: f2(bud + 35 * u + 6) + "px", bottom: "auto" });
+    J.guideTop = bud + 35 * u + 6;
+    Object.assign(jGuide.style, { left: f2(W / 2) + "px", top: f2(J.guideTop) + "px", bottom: "auto" });
     jNotes.style.top = f2(J.capTop + cap + lz) + "px";
     placeJapa();
   }
@@ -3258,6 +3451,11 @@
     }
     const cs = getComputedStyle(jVerse), up = parseFloat(cs.getPropertyValue("--gap-up")) || 24, down = parseFloat(cs.getPropertyValue("--gap-down")) || 24;
     jHalo.style.height = Math.round(2 * Math.max(jSa.offsetHeight + up, jEn.offsetHeight + down) + 110) + "px";
+    // The last verse hangs larger at the middle of the screen, where on a short screen it reaches
+    // the guide's usual place under the lotus; its words go just beneath the verse instead.
+    const sab = parseFloat(getComputedStyle(jSafe).paddingBottom) || 0;
+    const under = Math.min(by + down + jEn.offsetHeight + 26, innerHeight - sab - jGuide.offsetHeight - 16);
+    jGuide.style.top = f2(final ? under : J.guideTop) + "px";
     return clear;
   }
   // A verse stays until the visitor moves on: any tap, scroll, swipe or key, once it has had a
@@ -3952,6 +4150,11 @@
       await closeCreds(false);
       if (my !== J.tok) return;
     }
+    if (WK.open) {
+      gone = true;
+      await closeWork(false);
+      if (my !== J.tok) return;
+    }
     html.classList.add("journey-open");
     areas.forEach((ar) => { ar.classList.remove("is-active"); ar.querySelector(".area__label").setAttribute("aria-expanded", "false"); });
     // The name (or a section standing in for it) goes up in smoke.
@@ -4123,6 +4326,884 @@
   });
   jClose.addEventListener("click", () => closeJourney());
 
+  /* ---------- Work: the tilak unwinds into a kalava ----------
+     Nothing navigates and the music plays on. The name goes up in smoke, the tilak's two dots rise
+     to the head of the page, and a kalava spins down from them: the sacred thread of chandan and
+     kumkum cotton, twisted, with a knot tied in it for every piece of work, the newest at the top.
+     Care is tied in the chandan strand and code in the kumkum; work that is both binds the two.
+     Touch a dot to follow its strand alone: the other unwinds from the thread and falls away, and
+     what is left draws together. Every word lives in WORK. */
+  // when · tag: the small line over the title. strand: "care", "code" or "both". fig: a number and
+  // what it counts. go: where to read on (a page on another site asks first). open: still being tied.
+  const WORK = [
+    {
+      when: "Now", tag: "IIT Patna", strand: "code", open: true,
+      title: "M.Tech, AI and Data Science",
+      line: "The next knot, still being tied: learning to build tools that let care reach people I’ll never meet.",
+    },
+    {
+      when: "2026", tag: "This site", strand: "code",
+      title: "A portfolio painted in code",
+      line: "Mist that parts at a touch, boughs that bend in one breeze, a mala that swings in to count the walk: every brushstroke here is code, written with AI.",
+    },
+    {
+      tag: "The evidence", strand: "both",
+      title: "The remission study",
+      line: "Thirty-seven people with type 2 diabetes, followed over time. Their HbA1c fell by about two points on average (Wilcoxon, p < 0.001).",
+      fig: ["−2", "points of HbA1c"],
+    },
+    {
+      when: "Since 2023", tag: "AnubhutiHealth", strand: "both",
+      title: "A nutrition service, from nothing",
+      line: "Built the nutrition line and the six-person team behind it: dietitians, coaches and engineers.",
+      fig: ["₹3 lakh", "a month, in 18 months"],
+    },
+    {
+      when: "Since 2023", tag: "AnubhutiHealth", strand: "code",
+      title: "The AnubhutiHealth app",
+      line: "Led end to end, from the first sketch to patients’ phones: where lab reports meet lived experience.",
+      go: { text: "Visit", href: "https://anubhutihealth.in" },
+    },
+    {
+      when: "Since 2023", tag: "The clinic", strand: "care",
+      title: "Clinical nutrition counselling",
+      line: "Type 1, type 2 and gestational diabetes, obesity, PCOS and metabolic syndrome, beside Dr. Kumar Anuj, DM (Endocrinology), who signs off every plan.",
+      fig: ["500+", "patients counselled"],
+    },
+    {
+      when: "Since 2023", tag: "Teaching", strand: "care",
+      title: "The dietitian certification",
+      line: "The course that trains AnubhutiHealth’s dietitians, with the care SOPs and escalation rules behind every consult.",
+      fig: ["12", "modules"],
+    },
+    {
+      tag: "On camera", strand: "care",
+      title: "Diabetes education course",
+      line: "A video course for patients, written and presented.",
+      go: { text: "Watch", href: "https://www.youtube.com/watch?v=aM7hpccDjz8&list=PL1ATlZrFBRFJZKKNC5ww8qoXrgCrkhqm0" },
+    },
+    {
+      tag: "Writing", strand: "care",
+      title: "MetaboliQ",
+      line: "Every meal is a message to your cells. MetaboliQ decodes the reply.",
+      go: { text: "Read", href: "https://anubhutihealth.in/metaboliq" },
+    },
+    {
+      tag: "The field", strand: "care",
+      title: "Type 2 diabetes in Bihar",
+      line: "A completed study of how people living with type 2 diabetes in Bihar eat.",
+    },
+    {
+      when: "2022–25", tag: "The lab", strand: "care",
+      title: "Stress, written into the body",
+      line: "Research at CSIR-CCMB on how repeated social stress shapes behaviour and the epigenome, and a 2025 paper on the epigenetics of depression.",
+      go: { text: "Read the paper", href: "https://doi.org/10.1007/s10571-025-01597-3" },
+    },
+    {
+      when: "2023", tag: "In print", strand: "care",
+      title: "Biosensors for heavy metals",
+      line: "A chapter in Recent Advances in Biosensor Technology, from Bentham Science.",
+      go: { text: "Read", href: "https://doi.org/10.2174/9789815123739123010013" },
+    },
+  ];
+  // The thread, in px: the pitch of its twist, how far each strand swings from the middle as it
+  // turns, how far a strand's fibres lie from its own middle and how much faster they turn about
+  // it, and how finely it is drawn along its length.
+  const KAL = { P: 30, a: 1.3, r: 1.5, q: 1, step: 2 };
+  // Each strand is five fine fibres: chandan cotton with two threads of gold zari in it, and
+  // kumkum cotton with two of red silk. A fibre's colour facing us and turned away, its width, and
+  // how much light it catches.
+  const YARN = {
+    cot: { body: "#DDB66C", back: "#BF9550", w: .66, shine: .4 },
+    zari: { body: "#CFA14A", back: "#A07A36", w: .6, shine: 1 },
+    red: { body: "#BB342B", back: "#8E231C", w: .66, shine: .35 },
+    silk: { body: "#D0463A", back: "#A02C23", w: .6, shine: .9 },
+  };
+  const PLY = { care: ["cot", "zari", "cot", "zari", "cot"], code: ["red", "silk", "red", "silk", "red"] };
+  const CUT = [0, 2.6, 1.2, 3.8, 1.9]; // at the frayed end no two fibres stop at the same place
+  const FRAY = 30; // how far up from its end the thread comes untwisted
+  // The knots are bound in the same fibres, three to a turn, with the light on the turn's front.
+  const BIND = {
+    care: { fib: ["#DDB468", "#CC9D45", "#E6C47F"], glint: "#FFF3CF" },
+    code: { fib: ["#B83028", "#CF4236", "#A5261F"], glint: "#FFB9A8" },
+  };
+  // Light runs down each strand from the tilak: a band every `gap` px, at `v` px a second.
+  // Its colours as r,g,b: the light on the fibres, and the glow round the thread.
+  const SHEEN = { care: { gap: 250, v: 46, c: "255,246,218", aura: "237,185,76" }, code: { gap: 330, v: 34, c: "255,192,174", aura: "226,115,90" } };
+  const E_OUT = bezier(.16, 1, .3, 1);
+  const workEl = document.getElementById("work");
+  const wkScroll = workEl.querySelector(".wk-scroll"), wkFit = workEl.querySelector(".wk-fit"), wkList = workEl.querySelector(".wk-list");
+  const wkSvg = workEl.querySelector(".wk-cord"), wkCue = workEl.querySelector(".wk-cue"), wkLive = workEl.querySelector(".wk-live");
+  const wkCan = workEl.querySelector(".wk-strands");
+  const wkDots = [...workEl.querySelectorAll(".wk-dot")]; // care (chandan), then code (kumkum)
+  const wkTilak = workEl.querySelector(".wk-tilak"), wkHalo = workEl.querySelector(".wk-halo");
+  const wkT = Object.fromEntries(["chandan", "seed", "kumkum", "dust"].map((k) => [k, wkTilak.querySelector(".wk-tilak__" + k)]));
+  const workArea = document.getElementById("sub-work").closest(".area");
+  const narrowWork = narrowMala;
+  const WK_AWAY = '<svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.2 7.8 7.8 2.2M3.4 2.2h4.4v4.4"/></svg>';
+  const WK_ON = '<svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.2 5h7.4M5.8 2.2 8.6 5 5.8 7.8"/></svg>';
+  // x: the thread's line; hc, hk: the chandan and kumkum dots at its head; top, bot: the window the
+  // pieces scroll in; pad: the list's own top in it; end: where the thread ends (the list's y);
+  // free: how far it dangles below its last knot;
+  // grow: how far down from the kumkum dot it has spun; visA, visB: how present each strand is;
+  // lit: how present the tilak's light is; glow: when it last flared to be touched.
+  const WK = {
+    open: false, closing: false, built: false, tok: 0, ftok: 0, filter: null,
+    x: 0, hc: 0, hk: 0, top: 0, bot: 0, pad: 20, end: 0, endTo: 0, free: 200, grow: 0, visA: 1, visB: 1,
+    lit: 0, glow: -1e9, nextSpark: 0, halo: -1, ctx: null, dpr: 1, cx0: 0, cw: 0, ch: 0,
+    hover: null, spark: null, items: [],
+  };
+
+  WK.items = WORK.map((w, n) => {
+    const li = document.createElement("li");
+    li.className = "wk-item wk-item--" + w.strand;
+    const when = document.createElement("p"), title = document.createElement("h2"), line = document.createElement("p");
+    when.className = "wk-when";
+    when.textContent = w.when ? `${w.when} · ${w.tag}` : w.tag;
+    title.className = "wk-title";
+    title.textContent = w.title;
+    line.className = "wk-line";
+    line.textContent = w.line;
+    li.append(when, title, line);
+    if (w.fig) {
+      const f = document.createElement("p"), b = document.createElement("b"), s = document.createElement("span");
+      f.className = "wk-fig";
+      b.textContent = w.fig[0];
+      s.textContent = w.fig[1];
+      f.append(b, s);
+      li.append(f);
+    }
+    if (w.go) {
+      const a = document.createElement("a"), away = /^https?:/.test(w.go.href);
+      a.className = "wk-go";
+      a.href = w.go.href;
+      a.textContent = w.go.text;
+      if (away) { a.target = "_blank"; a.rel = "noopener"; }
+      a.insertAdjacentHTML("beforeend", away ? WK_AWAY : WK_ON);
+      li.append(a);
+    }
+    wkList.append(li);
+    const it = { w, li, n, y: 0, to: 0, k: 0, hs: 1, shown: true, met: false, g: null, knot: null, wraps: [], sway: null, tails: [], glow: null, side: 1 };
+    li.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") { WK.hover = it; wkDraw(); } });
+    li.addEventListener("pointerleave", () => { if (WK.hover === it) { WK.hover = null; wkDraw(); } });
+    li.addEventListener("focusin", () => { WK.hover = it; wkDraw(); });
+    li.addEventListener("focusout", () => { if (WK.hover === it) { WK.hover = null; wkDraw(); } });
+    return it;
+  });
+
+  // One small clock for the thread: every value it moves is drawn by drawWork().
+  const wkTw = new Set();
+  let wkRaf = 0;
+  const wkTick = (now) => {
+    wkRaf = 0;
+    for (const tw of [...wkTw]) {
+      if (now < tw.t0) continue;
+      const p = Math.min(1, (now - tw.t0) / tw.dur);
+      tw.fn(tw.ease(p), p);
+      if (p >= 1) { wkTw.delete(tw); tw.done(); }
+    }
+    drawWork(now);
+    if (wkTw.size) wkRaf = requestAnimationFrame(wkTick);
+  };
+  const wkDraw = () => { if (!wkRaf) wkRaf = requestAnimationFrame(wkTick); };
+  const wkAnim = (dur, ease, fn, delay = 0) => new Promise((done) => {
+    wkTw.add({ t0: performance.now() + ms(delay), dur: Math.max(1, ms(dur)), ease, fn, done });
+    wkDraw();
+  });
+
+  // The strands are painted on a narrow canvas down the thread's line (wkCan), redrawn every frame,
+  // back to front: the faint shadow the thread lays on the paper; the soft glow that travels with
+  // the light; the fibres of the strand behind, first those turned away and then those facing us;
+  // the strand in front, the same way; the light on the fibres facing us; the loose hairs of the
+  // cotton; the glints that flare now and then. The knots sit over it, in the SVG.
+  function buildKalava() {
+    const defs = svgEl("defs"), soft = svgEl("filter", { id: "wk-soft", x: "-60%", y: "-20%", width: "220%", height: "140%" });
+    soft.append(svgEl("feGaussianBlur", { stdDeviation: 1.3 }));
+    defs.append(soft);
+    // The faint warm glow about a knot, and each binding fibre's colour, darkening at the sides
+    // where it goes round the cord.
+    const glow = svgEl("radialGradient", { id: "wk-kglow" });
+    [[0, .24], [.4, .1], [1, 0]].forEach(([o, a]) => glow.append(svgEl("stop", { offset: o, "stop-color": "#C8382A", "stop-opacity": a })));
+    defs.append(glow);
+    const shade = (hex, f) => "#" + [1, 3, 5].map((i) => Math.round(parseInt(hex.slice(i, i + 2), 16) * f).toString(16).padStart(2, "0")).join("");
+    for (const k of ["care", "code"]) BIND[k].fib.forEach((col, j) => {
+      const lg = svgEl("linearGradient", { id: `wk-kf-${k}-${j}`, gradientUnits: "userSpaceOnUse", x1: -4.6, y1: 0, x2: 4.6, y2: 0 });
+      [[0, shade(col, .66)], [.3, col], [.62, col], [1, shade(col, .7)]].forEach(([o, c]) => lg.append(svgEl("stop", { offset: o, "stop-color": c })));
+      defs.append(lg);
+    });
+    wkSvg.append(defs);
+    WK.spark = [0, 1, 2].map(() => ({ t0: 0, dur: 1, yl: 0, dx: 0, k: "care" }));
+    const knots = svgEl("g");
+    wkSvg.append(knots);
+    WK.items.forEach((it, n) => {
+      it.g = svgEl("g", { opacity: 0 });
+      it.knot = knotOf(it, n);
+      it.g.append(it.knot);
+      knots.append(it.g);
+    });
+    WK.built = true;
+  }
+  // A knot, tied by hand: four turns of binding round the cord, each a few fine fibres not quite
+  // side by side, no two turns quite alike, each shading the one below it and darkening at the
+  // sides where it goes round; the two ends of the tie left hanging, frayed, stirring in the
+  // breeze; and a faint warm glow about it. It is in the strand the work belongs to (the two
+  // strands turn about for work that is both). For work still under way, a loop not yet pulled tight.
+  function knotOf(it, n) {
+    const g = svgEl("g"), kind = it.w.strand;
+    let seed = 7919 * (n + 3);
+    const rnd = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
+    it.glow = svgEl("circle", { r: 10.5, fill: "url(#wk-kglow)" });
+    g.append(it.glow);
+    // A few fibres along one path, each a little off from the last, the light catching them at `at`.
+    const fibres = (parent, d, c, lean, at) => {
+      c.fib.forEach((col, j) => parent.append(svgEl("path", {
+        d, stroke: col, "stroke-width": f2(.46 + rnd() * .14), "stroke-opacity": (.78 + rnd() * .2).toFixed(2),
+        transform: `translate(${f2((j - 1) * lean + (rnd() - .5) * .3)} ${f2((j - 1) * .5 + (rnd() - .5) * .2)})`,
+      })));
+      parent.append(svgEl("path", { d, stroke: c.glint, "stroke-width": .32, "stroke-opacity": .5, pathLength: 10, "stroke-dasharray": `${f2(.8 + rnd() * .8)} 20`, "stroke-dashoffset": f2(-(at ?? 3.6) - rnd()), transform: "translate(0 -.3)" }));
+    };
+    if (it.w.open) {
+      it.sway = svgEl("g");
+      fibres(it.sway, "M0 -3.4C3.8 -7.8 10.6 -7.5 11.1 -1.6C11.5 3.6 6.4 5.6 1.3 3C4.6 5.7 6 8.4 5.2 11", BIND[kind === "care" ? "care" : "code"], .42, 2);
+      g.append(it.sway);
+      return g;
+    }
+    g.append(svgEl("ellipse", { cx: 1.4, cy: 2.2, rx: 5, ry: 4.2, fill: "rgba(62, 40, 20, .09)", filter: "url(#wk-soft)" }));
+    // How this knot's hand went: each turn's height, slant, bow and reach, and each fibre's place.
+    const turns = [-2.6, -.85, .9, 2.65].map((y) => ({
+      y: y + (rnd() - .5) * .3, tilt: .85 + (rnd() - .5) * .5, bow: 1.1 + (rnd() - .5) * .5, w0: 3.9 + (rnd() - .5) * .5, w1: 3.9 + (rnd() - .5) * .5,
+      fib: [0, 1, 2].map((j) => ({ dx: (rnd() - .5) * .45, dy: (j - 1) * .5 + (rnd() - .5) * .16 })),
+      lit: .8 + rnd() * .8, at: 3.4 + rnd() * 1.2,
+    }));
+    const side = it.side = kind === "care" ? -1 : 1, lay = [(rnd() - .5) * .8, (rnd() - .5) * .8];
+    const fw = [0, 1, 2].map(() => .48 + rnd() * .12), tj = [0, 1, 2].map((j) => [(j - 1) * .32 * side + (rnd() - .5) * .3, (j - 1) * .5 + (rnd() - .5) * .2]);
+    // The tie's two ends, hanging from the top turn on the piece's side, their fibres parting a
+    // little toward the tip.
+    const ends = [
+      [[side * 3.7, -2.6], [side * 6.2, -1.8 + lay[0]], [side * 7.2, 1.4], [side * (6.6 + lay[0]), 5.4]],
+      [[side * 3.9, -1.9], [side * 5.4, -.6], [side * 5.8, 2.4 + lay[1]], [side * (4.9 + lay[1]), 6.6]],
+    ];
+    const curve = (pts, [ox, oy]) => pts.map(([x, y], i) => `${i ? (i === 1 ? "C" : " ") : "M"}${f2(x + ox * (1 + .3 * i))} ${f2(y + oy * (1 + .3 * i))}`).join("");
+    // Work that is both is bound in both strands, turn about; followed along one strand alone,
+    // the binding shows in that strand's thread only. Each fibre colour is one path through all
+    // the turns, so a knot costs little to draw as it rides the thread.
+    const sets = kind === "both" ? [["both", ["care", "code", "care", "code"]], ["care", ["care", "care", "care", "care"]], ["code", ["code", "code", "code", "code"]]] : [[kind, [kind, kind, kind, kind]]];
+    for (const [key, of] of sets) {
+      const set = svgEl("g"), cols = new Map(), lit = [];
+      let shade = "";
+      set.dataset.strand = key;
+      turns.forEach((tn, i) => {
+        // The turn's front as it goes round the cord: slanting across the middle, turning away
+        // at the sides, bowed a little toward us.
+        const d = (dx, dy) => "M" + [-4, -3, -2, -1, 0, 1, 2, 3, 4].map((q) => {
+          const th = q * Math.PI / 8;
+          return `${f2(dx + Math.sin(th) * (q < 0 ? tn.w0 : tn.w1))} ${f2(tn.y + dy + tn.tilt * th / (Math.PI / 2) + tn.bow * Math.cos(th))}`;
+        }).join("L"), k = of[i];
+        shade += d(0, .7);
+        tn.fib.forEach((fb, j) => cols.set(`${k}-${j}`, (cols.get(`${k}-${j}`) || "") + d(fb.dx, fb.dy)));
+        if (i % 2 === 0 || tn.lit > 1.3) lit.push([d(0, -.3), k, tn]);
+      });
+      set.append(svgEl("path", { d: shade, stroke: "rgba(70, 32, 16, .12)", "stroke-width": .7 }));
+      cols.forEach((d, id) => set.append(svgEl("path", { d, stroke: `url(#wk-kf-${id})`, "stroke-width": f2(fw[+id.slice(-1)]), "stroke-opacity": .9 })));
+      lit.forEach(([d, k, tn]) => set.append(svgEl("path", { d, stroke: BIND[k].glint, "stroke-width": .32, "stroke-opacity": .5, pathLength: 10, "stroke-dasharray": `${f2(tn.lit)} 20`, "stroke-dashoffset": f2(-tn.at) })));
+      const tails = svgEl("g"), c = BIND[of[0]];
+      c.fib.forEach((col, j) => tails.append(svgEl("path", { d: curve(ends[0], tj[j]) + curve(ends[1], tj[(j + 1) % 3]), stroke: col, "stroke-width": f2(fw[j]), "stroke-opacity": .88 })));
+      tails.append(svgEl("path", { d: curve(ends[0], [0, -.3]), stroke: c.glint, "stroke-width": .32, "stroke-opacity": .5, pathLength: 10, "stroke-dasharray": "1.2 20", "stroke-dashoffset": -1.5 }));
+      set.append(tails);
+      it.tails.push(tails);
+      g.append(set);
+      it.wraps.push(set);
+    }
+    return g;
+  }
+
+  // The tilak is pressed in as the dots land: the chandan dot into a dot of paste, the kumkum dot
+  // into a bindu with a little of its powder fallen round it. Leaving, they lift back into the two
+  // plain dots.
+  const tilakAnim = (el, frames, dur, delay, easing) => {
+    if (el._a) el._a.cancel();
+    el._a = el.animate(frames, { duration: reduced ? 1 : ms(dur), delay: reduced ? 0 : ms(delay), easing, fill: "both" });
+    return el._a.finished.catch(() => {});
+  };
+  function tilakIn() {
+    const out = "cubic-bezier(.16,1,.3,1)";
+    tilakAnim(wkT.seed, [{ opacity: 1 }, { opacity: 0 }], 700, 120, "ease-out");
+    tilakAnim(wkT.chandan, [{ opacity: 0, transform: "scale(.8)" }, { opacity: 1, transform: "scale(1.06)", offset: .45 }, { opacity: 1, transform: "none" }], 800, 0, out);
+    tilakAnim(wkT.kumkum, [{ transform: "scale(.8)" }, { transform: "scale(1.06)", offset: .45 }, { transform: "none" }], 800, 0, out);
+    tilakAnim(wkT.dust, [{ opacity: 0, transform: "scale(.45)" }, { opacity: 1, transform: "none" }], 1100, 180, out);
+    wkAnim(2200, E_EASE, (e) => { WK.lit = e; }, 600);
+  }
+  function tilakOut() {
+    const inn = "cubic-bezier(.5,0,.75,.25)";
+    WK.lit = 0;
+    tilakAnim(wkT.dust, [{ opacity: 1, transform: "none" }, { opacity: 0, transform: "scale(.5)" }], 320, 0, inn);
+    tilakAnim(wkT.seed, [{ opacity: 0 }, { opacity: 1 }], 300, 160, "ease-in");
+    tilakAnim(wkT.kumkum, [{ transform: "none" }, { transform: "scale(.8)" }], 420, 60, inn);
+    return tilakAnim(wkT.chandan, [{ opacity: 1, transform: "none" }, { opacity: 0, transform: "scale(.8)" }], 420, 60, inn);
+  }
+
+  // Where each strand's middle lies, and each fibre: its x, and its layer (0 to 3: which strand
+  // is in front, whether the fibre is turned away), plus 4 where the light catches it.
+  const WKN = 3000, FIBS = [];
+  for (const k of ["care", "code"]) PLY[k].forEach((yarn, f) => FIBS.push({ k, yarn, f }));
+  const WKS = {
+    ys: new Float64Array(WKN), cx: new Float64Array(WKN), px: new Float64Array(WKN), pz: new Float64Array(WKN),
+    ph: new Float64Array(WKN), pt: new Float64Array(WKN), tq: new Float64Array(WKN), br: new Float64Array(WKN), fx: new Float32Array(WKN * FIBS.length), fl: new Uint8Array(WKN * FIBS.length),
+    fn: new Int32Array(FIBS.length),
+  };
+  const LAYER_O = [.7, .82, .95, 1];
+  // A band of light every `gap` px, as a vertical gradient over the thread from y0 to y1: faint
+  // (base) between bands, full at a band's heart. `at` is where the band's heart lies, 0 to 1.
+  const BAND = [[-.14, 0], [-.05, .5], [0, 1], [.05, .5], [.14, 0]];
+  function bandGrad(ctx, y0, y1, gap, at, rgb, base) {
+    const span = Math.max(1, y1 - y0), c0 = y0 + (at - .5) * gap, g = ctx.createLinearGradient(0, y0, 0, y0 + span);
+    const prof = (y) => {
+      let u = ((y - c0) / gap) % 1;
+      if (u < -.5) u += 1; else if (u >= .5) u -= 1;
+      for (let j = 1; j < BAND.length; j++) {
+        const [u0, a0] = BAND[j - 1], [u1, a1] = BAND[j];
+        if (u >= u0 && u <= u1) return a0 + (a1 - a0) * (u - u0) / (u1 - u0);
+      }
+      return 0;
+    };
+    const stop = (y) => g.addColorStop(Math.min(1, Math.max(0, (y - y0) / span)), `rgba(${rgb},${(base + (1 - base) * prof(y)).toFixed(3)})`);
+    stop(y0);
+    stop(y0 + span);
+    for (let c = c0 + Math.floor((y0 - c0) / gap) * gap; c - .14 * gap < y0 + span; c += gap) {
+      for (const [du] of BAND) { const y = c + du * gap; if (y > y0 && y < y0 + span) stop(y); }
+    }
+    return g;
+  }
+
+  function drawWork(now = performance.now()) {
+    if (!WK.built || (!WK.open && !WK.closing) || !WK.ctx) return;
+    const t = now / 1000, tw = windT(now), gust = breeze(tw);
+    const off = WK.top - wkScroll.scrollTop; // where the list's own top lies on the screen
+    const x = WK.x, yk = WK.hk, tail = off + WK.end;
+    const tip = Math.min(tail, yk + WK.grow), y1 = Math.min(tip, WK.bot + 14), seen = tip <= WK.bot + 14;
+    const narrow = narrowWork.matches;
+    // The thread hangs from the tilak and swings from it: a slow sway that grows down its length,
+    // each part following the one above a beat later, so soft waves run down it, and a gust pushes
+    // it aside. Its free end, dangling below the last knot, swings wider, its tip trailing.
+    const S = reduced ? 0 : narrow ? .7 : 1, free = Math.max(60, WK.free), f0 = tail - free;
+    const cordX = (y) => {
+      const d = Math.max(0, y - yk), g = 1 - Math.exp(-d / 200), u = tw - d / 210;
+      let dx = g * (5 * Math.sin(u * 1.05) + 7 * breeze(u)) + g * g * 2.2 * Math.sin(tw * 2.3 - d * .0155 + 1);
+      if (y > f0) {
+        const q = Math.min(1, (y - f0) / free), v = tw - q * .8;
+        dx += q * Math.sqrt(q) * (8 * Math.sin(v * 1.3 + .5) + 2.6 * Math.sin(v * 2.9 + 1.9) + 11 * breeze(v));
+      }
+      return x + S * dx;
+    };
+    const fadeAt = (y) => smooth(WK.top - 4, WK.top + 20, y) * (1 - smooth(WK.bot - 44, WK.bot - 6, y));
+    const n = WK.grow > 0 && y1 > yk ? Math.min(WKN - 1, Math.ceil((y1 - yk) / KAL.step)) + 1 : 0;
+    const { ys, cx, px, pz, ph: phs, pt, tq, br, fx: FX, fl: FL, fn } = WKS;
+    // Within it, too, it is never still. It turns on itself as it swings, winding and unwinding,
+    // the more toward its free end; and a slow breath runs down it, its strands and their fibres
+    // loosening a little as it passes and drawing tight again behind it.
+    for (let i = 0; i < n; i++) {
+      const y = Math.min(y1, yk + i * KAL.step), d = y - yk, u = tw - d / 300;
+      ys[i] = y;
+      cx[i] = cordX(y);
+      tq[i] = reduced ? 0 : (1.8 * Math.sin(u * .47) + Math.sin(u * .83 + 1.3) + 1.6 * breeze(u)) * (1 - Math.exp(-d / 280));
+      br[i] = reduced ? .3 : .5 + .5 * Math.sin(tw * 1.3 - d * .017);
+    }
+    const vis = { care: WK.visA, code: WK.visB }, alpha = {};
+    let again = false, F = 0;
+    for (const [k, sgn] of [["care", 1], ["code", -1]]) {
+      const u = 1 - (sgn > 0 ? WK.visA : WK.visB), uo = 1 - (sgn > 0 ? WK.visB : WK.visA);
+      const side = narrow || sgn < 0 ? 1 : -1; // it falls away toward its own column
+      alpha[k] = u > 0 ? 1 - smooth(.3, 1, u) : 1;
+      // The strand's own middle, and how far it lies in front of the other.
+      for (let i = 0; i < n; i++) {
+        const y = ys[i], d = y - yk, ph = TAU * (y - off) / KAL.P + tq[i];
+        const into = d >= 9 ? 1 : smooth(0, 9, d), part = seen ? smooth(tip - FRAY, tip, y) : 0;
+        // The staying strand straightens as the other leaves; the leaving one swings wide, then
+        // falls away loose toward its column, billowing a little as it goes.
+        const amp = KAL.a * (.75 + .75 * br[i]) * into * (1 - uo) * (1 + 2.4 * u);
+        const loose = u ? side * 26 * u * u * (.55 + .45 * Math.sin(y / 53 + t * .8 + (sgn > 0 ? 0 : 2.1))) : 0;
+        px[i] = cx[i] + sgn * ((1 - part) * amp * Math.sin(ph + 2.6 * u * sgn) + part * 3) + loose;
+        pz[i] = sgn * Math.cos(ph) * (1 - part) * (1 - Math.max(u, uo)) * into + (uo - u) + (1 - into) * (sgn > 0 ? -.3 : .3) + part * sgn * .1;
+        phs[i] = ph * KAL.q;
+        pt[i] = into * (1 - part);
+      }
+      // Its fibres turn about that middle. At the end they come untwisted and fan out, each
+      // stopping at its own length, stirring as they hang.
+      for (let f = 0; f < PLY[k].length; f++, F++) {
+        const th = TAU * f / PLY[k].length + (sgn > 0 ? 0 : .8), fan = f - (PLY[k].length - 1) / 2;
+        const cut = seen ? tip - CUT[f] * 1.6 - (sgn > 0 ? .7 : 0) : Infinity;
+        const stir = reduced ? 0 : 1.5 * Math.sin(tw * 2.3 + f * 1.7 + sgn) + .7 * Math.sin(tw * 3.7 + f * 2.9);
+        const b = F * WKN;
+        let m = 0;
+        for (; m < n && ys[m] <= cut; m++) {
+          const psi = phs[m] + th, rr = KAL.r * pt[m] * (.8 + .45 * br[m]), s = Math.sin(psi), c = Math.cos(psi);
+          let fxv = px[m] + rr * s;
+          const part = seen && ys[m] > tip - FRAY ? smooth(tip - FRAY, tip, ys[m]) : 0;
+          if (part) fxv += fan * 1.5 * Math.pow(part, 1.3) + part * part * stir;
+          const fz = c * (1 - part), L = (pz[m] >= 0 ? 2 : 0) + (fz >= 0 ? 1 : 0);
+          FX[b + m] = fxv;
+          // The light catches a fibre where it comes round to face us.
+          FL[b + m] = L + (L === 3 && fz > .72 && part < .5 ? 4 : 0);
+        }
+        fn[F] = m;
+      }
+    }
+
+    const ctx = WK.ctx, dpr = WK.dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, -WK.cx0 * dpr, 0);
+    ctx.clearRect(WK.cx0, 0, WK.cw, WK.ch);
+    ctx.lineCap = ctx.lineJoin = "round";
+    // The light is born in the tilak: it gathers there, then runs down each strand as a band.
+    const lightAt = {};
+    for (const k of ["care", "code"]) lightAt[k] = reduced ? .2 : (t * SHEEN[k].v % SHEEN[k].gap) / SHEEN[k].gap;
+    if (n > 1) {
+      const yEnd = ys[n - 1];
+      // Its shadow on the paper, and the glow round it where the light is passing.
+      const aura = new Path2D();
+      aura.moveTo(cx[0], ys[0]);
+      for (let i = 2; i < n; i += 2) aura.lineTo(cx[i], ys[i]);
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = "rgba(62, 40, 20, .035)";
+      ctx.save();
+      ctx.translate(1.4, 2.4);
+      for (const w of [6, 3]) { ctx.lineWidth = w; ctx.stroke(aura); }
+      ctx.restore();
+      for (const k of ["care", "code"]) {
+        if (!alpha[k]) continue;
+        ctx.strokeStyle = bandGrad(ctx, yk, yEnd, SHEEN[k].gap, lightAt[k], SHEEN[k].aura, 0);
+        for (const [w, o] of [[9, .18], [3.6, .3]]) { ctx.lineWidth = w; ctx.globalAlpha = o * alpha[k] * (k === "care" ? 1 : .75); ctx.stroke(aura); }
+      }
+      // The fibres, layer by layer.
+      for (let L = 0; L < 4; L++) for (const yarn in YARN) {
+        const Y = YARN[yarn];
+        let a = 0;
+        ctx.beginPath();
+        FIBS.forEach((fb, j) => {
+          if (fb.yarn !== yarn) return;
+          a = alpha[fb.k];
+          const b = j * WKN, m = fn[j];
+          let inL = false;
+          for (let i = 0; i < m; i++) {
+            const here = (FL[b + i] & 3) === L;
+            if (here && !inL) {
+              if (i) { ctx.moveTo((FX[b + i - 1] + FX[b + i]) / 2, (ys[i - 1] + ys[i]) / 2); ctx.lineTo(FX[b + i], ys[i]); } else ctx.moveTo(FX[b], ys[0]);
+            } else if (here) ctx.lineTo(FX[b + i], ys[i]);
+            else if (inL) ctx.lineTo((FX[b + i - 1] + FX[b + i]) / 2, (ys[i - 1] + ys[i]) / 2);
+            inL = here;
+          }
+        });
+        if (!a) continue;
+        ctx.strokeStyle = L & 1 ? Y.body : Y.back;
+        ctx.lineWidth = Y.w;
+        ctx.globalAlpha = LAYER_O[L] * a;
+        ctx.stroke();
+      }
+      // The care strand hangs from the chandan dot, down behind the kumkum bindu to twist with the
+      // code strand. It comes as the thread starts to spin, and swings aside when care leaves.
+      const hang = alpha.care * smooth(0, 40, WK.grow);
+      if (hang > .01) {
+        const y0 = WK.hc, lean = (narrow ? 1 : -1) * 20 * (1 - WK.visA) ** 2, turn = reduced ? 0 : .6 * Math.sin(tw * .5);
+        for (const front of [false, true]) for (const yarn of ["cot", "zari"]) {
+          const Y = YARN[yarn];
+          ctx.beginPath();
+          PLY.care.forEach((yn, f) => {
+            if (yn !== yarn) return;
+            let on = false, lx = 0, ly = 0;
+            for (let y = y0; y < yk + KAL.step; y += KAL.step) {
+              const psi = TAU * (y - y0) / KAL.P + TAU * f / PLY.care.length + turn;
+              const sx = x + lean * smooth(y0, yk + 40, y) + KAL.r * Math.sin(psi), here = Math.cos(psi) >= 0 === front;
+              if (here) { if (!on) ctx.moveTo(y > y0 ? lx : sx, y > y0 ? ly : y); ctx.lineTo(sx, y); }
+              on = here; lx = sx; ly = y;
+            }
+          });
+          ctx.strokeStyle = front ? Y.body : Y.back;
+          ctx.lineWidth = Y.w;
+          ctx.globalAlpha = (front ? .95 : .72) * hang;
+          ctx.stroke();
+        }
+      }
+      // The light on the fibres facing us: a faint sheen all along, and the band.
+      const sheen = {};
+      for (const k of ["care", "code"]) sheen[k] = bandGrad(ctx, yk, yEnd, SHEEN[k].gap, lightAt[k], SHEEN[k].c, .16);
+      for (const yarn in YARN) {
+        let k = null;
+        ctx.beginPath();
+        FIBS.forEach((fb, j) => {
+          if (fb.yarn !== yarn) return;
+          k = fb.k;
+          const b = j * WKN, m = fn[j];
+          let on = false;
+          for (let i = 0; i < m; i++) {
+            const lit = FL[b + i] >= 4;
+            if (lit && !on && i) { ctx.moveTo((FX[b + i - 1] + FX[b + i]) / 2, (ys[i - 1] + ys[i]) / 2); ctx.lineTo(FX[b + i], ys[i]); } else if (lit && on) ctx.lineTo(FX[b + i], ys[i]);
+            on = lit && i > 0;
+          }
+        });
+        if (!k || !alpha[k]) continue;
+        ctx.strokeStyle = sheen[k];
+        ctx.lineWidth = .65;
+        ctx.globalAlpha = YARN[yarn].shine * alpha[k];
+        ctx.stroke();
+      }
+      // A few loose hairs of the cotton stand out from each strand and stir in the breeze.
+      ctx.lineWidth = .42;
+      for (const [k, sgn] of [["care", 1], ["code", -1]]) {
+        if (!alpha[k] || n < 30) continue;
+        const hy1 = Math.min(tip, y1) - 26;
+        ctx.beginPath();
+        for (let j = sgn > 0 ? 0 : 1; j < 400; j += 2) {
+          const y = off + WK.pad + 16 + j * 19 + (j * 53) % 23;
+          if (y > hy1) break;
+          if (y < yk + 14) continue;
+          const sd = (j * 7) % 3 ? 1 : -1, len = 2.6 + (j * 13 % 5) * .7, ang = .55 + .35 * Math.sin(j * 1.7);
+          const hx = sd * len * Math.cos(ang) + (reduced ? 0 : (2.2 * gust + .9 * Math.sin(tw * 2.1 + j * 1.9)) * len / 5), hy = len * Math.sin(ang);
+          const sx = cordX(y) + sgn * KAL.a * .5 + sd * KAL.r * .8;
+          ctx.moveTo(sx, y);
+          ctx.quadraticCurveTo(sx + hx * .55, y + hy * .05, sx + hx, y + hy);
+        }
+        ctx.strokeStyle = k === "care" ? YARN.cot.body : YARN.red.body;
+        ctx.globalAlpha = (k === "care" ? .5 : .42) * alpha[k];
+        ctx.stroke();
+      }
+    }
+
+    const flare = Math.exp(-(((lightAt.care - .5) / .075) ** 2));
+    const touch = Math.max(0, 1 - (now - WK.glow) / 1800);
+    const halo = WK.lit * ((reduced ? .45 : .3 + .55 * flare) + .6 * touch * touch);
+    if (Math.abs(halo - WK.halo) > .004) { WK.halo = halo; wkHalo.style.opacity = halo.toFixed(3); }
+    if (touch > 0) again = true;
+
+    // Now and then a fibre of the zari (or the silk) catches the light and flares.
+    const ySpan = Math.min(tip, y1) - yk - 60;
+    if (!reduced && WK.open && ySpan > 40 && now > WK.nextSpark) {
+      const s = WK.spark.find((q) => now - q.t0 > q.dur);
+      if (s) Object.assign(s, { t0: now, dur: 1000 + Math.random() * 800, yl: yk + 24 + Math.random() * ySpan - off, dx: (Math.random() - .5) * 2.4, k: Math.random() < .7 ? "care" : "code" });
+      WK.nextSpark = now + 700 + Math.random() * 1700;
+    }
+    for (const s of WK.spark) {
+      const p = (now - s.t0) / s.dur, y = s.yl + off;
+      if (!s.t0 || p < 0 || p > 1 || y > tip) continue;
+      const e = Math.sin(Math.PI * p), r = .8 + 1.8 * e, sx = cordX(y) + s.dx;
+      const o = e * e * vis[s.k] * fadeAt(y);
+      if (o < .01) continue;
+      ctx.fillStyle = ctx.strokeStyle = s.k === "care" ? "#FFF6DA" : "#FFD2C4";
+      ctx.globalAlpha = o * .45;
+      ctx.beginPath();
+      ctx.arc(sx, y, 1.3, 0, TAU);
+      ctx.fill();
+      ctx.globalAlpha = o;
+      ctx.lineWidth = .5;
+      ctx.beginPath();
+      ctx.moveTo(sx - r, y); ctx.lineTo(sx + r, y);
+      ctx.moveTo(sx, y - r * 1.35); ctx.lineTo(sx, y + r * 1.35);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+
+    // The knots ride the thread, fading at the window's edges as the words do.
+    for (const it of WK.items) {
+      const ky = off + WK.pad + it.y + 8;
+      const strandVis = it.w.strand === "care" ? WK.visA : it.w.strand === "code" ? WK.visB : Math.max(WK.visA, WK.visB);
+      const fade = fadeAt(ky) * (ky <= tip + 1 ? 1 : 0);
+      const o = it.k * strandVis * fade;
+      if (o < .004) { if (it.o) { it.o = 0; it.g.setAttribute("opacity", 0); } continue; }
+      const hs = WK.hover === it ? 1.3 : 1;
+      if (Math.abs(hs - it.hs) > .003) { it.hs += (hs - it.hs) * (reduced ? 1 : .2); again = true; }
+      const s = (1.9 - .9 * it.k) * it.hs;
+      it.g.setAttribute("transform", `translate(${f2(cordX(ky))} ${f2(ky)}) scale(${s.toFixed(3)})`);
+      it.o = o;
+      it.g.setAttribute("opacity", o.toFixed(3));
+      if (it.w.strand === "both") {
+        const m = Math.min(WK.visA, WK.visB), v = { both: m, care: (WK.visA - m) / Math.max(WK.visA, WK.visB, .001), code: (WK.visB - m) / Math.max(WK.visA, WK.visB, .001) };
+        it.wraps.forEach((w) => w.setAttribute("opacity", v[w.dataset.strand].toFixed(3)));
+      }
+      if (it.sway) it.sway.setAttribute("transform", `rotate(${(reduced ? 0 : 6 * Math.sin(t * .9) + 7 * gust).toFixed(2)})`);
+      // The tie's ends stir in the breeze, and the glow about the knot breathes, just.
+      if (!reduced) {
+        const a = it.side * (5 * Math.sin(t * 1.1 + it.n * 1.9) + 9 * gust);
+        it.tails.forEach((tl) => tl.setAttribute("transform", `rotate(${a.toFixed(2)} ${f2(it.side * 3.7)} -2.4)`));
+      }
+      it.glow.setAttribute("opacity", (reduced ? .85 : .7 + .3 * Math.sin(t * .8 + it.n * 1.7)).toFixed(3));
+    }
+    if (again) wkDraw();
+  }
+
+  // Wide screens: care to the left of the thread and code to the right; work that is both goes
+  // wherever is free first. Each is placed as near under the last as its side allows, and the
+  // thread's free end dangles well below the last knot and its words. One column on phones.
+  function placeWork() {
+    const narrow = narrowWork.matches, free = [0, 0], STEP = 62;
+    let last = -STEP, bottom = 0;
+    for (const it of WK.items) {
+      if (!it.shown) continue;
+      const s = narrow ? 1 : it.w.strand === "care" ? 0 : it.w.strand === "code" ? 1 : free[0] <= free[1] ? 0 : 1;
+      it.li.classList.toggle("is-left", s === 0);
+      it.li.classList.toggle("is-right", s === 1);
+      const h = it.li.offsetHeight, top = narrow ? free[1] : Math.max(free[s], last + STEP);
+      it.to = top;
+      free[s] = top + h + (narrow ? 28 : 34);
+      last = top;
+      bottom = Math.max(bottom, top + h);
+    }
+    const knot = Math.max(0, last) + 8;
+    WK.endTo = Math.max(knot + (narrow ? 170 : 210), bottom + (narrow ? 100 : 120));
+    WK.free = WK.endTo - knot;
+    wkList.style.height = Math.ceil(Math.max(bottom + 16, WK.endTo + 24)) + "px";
+  }
+
+  // The window the pieces scroll in runs from just under the dots to the nav, and the nav glides
+  // down toward the socials to give it as much of the screen as it can.
+  function layoutWork() {
+    const narrow = narrowWork.matches, sp = getComputedStyle(jSafe), sat = parseFloat(sp.paddingTop) || 0;
+    const nav = navEl.getBoundingClientRect(), navTop = nav.top - navShift, navBot = nav.bottom - navShift;
+    const soc = socialsEl.getBoundingClientRect();
+    navShift = Math.max(0, soc.top - 14 - navBot);
+    navEl.style.transform = navShift ? `translateY(${navShift.toFixed(1)}px)` : "";
+    const d = tilakDots[0].getBoundingClientRect().width || 10;
+    workEl.style.setProperty("--dot", d + "px");
+    placeWork();
+    const fr = wkFit.getBoundingClientRect(), gap = parseFloat(getComputedStyle(workEl).getPropertyValue("--gap")) || 44;
+    WK.x = narrow ? fr.left + gap / 2 - 2 : fr.left + fr.width / 2;
+    WK.hc = sat + Math.max(28, innerHeight * .045) + d / 2;
+    WK.hk = WK.hc + d * 2.75; // the tilak's own spacing
+    const ts = d / 20; // the tilak's units (its viewBox is -30 -96 60 126)
+    wkTilak.style.cssText = `left:${f2(WK.x - 30 * ts)}px;top:${f2(WK.hk - 96 * ts)}px;width:${f2(60 * ts)}px;height:${f2(126 * ts)}px`;
+    Object.assign(wkHalo.style, { left: f2(WK.x - 25 * ts) + "px", top: f2(WK.hk - 92 * ts) + "px", width: f2(50 * ts) + "px", height: f2(124 * ts) + "px" });
+    // The strands' canvas: a column wide enough for a strand falling away, as deep as the window.
+    WK.dpr = Math.min(2, devicePixelRatio || 1);
+    WK.cw = 180;
+    WK.cx0 = Math.round(WK.x - WK.cw / 2);
+    WK.ch = Math.ceil(innerHeight);
+    wkCan.width = Math.round(WK.cw * WK.dpr);
+    wkCan.height = Math.round(WK.ch * WK.dpr);
+    Object.assign(wkCan.style, { left: WK.cx0 + "px", width: WK.cw + "px", height: WK.ch + "px" });
+    WK.ctx = WK.ctx || wkCan.getContext("2d");
+    WK.top = WK.hk + d / 2 + 16;
+    WK.bot = Math.max(WK.top + 90, navTop + navShift - 14);
+    wkScroll.style.top = f2(WK.top) + "px";
+    wkScroll.style.height = f2(WK.bot - WK.top) + "px";
+    workEl.style.setProperty("--wk-bot", f2(WK.bot) + "px");
+    wkSvg.setAttribute("viewBox", `0 0 ${innerWidth} ${innerHeight}`);
+    // Care's word to the left of its dot and code's to the right (both to the right on a phone).
+    const [care, code] = wkDots, pad = 10;
+    if (narrow) care.style.left = f2(WK.x - d / 2 - pad) + "px";
+    else care.style.left = f2(WK.x + d / 2 + pad - care.offsetWidth) + "px";
+    care.style.top = f2(WK.hc - care.offsetHeight / 2) + "px";
+    code.style.left = f2(WK.x - d / 2 - pad) + "px";
+    code.style.top = f2(WK.hk - code.offsetHeight / 2) + "px";
+    wkCue.style.left = f2(WK.x) + "px";
+    wkCue.style.top = f2(WK.bot - 30) + "px";
+    WK.items.forEach((it) => { if (it.shown) { it.y = it.to; it.li.style.top = it.y + "px"; } });
+    WK.end = WK.pad + WK.endTo;
+    showWkCue();
+    keepDirty = true;
+  }
+  const showWkCue = () => {
+    const rest = wkScroll.scrollHeight - wkScroll.clientHeight - wkScroll.scrollTop;
+    workEl.classList.toggle("has-more", rest > 24);
+  };
+  wkScroll.addEventListener("scroll", () => { showWkCue(); wkDraw(); }, { passive: true });
+
+  // A tilak dot flies between its place and the head of the thread on a gentle bow, swelling a
+  // little mid-air: the chandan dot bows one way and the kumkum the other, and they meet again.
+  function flyWk(dot, x, y, home, bowSign) {
+    const [dx0, dy0] = centre(dot), s = dot.getBoundingClientRect().width || 10;
+    const [ax, ay] = home ? [x, y] : [dx0, dy0], [ex, ey] = home ? [dx0, dy0] : [x, y];
+    const f = document.createElement("i");
+    f.className = "dot-flight " + (dot.classList.contains("dot--chandan") ? "dot--chandan" : "dot--kumkum");
+    f.style.cssText = `left:${f2(ax - s / 2)}px;top:${f2(ay - s / 2)}px;width:${s}px;height:${s}px`;
+    document.body.append(f);
+    flights.push(f);
+    const dx = ex - ax, dy = ey - ay, bow = bowSign * Math.min(22, Math.hypot(dx, dy) * .09);
+    return f.animate([
+      { transform: "translate(0px, 0px) scale(1)" },
+      { transform: `translate(${f2(dx * .5 + bow)}px, ${f2(dy * .5)}px) scale(1.3)`, offset: .5 },
+      { transform: `translate(${f2(dx)}px, ${f2(dy)}px) scale(1)` },
+    ], { duration: ms(home ? 850 : 1050), easing: SWIFT, fill: "both" }).finished.catch(() => {});
+  }
+
+  // As the thread reaches a knot the knot is pulled tight and its piece settles in beside it.
+  function meet(it, delay = 0) {
+    it.met = true;
+    wkAnim(620, E_OUT, (e) => { it.k = e; }, delay);
+    tween(it.li, IN, { duration: ms(950), delay: ms(delay + 70), easing: SETTLE }, START);
+  }
+  // The thread spins down from the tilak as far as the window shows, the knots meeting it on the
+  // way; the rest is there already, for whoever scrolls.
+  function spinKalava(my) {
+    const off = WK.top - wkScroll.scrollTop, reach = Math.max(40, Math.min(off + WK.end, WK.bot + 14) - WK.hk);
+    WK.items.forEach((it) => { it.met = false; });
+    return wkAnim(reduced ? 1 : 1150 + reach * .75, E_SWIFT, (e) => {
+      WK.grow = reach * e;
+      const o = WK.top - wkScroll.scrollTop;
+      for (const it of WK.items) if (it.shown && !it.met && WK.hk + WK.grow >= o + WK.pad + it.y + 8) meet(it);
+    }).then(() => {
+      if (my !== WK.tok) return;
+      WK.grow = 1e5;
+      WK.items.forEach((it, i) => { if (it.shown && !it.met) meet(it, i * 30); });
+      WK.glow = performance.now(); // the tilak's light swells once: touch us
+      wkDraw();
+    });
+  }
+
+  async function openWork(byKeyboard) {
+    if (WK.open) return;
+    WK.open = true;
+    WK.closing = false;
+    const my = ++WK.tok;
+    token++; // a touch stage() in flight stops here
+    let gone = false;
+    if (credsOpen) {
+      gone = true;
+      await closeCreds(false);
+      if (my !== WK.tok) return;
+    }
+    html.classList.add("work-open");
+    closeAll();
+    areas.forEach((a) => {
+      a.classList.toggle("is-active", a === workArea);
+      a.querySelector(".area__label").setAttribute("aria-expanded", String(a === workArea));
+    });
+    // The name (or a section standing in for it) goes up in smoke.
+    const leaving = shown ? [...focus.querySelectorAll(".l, .focus__desc, .focus__arrow")] : gone ? [] : nameLetters;
+    leaving.forEach((el) => tween(el, OUT, { duration: ms(440), delay: ms(Math.random() * 160), easing: "cubic-bezier(.5,0,.75,.25)" }));
+    if (shown) { shown = null; focus.classList.remove("is-live"); setTimeout(() => { if (!shown) focus.textContent = ""; }, 700); }
+    const slot = document.querySelector(".id__slot").getBoundingClientRect();
+    if (smoke && !gone) smoke.puff(slot.left + slot.width / 2, slot.top + slot.height / 2, Math.max(slot.width, 220) * .55);
+    boughLayer.classList.add("is-hushed"); // the thread's words reach out under the boughs
+
+    if (!WK.built) buildKalava();
+    setStrand(null, true);
+    wkTw.clear();
+    clearFlights();
+    WK.items.forEach((it) => { if (it.li._a) { it.li._a.cancel(); it.li._a = null; } it.k = 0; it.met = false; it.hs = 1; });
+    workEl.classList.remove("is-head", "has-more");
+    workEl.classList.add("is-open");
+    workEl.setAttribute("aria-hidden", "false");
+    wkScroll.scrollTop = 0;
+    WK.grow = 0;
+    WK.visA = WK.visB = 1;
+    layoutWork();
+    wkDraw();
+    await wait(240);
+    if (my !== WK.tok) return;
+    // The tilak rises to the head of the page, and the thread spins down from it.
+    tilakEl2.classList.add("is-away");
+    await Promise.all([flyWk(tilakDots[0], WK.x, WK.hc, false, -1), flyWk(tilakDots[1], WK.x, WK.hk, false, 1)]);
+    if (my !== WK.tok) return;
+    clearFlights();
+    workEl.classList.add("is-head");
+    tilakIn();
+    showWkCue();
+    wkLive.textContent = `Work, ${WORK.length} pieces, newest first. Care hangs from the chandan dot and code from the kumkum; touch either to follow it alone.`;
+    await spinKalava(my);
+    if (my !== WK.tok) return;
+    if (byKeyboard) wkDots[0].focus({ preventScroll: true });
+  }
+
+  async function closeWork(restoreName = true) {
+    if (!WK.open) return;
+    WK.open = false;
+    WK.closing = true;
+    const my = ++WK.tok;
+    html.classList.remove("work-open");
+    if (restoreName) areas.forEach((a) => {
+      a.classList.remove("is-active");
+      a.querySelector(".area__label").setAttribute("aria-expanded", "false");
+    });
+    WK.items.forEach((it) => { if (it.shown) tween(it.li, OUT, { duration: ms(340), delay: ms(Math.random() * 120), easing: "cubic-bezier(.5,0,.75,.25)" }); });
+    // The thread winds back up into the tilak, its knots loosening as they go.
+    wkTw.clear();
+    const off = WK.top - wkScroll.scrollTop, g0 = Math.max(0, Math.min(WK.grow, Math.min(off + WK.end, WK.bot + 14) - WK.hk));
+    const k0 = WK.items.map((it) => it.k);
+    WK.grow = g0;
+    const wound = wkAnim(reduced ? 1 : 900, E_SWIFT, (e) => {
+      WK.grow = g0 * (1 - e);
+      WK.items.forEach((it, i) => { it.k = k0[i] * (1 - smooth(0, .45, e)); });
+    }, 120);
+    workEl.classList.remove("has-more");
+    navShift = 0;
+    navEl.style.transform = "";
+    boughLayer.classList.remove("is-hushed");
+    if (restoreName) {
+      const slot = document.querySelector(".id__slot").getBoundingClientRect();
+      if (smoke) smoke.puff(slot.left + slot.width / 2, slot.top + slot.height / 2, Math.max(slot.width, 220) * .45);
+      nameLetters.forEach((l) => tween(l, IN, { duration: ms(1000), delay: ms(700 + Math.random() * 380), easing: SETTLE }));
+    }
+    await wound;
+    if (my !== WK.tok) return;
+    await tilakOut();
+    if (my !== WK.tok) return;
+    workEl.classList.remove("is-head");
+    await Promise.all([flyWk(tilakDots[0], WK.x, WK.hc, true, -1), flyWk(tilakDots[1], WK.x, WK.hk, true, 1)]);
+    if (my !== WK.tok) return;
+    tilakEl2.classList.remove("is-away");
+    clearFlights();
+    WK.closing = false;
+    workEl.classList.remove("is-open");
+    workEl.setAttribute("aria-hidden", "true");
+    keepDirty = true;
+  }
+
+  // Touch a dot to follow its strand alone: the other unwinds from the thread and falls away, its
+  // knots and its pieces with it, and what is left draws together from the top. Touch it again
+  // (or the other dot) to change.
+  function setStrand(k, now) {
+    const next = !k || k === WK.filter ? null : k;
+    WK.filter = next;
+    const my = ++WK.ftok;
+    workEl.classList.toggle("is-care", next === "care");
+    workEl.classList.toggle("is-code", next === "code");
+    wkDots.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.strand === next)));
+    const keep = (it) => !next || it.w.strand === next || it.w.strand === "both";
+    const a1 = next === "code" ? 0 : 1, b1 = next === "care" ? 0 : 1;
+    if (now) {
+      WK.visA = a1; WK.visB = b1;
+      WK.items.forEach((it) => { it.shown = keep(it); it.li.hidden = !it.shown; });
+      return;
+    }
+    const gone = WK.items.filter((it) => it.shown && !keep(it)), back = WK.items.filter((it) => !it.shown && keep(it));
+    const a0 = WK.visA, b0 = WK.visB;
+    wkAnim(1500, E_EASE, (e) => { WK.visA = a0 + (a1 - a0) * e; WK.visB = b0 + (b1 - b0) * e; });
+    gone.forEach((it) => {
+      tween(it.li, OUT, { duration: ms(380), delay: ms(Math.random() * 90), easing: "cubic-bezier(.5,0,.75,.25)" });
+      const k0 = it.k;
+      wkAnim(460, E_EASE, (e) => { it.k = k0 * (1 - e); });
+    });
+    if (wkScroll.scrollTop > 0) wkScroll.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+    const count = WK.items.filter(keep).length;
+    wkLive.textContent = next ? `${next === "care" ? "Care" : "Code"} only: ${count} pieces of work.` : `Both strands: ${count} pieces of work.`;
+    setTimeout(() => {
+      if (my !== WK.ftok || !WK.open) return;
+      gone.forEach((it) => { it.shown = false; it.li.hidden = true; });
+      back.forEach((it) => { it.shown = true; it.li.hidden = false; it.k = 0; });
+      const from = new Map(WK.items.map((it) => [it, it.y]));
+      placeWork();
+      back.forEach((it) => { it.y = it.to; it.li.style.top = it.y + "px"; });
+      const movers = WK.items.filter((it) => it.shown && !back.includes(it)), e0 = WK.end, e1 = WK.pad + WK.endTo;
+      wkAnim(900, E_OUT, (e) => {
+        movers.forEach((it) => { it.y = from.get(it) + (it.to - from.get(it)) * e; it.li.style.top = f2(it.y) + "px"; });
+        WK.end = e0 + (e1 - e0) * e;
+      }).then(() => { if (my === WK.ftok) { showWkCue(); keepDirty = true; } });
+      back.forEach((it, i) => meet(it, 240 + i * 60));
+    }, reduced ? 0 : 420);
+  }
+  wkDots.forEach((b) => b.addEventListener("click", () => { if (WK.open && !WK.closing) setStrand(b.dataset.strand); }));
+
+  // The wheel and the keys scroll the pieces wherever the pointer happens to be.
+  addEventListener("wheel", (e) => {
+    if (WK.open && !(e.target.closest && e.target.closest(".wk-scroll"))) wkScroll.scrollTop += e.deltaY;
+  }, { passive: true });
+  addEventListener("keydown", (e) => {
+    if (!WK.open || leave.open || e.altKey || e.ctrlKey || e.metaKey) return;
+    const page = wkScroll.clientHeight * .85;
+    const by = { ArrowDown: 60, ArrowUp: -60, PageDown: page, PageUp: -page, End: 1e5, Home: -1e5 }[e.key];
+    if (by === undefined) return;
+    e.preventDefault();
+    wkScroll.scrollBy({ top: by, behavior: reduced ? "auto" : "smooth" });
+  });
+  addEventListener("resize", () => { if (WK.open) requestAnimationFrame(() => { layoutWork(); wkDraw(); }); });
+
   /* ---------- Leaving: any link to another site asks first, then opens in a new tab ---------- */
   const leave = document.querySelector(".leave"), leaveGo = leave.querySelector(".leave__go");
   const leaveHost = leave.querySelector(".leave__host"), leaveName = leave.querySelector(".leave__name");
@@ -4175,8 +5256,10 @@
   areas.forEach((area) => {
     area.querySelector(".area__label").addEventListener("click", (e) => {
       if (area === journeyArea) { openJourney(); return; }
+      if (area === workArea) { if (WK.open) closeWork(); else openWork(e.detail === 0); return; }
       if (area === credsArea) { if (credsOpen) closeCreds(); else openCreds(e.detail === 0); return; }
       if (credsOpen) closeCreds(!touchMQ.matches); // on touch the section takes the stage straight over
+      if (WK.open) closeWork(!touchMQ.matches);
       if (touchMQ.matches) { stage(shown === area ? null : area); return; }
       const open = !area.classList.contains("is-open");
       closeAll(area);
@@ -4186,15 +5269,17 @@
   });
   document.addEventListener("click", (e) => {
     if (J.open || J.leaving || leave.open) return; // the Journey takes its own clicks, and the leaving card its own
-    if (e.target.closest(".area") || e.target.closest(".focus__title") || e.target.closest(".sound") || e.target.closest(".cred")) return;
+    if (e.target.closest(".area") || e.target.closest(".focus__title") || e.target.closest(".sound") || e.target.closest(".cred, .wk-item, .wk-dot")) return;
     closeAll();
     if (credsOpen) closeCreds();
+    if (WK.open) closeWork();
     if (shown) stage(null);
   });
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape" || J.open || J.leaving || leave.open) return;
     closeAll();
     if (credsOpen) closeCreds();
+    if (WK.open) closeWork();
     if (shown) stage(null);
   });
 
@@ -4216,6 +5301,8 @@
       const w = breeze(t);
       tasselArt.style.transform = `rotate(${(-(1.2 + 4 * w) * Math.sin(t * 1.3) - 3 * w).toFixed(2)}deg)`;
     }
+    // The kalava's free end sways on it too (drawWork).
+    if (WK.open || WK.closing) wkDraw();
     // (The Journey’s mala and lotus feel the same breeze, in malaTick and lotusTick.)
   }
 
@@ -4536,6 +5623,7 @@
     }
     if (focus.classList.contains("is-live")) box(focus, 12, .18);
     if (credsOpen) for (const c of creds.querySelectorAll(".cred")) box(c, 10, .15);
+    if (WK.open) for (const it of WK.items) if (it.shown) box(it.li, 10, .15);
     bandBot = .95 * innerHeight;
     bandTop = list.bottom + 24;
     if (bandBot - bandTop < 56) bandTop = bandBot - 56;
